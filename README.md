@@ -105,7 +105,7 @@ Follow these steps to clone and install the project:
 
 ## **Author**
 Developed by **Ismael Marot**.  
-Find more projects on [GitHub](https://github.com/your_username).
+Find more projects on [GitHub](https://github.com/ismaelmarot).
 
 ---
 
