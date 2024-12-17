@@ -116,6 +116,14 @@ This project is licensed under the **MIT License**. See the [LICENSE](LICENSE) f
 
 ## **Screenshots**
 
-![Add vehicles page](https://github.com/ismaelmarot/car-expense-tracker/blob/main/assets/car-app-01.png)
+![Vehicles page](https://github.com/ismaelmarot/car-expense-tracker/blob/main/assets/car-app-01.png)
 
+![Add vehicle](https://github.com/ismaelmarot/car-expense-tracker/blob/main/assets/car-app-02.png)
 
+![Add expense](https://github.com/ismaelmarot/car-expense-tracker/blob/main/assets/car-app-03.png)
+
+![Expenses List](https://github.com/ismaelmarot/car-expense-tracker/blob/main/assets/car-app-04.png)
+
+![Expenses Graphics](https://github.com/ismaelmarot/car-expense-tracker/blob/main/assets/car-app-05.png)
+
+![Edit expense](https://github.com/ismaelmarot/car-expense-tracker/blob/main/assets/car-app-06.png)
