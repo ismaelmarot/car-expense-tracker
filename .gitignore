@@ -7,18 +7,40 @@ yarn-error.log*
 pnpm-debug.log*
 lerna-debug.log*
 
-node_modules
-dist
-dist-ssr
-*.local
+# Dependencias
+node_modules/
 
-# Editor directories and files
+# Salida de compilación
+dist/
+dist-ssr/
+build/
+out/
+
+# Variables de entorno
+.env
+
+# Bases de datos locales
+*.sqlite
+*.sqlite3
+
+# Caché
+.cache/
+*.tsbuildinfo
+
+# Archivos locales y del sistema
+*.local
+.DS_Store
+
+# Directorios de editores
 .vscode/*
 !.vscode/extensions.json
 .idea
-.DS_Store
+*.iml
+.project
+.classpath
 *.suo
 *.ntvs*
 *.njsproj
 *.sln
 *.sw?
+.c9/
