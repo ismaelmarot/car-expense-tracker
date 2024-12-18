@@ -12,7 +12,7 @@
     "start": "concurrently 'yarn start:react' 'yarn start:electron'",
     "start:react": "cd car-expense-tracker-frontend && yarn start",
     "start:electron": "wait-on http://localhost:3000 && electron .",
-     "dist": "electron-builder"
+     "electron-build": "electron-builder"
   },
   "dependencies": {
     "concurrently": "^9.1.0"
