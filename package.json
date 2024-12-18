@@ -1,0 +1,46 @@
+{
+  "name": "car-expense-tracker",
+  "version": "1.0.0",
+  "description": "Car Expense Tracker App",
+  "main": "electron.js",
+  "scripts": {
+    "start-frontend": "cd car-expense-tracker-frontend && yarn start",
+    "start-backend": "cd car-expense-tracker-backend && node server.js",
+    "build": "cd car-expense-tracker-frontend && yarn build",
+    "electron": "electron .",
+    "package": "electron-builder",
+    "start": "concurrently 'yarn start:react' 'yarn start:electron'",
+    "start:react": "cd car-expense-tracker-frontend && yarn start",
+    "start:electron": "wait-on http://localhost:3000 && electron .",
+     "dist": "electron-builder"
+  },
+  "dependencies": {
+    "concurrently": "^9.1.0"
+  },
+  "devDependencies": {
+    "electron": "^33.2.1",
+    "electron-builder": "^25.1.8",
+    "wait-on": "^8.0.1"
+  },
+  "build": {
+    "appId": "com.car-expense-tracker",
+    "productName": "Car Expense Tracker",
+    "files": [
+      "car-expense-tracker-frontend/build/**/*",
+      "car-expense-tracker-backend/**/*",
+      "electron.js"
+    ],
+    "directories": {
+      "output": "dist"
+    },
+    "win": {
+      "target": "nsis",
+      "icon": "car-expense-tracker-frontend/public/app-car-icon.png"
+    },
+    "mac": {
+      "target": "dmg",
+      "icon": "car-expense-tracker-frontend/public/app-car-icon.png"
+    }
+  },
+  "license": "ISC"
+}
