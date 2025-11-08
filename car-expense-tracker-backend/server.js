@@ -12,7 +12,7 @@ console.log('Antes de la línea de la base de datos');
 
 const dbPath = isProduction
   ? path.join(process.resourcesPath, 'database.db')
-  : path.join(__dirname, 'car-expense-tracker-backend', 'database.db');
+  : path.join(__dirname, 'database.db');
 
 console.log(`Ruta de la base de datos: ${dbPath}`);
 
@@ -160,8 +160,8 @@ app.delete('/expenses/:id', (req, res) => {
 
 // Endpoint para descargar el backup de la base de datos
 app.get('/api/download-backup', (req, res) => {
-  const backupFilePath = path.join(__dirname, 'car-expense-tracker-backend', 'database.db');
-  const backupDestination = path.join(__dirname, 'car-expense-tracker-backend', 'backup.db');
+  const backupFilePath = path.join(__dirname, 'database.db');
+  const backupDestination = path.join(__dirname, 'backup.db');
 
   if (fs.existsSync(backupFilePath)) {
     fs.copyFile(backupFilePath, backupDestination, (err) => {

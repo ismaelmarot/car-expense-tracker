@@ -14,9 +14,7 @@ export const GridTable = styled(Grid)`
 `;
 
 export const GridTitle = styled(Typography)`
-    display: flex;
-    justify-content: center;
-    align-items: center;
+    ${flex('column', 'center', 'center')}
     padding: 0.3rem;
     border-radius: 3px;
     font-size: 1.5rem;
