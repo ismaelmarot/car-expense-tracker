@@ -1,0 +1,1 @@
+export const categoriesExpenses = ['combustible', 'mantenimiento', 'seguro', 'patente', 'reparacion', 'otros'];
