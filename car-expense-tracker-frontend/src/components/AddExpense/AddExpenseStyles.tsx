@@ -24,9 +24,9 @@ export const GridTitle = styled(Typography)`
 `;
 
 export const FormStyled = styled('form')`
+    padding: 2rem 1rem;
     border: 3px solid rgba(228,232,236,1);
     border-radius: 3px;
-    padding: 2rem 1rem;
     background-color: rgba(228,232,236,1);
     
 `;
@@ -47,8 +47,7 @@ export const GridTextFieldShort = styled(GridTextFieldLarge)`
 `;
 
 export const GridButtonAddExpense = styled(Grid)`
-    display: flex;
-    justify-content: center;
+    ${flex('column', 'center', 'center')}
     width: 100%;
     margin-top: 1rem;
 `;
