@@ -2,13 +2,13 @@ import styled from '@emotion/styled';
 import { Link } from 'react-router-dom';
 import { Grid, Button, Typography } from '@mui/material';
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
+import { flex } from '../../helpers/setFlex';
 
 export const Container = styled(Grid)`
-    display: flex;
-    align-items: center;
+    ${flex('row', 'center', 'flex-start')}
     height: 3rem;
-    margin: 0 .5rem .5rem;
     width: 100%;
+    margin: 0 .5rem .5rem;
 `;
 
 export const LinkStyled = styled(Link)`
