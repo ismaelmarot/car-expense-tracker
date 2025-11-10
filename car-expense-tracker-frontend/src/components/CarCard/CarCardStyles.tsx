@@ -1,10 +1,10 @@
 import React from 'react';
 import styled from '@emotion/styled';
 import { Card, Typography } from '@mui/material';
+import { size } from '../../helpers/setSize';
 
 export const CardStyled = styled(Card)`
-    height: 100%;
-    width: 100%;
+    ${size('100%', '100%')}
     transition: font-size 0.3s ease;
     &:hover {
         color: rgba(37,100,235,1);
