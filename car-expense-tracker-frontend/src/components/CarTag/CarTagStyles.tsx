@@ -1,16 +1,15 @@
 import React from 'react';
 import styled from '@emotion/styled';
 import { Grid } from '@mui/material';
+import { flex } from '../../helpers/setFlex';
+import { GeneralColors } from '../../constants/GeneralColors';
 
 export const GeneralContainer = styled(Grid)`
-    display: flex;
-    flex-direction: row;
-    border-right: 3px solid white;
+    ${flex('row','center','center')}
+    border-right: 3px solid ${GeneralColors.white};
 `;
 
 export const Container = styled(Grid)`
-    display: flex;
-    align-items: center;
     font-size: 1.5rem;
     font-weight: bold;
 `;
