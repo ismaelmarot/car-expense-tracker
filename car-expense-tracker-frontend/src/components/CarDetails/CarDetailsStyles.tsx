@@ -17,13 +17,11 @@ export const GridCarDetails = styled(Grid)`
 `;
 
 export const GridDeleteCarIcon = styled(Grid)`
-    display: flex;
-    align-items: center;
-    justify-content: flex-end;
+    ${flex('row','center','flex-end')}
     width: 100%;
     padding: 0 .5rem 0 1rem;
 `;
 
 export const ButtonDeleteCar = styled(Button)`
-    background-color: rgba(211, 47, 47 , 1);
+    background-color: ${GeneralColors.red};
 `;
