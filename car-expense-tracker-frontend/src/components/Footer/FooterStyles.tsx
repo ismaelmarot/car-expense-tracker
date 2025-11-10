@@ -1,10 +1,10 @@
 import React from 'react';
 import styled from '@emotion/styled';
 import { Grid, Link } from '@mui/material';
+import { flex } from '../../helpers/setFlex';
 
-export const Container = styled(Grid)`
-    display: flex;
-    justify-content: center;
+export const Container = styled.div`
+    ${flex('row', 'center', 'center')}
     color: rgba(255, 255, 255, 1);
     background-color: rgba(0,0,0,1);
 `;

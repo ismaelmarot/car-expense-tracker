@@ -16,7 +16,7 @@ const Footer: React.FC = () => {
     return (
         <>
 
-            <Container container>
+            <Container>
                 <Item item>Vehicles Expenses Tracker - © {getCurrentYear()}</Item>
                 <Item item> | </Item>
                 <Item item>Created by Ismael Marot</Item>
