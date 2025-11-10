@@ -1,10 +1,10 @@
 import React from 'react';
 import styled from '@emotion/styled';
 import {Grid, Typography } from '@mui/material';
+import { flex } from '../../helpers/setFlex';
 
 export const Container = styled(Grid)`
-  display: flex;
-  justify-content: center;
+  ${flex('column','center','center')}
   margin-bottom: 3rem;
 `;
 
