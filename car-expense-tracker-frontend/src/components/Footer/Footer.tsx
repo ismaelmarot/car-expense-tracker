@@ -19,10 +19,10 @@ const Footer: React.FC = () => {
             <Container container>
                 <Item item>Vehicles Expenses Tracker - © {getCurrentYear()}</Item>
                 <Item item> | </Item>
-                <Item item>Creado por ismaelmarot</Item>
+                <Item item>Created by Ismael Marot</Item>
                 <Item item> | </Item>
                 <LinkStyled onClick={handleOpenLegal}>
-                    T&eacute;rminos Legales
+                    Legal Terms
                 </LinkStyled>
             </Container>
 
