@@ -22,10 +22,8 @@ export const ArrowBackIconStyled = styled(ArrowBackIcon)`
 `;
 
 export const ButtonStyled = styled(Button)`
-    display: flex;
-    align-items: center;
-    height: 3rem;
-    width: auto;
+    ${flex('row', 'center', 'center')}
+    ${size('auto', '3rem')}
     background-color: rgba(24,118,209,1);
 `;
 
