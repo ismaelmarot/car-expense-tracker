@@ -14,8 +14,7 @@ export const Item = styled(Grid)`
 `;
 
 export const LinkStyled = styled(Link)`
-    display: flex;
-    align-items: center;
+    ${flex('row', 'center', 'center')}
     text-decoration: none;
     cursor: pointer;
     color: rgba(255, 255, 255, 1);
