@@ -1,19 +1,18 @@
 import React from 'react';
 import styled from '@emotion/styled';
 import { Grid, Typography } from '@mui/material';
+import { flex } from '../../helpers/setFlex';
+import { size } from '../../helpers/setSize';
 
 export const Container = styled(Grid)`
-    margin-top: .5rem;
+    margin: .3rem 0 1rem;
     padding-top: 1rem;
     background-color: white;
 `;
 
 export const GridPieChart = styled(Grid)`
-    display: flex;
-    justify-content: center;
-    height: 22rem;
-    width: 90%;
-    margin: 0 1rem 2rem;
+    ${flex('column', 'center', 'center')}
+    ${size('100%', '30rem')}
     background-color: white;
 `;
 
