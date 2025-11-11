@@ -1,12 +1,13 @@
 import React from 'react';
 import styled from '@emotion/styled';
 import { Button } from '@mui/material';
+import { GeneralColors } from '../../constants/GeneralColors';
 
 export const ButtonCancel = styled(Button)`
-    color: rgb(36,99,235);
+    color: ${GeneralColors.blue};
 `;
 
 export const ButtonDelete = styled(Button)`
-    color: rgba(255, 255, 255,1);
-    background-color: rgba(211,47,47,1);
+    color: ${GeneralColors.white};
+    background-color: ${GeneralColors.red};
 `;
