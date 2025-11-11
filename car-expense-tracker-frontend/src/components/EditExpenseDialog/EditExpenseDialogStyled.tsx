@@ -1,6 +1,7 @@
 import React from 'react';
 import styled from '@emotion/styled';
 import { Button, Typography, DialogActions, DialogContent, TextField, FormControl, InputLabel } from '@mui/material';
+import { GeneralColors } from '../../constants/GeneralColors';
 
 export const TypographyError = styled(Typography)`
     margin-bottom: 1rem;
@@ -11,8 +12,8 @@ export const DialogActionsStyled = styled(DialogActions)`
 `;
 
 export const ButtonSave = styled(Button)`
-    color: rgba(255, 255, 255,1);
-    background-color:rgba(24,118,208,1);
+    color: ${GeneralColors.white};
+    background-color: ${GeneralColors.blue};
 `;
 
 export const DialogContentStyled = styled(DialogContent)`
@@ -20,8 +21,8 @@ export const DialogContentStyled = styled(DialogContent)`
 `;
 
 export const TextFieldStyled = styled(TextField)`
-    margin-bottom: 1rem;
     width: 100%;
+    margin-bottom: 1rem;
 `;
 
 export const FormControlStyled = styled(FormControl)`
@@ -31,5 +32,5 @@ export const FormControlStyled = styled(FormControl)`
 
 export const InputLabelStyled = styled(InputLabel)`
     padding: 0 3px;
-    background-color: rgba(255, 255, 255, 1);
+    background-color: ${GeneralColors.white};
 `;
