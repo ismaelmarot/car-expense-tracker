@@ -2,16 +2,15 @@ import React from 'react';
 import styled from '@emotion/styled';
 import { Grid, Typography } from '@mui/material';
 import { Bar } from 'react-chartjs-2';
+import { flex } from '../../helpers/setFlex';
 
 export const Container = styled(Grid)`
-    margin-top: .5rem;
     padding-top: 1rem;
     background-color: white;
 `;
 
 export const GridBar = styled(Grid)`
-    display: flex;
-    justify-content: center;
+    ${flex('column','center','center')}
     width: 100%;
     background-color: white;
 `;
