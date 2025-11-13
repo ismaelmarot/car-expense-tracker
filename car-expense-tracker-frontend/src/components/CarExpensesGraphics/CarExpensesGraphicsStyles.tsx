@@ -5,21 +5,19 @@ import { flex } from '../../helpers/setFlex';
 import { GeneralColors } from '../../constants/GeneralColors';
 
 export const Container = styled(Grid)`
-  ${flex('row','center','center')}
-  margin-bottom: 3rem;
+  ${flex('column','center','flex-start')}
+  box-sizing: border-box;
 `;
 
 export const ContainerGraphics = styled(Grid)`
   width: 100%;
-  border-radius: 3px;
   border: 3px solid ${GeneralColors.grey};
+  box-sizing: border-box;
 `;
 
 export const TitleStyled = styled(Typography)`
   width: 100%;
-  margin-bottom: 1rem;
   padding: .3rem;
-  border-radius: 3px;
   font-size: 1.5rem;
   font-weight: bold;
   color: ${GeneralColors.white};
