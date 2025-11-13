@@ -47,7 +47,7 @@ const TabsCar: React.FC = () => {
                     <Tab label="Gráfica" icon={<BarChartIcon/> }></Tab>
                     <Tab label="Ajustes" icon={<SettingsIcon />}></Tab>
             </Tabs>
-            <Box sx={{ p: 3}}>{renderTabContent()}</Box>
+            <Box sx={{ p: 3}} style={{border:'3px dashed red'}}>{renderTabContent()}</Box>
             
         </BoxStyled>
     )

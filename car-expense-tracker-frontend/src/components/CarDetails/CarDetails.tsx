@@ -71,7 +71,7 @@ const CarDetails: React.FC = () => {
     }
 
     return (
-        <Grid>
+        <Grid style={{border:'3px solid blue', height:'100%'}}>
             <BackButton />
             <GridCarDetails>
                 <CarTag

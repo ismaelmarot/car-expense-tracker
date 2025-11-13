@@ -4,4 +4,6 @@ import { Box } from '@mui/material';
 
 export const BoxStyled = styled(Box)`
     width: 100%;
+    border: 3px dashed blue;
+    height: 80%;
 `;
