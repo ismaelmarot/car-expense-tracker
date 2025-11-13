@@ -7,6 +7,7 @@ export const Container = styled.div`
     ${flex('row', 'center', 'center')}
     color: ${GeneralColors.white};
     background-color: ${GeneralColors.AppData};
+    width: 100%;
 `;
 
 export const Item = styled(Grid)`
