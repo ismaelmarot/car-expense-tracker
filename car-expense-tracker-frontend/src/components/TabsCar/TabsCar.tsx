@@ -8,7 +8,7 @@ import AddCircleOutlineIcon from '@mui/icons-material/AddCircleOutline';
 import HistoryIcon from '@mui/icons-material/History';
 import BarChartIcon from '@mui/icons-material/BarChart';
 import SettingsIcon from '@mui/icons-material/Settings';
-import { BoxStyled } from './TabsCarStyles';
+import { BoxRenderContent, BoxStyled } from './TabsCarStyles';
 
 const TabsCar: React.FC = () => {
     const [tabIndex, setTabIndex] = useState(0);
@@ -47,8 +47,9 @@ const TabsCar: React.FC = () => {
                     <Tab label="Gráfica" icon={<BarChartIcon/> }></Tab>
                     <Tab label="Ajustes" icon={<SettingsIcon />}></Tab>
             </Tabs>
-            <Box sx={{ p: 3}} style={{border:'3px dashed red'}}>{renderTabContent()}</Box>
-            
+            <BoxRenderContent>
+                {renderTabContent()}
+            </BoxRenderContent>
         </BoxStyled>
     )
 };

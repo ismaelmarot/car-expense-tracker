@@ -4,7 +4,10 @@ import { Box } from '@mui/material';
 import { size } from '../../helpers/setSize';
 
 export const BoxStyled = styled(Box)`
-    /* ${size('100%', '100%')} */
+    ${size('100%', '100%')}
     box-sizing: border-box;
-    border: 3px solid pink;
+`;
+
+export const BoxRenderContent = styled(Box)`
+    ${size('100%', '100%')}
 `;

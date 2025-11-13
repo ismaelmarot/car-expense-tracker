@@ -7,6 +7,7 @@ import { GeneralColors } from '../../constants/GeneralColors';
 
 export const GridContainer = styled(Grid)`
     height: 100%;
+    border: 3px dashed blue;
 `;
 
 export const BoxStyled = styled(Box)`
