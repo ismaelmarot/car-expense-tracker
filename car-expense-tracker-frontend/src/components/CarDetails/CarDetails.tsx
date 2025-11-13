@@ -7,7 +7,7 @@ import TabsCar from '../TabsCar/TabsCar';
 import BackButton from '../BackButton/BackButton';
 import DeleteCarConfirmationDialog from '../DeletCarConfirmationDialog/DeletCarConfirmationDialog';
 import CarTag from '../../components/CarTag/CarTag';
-import { BoxStyled, ButtonDeleteCar, GridCarDetails, GridDeleteCarIcon } from './CarDetailsStyles';
+import { GridContainer, BoxStyled, ButtonDeleteCar, GridCarDetails, GridDeleteCarIcon } from './CarDetailsStyles';
 
 const CarDetails: React.FC = () => {
     const { id } = useParams();
@@ -71,7 +71,7 @@ const CarDetails: React.FC = () => {
     }
 
     return (
-        <Grid style={{border:'3px solid blue', height:'100%'}}>
+        <GridContainer>
             <BackButton />
             <GridCarDetails>
                 <CarTag
@@ -96,7 +96,7 @@ const CarDetails: React.FC = () => {
                 </GridDeleteCarIcon>
             </GridCarDetails>
             <TabsCar />   
-        </Grid>
+        </GridContainer>
     )
 };
 

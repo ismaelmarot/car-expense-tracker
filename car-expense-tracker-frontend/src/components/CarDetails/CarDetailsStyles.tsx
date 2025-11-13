@@ -5,6 +5,10 @@ import { flex } from '../../helpers/setFlex';
 import { size } from '../../helpers/setSize';
 import { GeneralColors } from '../../constants/GeneralColors';
 
+export const GridContainer = styled(Grid)`
+    height: 100%;
+`;
+
 export const BoxStyled = styled(Box)`
     ${flex('row','center','center')}
     ${size('100vh','auto')}

@@ -1,9 +1,10 @@
 import React from 'react';
 import styled from '@emotion/styled';
 import { Box } from '@mui/material';
+import { size } from '../../helpers/setSize';
 
 export const BoxStyled = styled(Box)`
-    width: 90%;
-    border: 3px dashed blue;
-    height: 80%;
+    /* ${size('100%', '100%')} */
+    box-sizing: border-box;
+    border: 3px solid pink;
 `;

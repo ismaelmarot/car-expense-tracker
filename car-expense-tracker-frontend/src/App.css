@@ -1,11 +1,11 @@
 .App {
   display: flex;
   flex-direction: column;
-  box-sizing: border-box;
+  max-height: 100vh;
   height: 100vh;
+  box-sizing: border-box;
   width: 100%;
   text-align: center;
-  background-color: white;
 }
 
 .App-logo {
@@ -36,7 +36,6 @@
 
 .Content {
   flex: 1;
-  width: 100%;
 }
 
 .Footer {
@@ -51,7 +50,7 @@
   justify-content: flex-start;
   margin-bottom: .1rem;
   padding: 0 1rem;
-  color: white;
+  color: rgba(255, 255, 255,1);
   background-color: rgba(13,13,13,1);
 }
 
