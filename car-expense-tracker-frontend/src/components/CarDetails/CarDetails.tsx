@@ -63,7 +63,7 @@ const CarDetails: React.FC = () => {
     if (!car) {
         return (
             <Container>
-                <Typography variant="h5" color="error">
+                <Typography variant='h5' color='error'>
                     No se encontró información para este auto.
                 </Typography>
             </Container>
@@ -83,7 +83,7 @@ const CarDetails: React.FC = () => {
                     vin={car.vin} 
                 />
                 <GridDeleteCarIcon>     
-                    <ButtonDeleteCar variant="contained" onClick={handleOpenDialog}>
+                    <ButtonDeleteCar variant='contained' onClick={handleOpenDialog}>
                         Eliminar Vehículo
                     </ButtonDeleteCar>
                     <DeleteCarConfirmationDialog

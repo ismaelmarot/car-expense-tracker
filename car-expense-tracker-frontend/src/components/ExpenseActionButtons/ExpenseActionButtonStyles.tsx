@@ -11,6 +11,7 @@ export const Container = styled(Grid)`
 
 export const EditButton = styled(IconButton)`
     color: ${GeneralColors.blue};
+    height: 100%;
 `;
 
 export const DeleteButton = styled(IconButton)`
