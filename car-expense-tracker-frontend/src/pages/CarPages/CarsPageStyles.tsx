@@ -42,8 +42,7 @@ export const LinkAddCarCard = styled(LinkCard)`
 `;
 
 export const CardStyled = styled(Grid)`
-    width: 100%;
-    height: 300px;
+    ${size('100%','300px')}
     background-color: #f5f5f5;
     border: 3px solid #ddd;
     border-radius: 5px;
