@@ -2,6 +2,7 @@ import React from 'react';
 import styled from '@emotion/styled';
 import { Link } from 'react-router-dom';
 import { Grid, Typography } from '@mui/material';
+import { flex } from '../../helpers/setFlex';
 
 export const GeneralContainer = styled(Grid)`
     margin-bottom: 3rem;
@@ -24,10 +25,11 @@ export const TypographyStyled = styled(Typography)`
 `;
 
 export const LinkCard = styled(Link)`
-    display: flex;
+    ${flex('column','center','center')}
+    /* display: flex;
     flex-direction: column;
     justify-content: center;
-    align-items: center;
+    align-items: center; */
     width: 100%;
     height: 100%;
     text-decoration: none;
