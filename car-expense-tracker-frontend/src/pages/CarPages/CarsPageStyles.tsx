@@ -3,6 +3,7 @@ import styled from '@emotion/styled';
 import { Link } from 'react-router-dom';
 import { Grid, Typography } from '@mui/material';
 import { flex } from '../../helpers/setFlex';
+import { size } from '../../helpers/setSize';
 
 export const GeneralContainer = styled(Grid)`
     margin-bottom: 3rem;
@@ -26,12 +27,7 @@ export const TypographyStyled = styled(Typography)`
 
 export const LinkCard = styled(Link)`
     ${flex('column','center','center')}
-    /* display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center; */
-    width: 100%;
-    height: 100%;
+    ${size('100%','100%')}
     text-decoration: none;
     transition: font-size 0.3s ease;
     &:hover {
