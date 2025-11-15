@@ -103,7 +103,7 @@ const CarExpenses: React.FC = () => {
     }));
 
     return (
-        <Box style={{ border:'1rem solid red', height: '100%' }}>
+        <Box style={{ border:'1rem solid red', height: '80%' }}>
             { renderTotalAmount() }
                 <ExpenseTable
                     expenses={mappedExpenses}
