@@ -4,10 +4,9 @@ import { Link } from 'react-router-dom';
 import { Grid, Typography } from '@mui/material';
 import { flex } from '../../helpers/setFlex';
 import { size } from '../../helpers/setSize';
+import { GeneralColors } from '../../constants/GeneralColors';
 
-export const GeneralContainer = styled(Grid)`
-    margin-bottom: 3rem;
-`;
+export const GeneralContainer = styled(Grid)``;
 
 export const Container = styled(Grid)`
     margin: 2rem 1rem;
@@ -16,13 +15,13 @@ export const Container = styled(Grid)`
 export const Title = styled(Grid)`
     margin: 0 .5rem;
     border-radius: 3px;
-    background-color: rgba(166,201,238,1);
+    background-color: ${GeneralColors.blue};
 `;
 
 export const TypographyStyled = styled(Typography)`
     font-size: 2rem;
     font-weight: bold;
-    color: rgba(38,100,235,1);
+    color: ${GeneralColors.white};
 `;
 
 export const LinkCard = styled(Link)`
@@ -32,8 +31,8 @@ export const LinkCard = styled(Link)`
     transition: font-size 0.3s ease;
     &:hover {
         font-size: 2rem;
-        border-color: rgba(166,201,238,1);
-        color: rgba(37,100,235,1);
+        border-color: ${GeneralColors.blue};
+        color: ${GeneralColors.blue};
     }
 `;
 
@@ -43,11 +42,12 @@ export const LinkAddCarCard = styled(LinkCard)`
 
 export const CardStyled = styled(Grid)`
     ${size('100%','300px')}
-    background-color: #f5f5f5;
-    border: 3px solid #ddd;
+    background-color: ${GeneralColors.white};
+    border: 3px solid ${GeneralColors.grey};
     border-radius: 5px;
-    transition: font-size 0.3s ease;
+    transition: font-size 0.2s ease;
     &:hover {
-        border-color: rgba(166,201,238,1);
+        border-color: ${GeneralColors.blue};
+        font-size: 2rem;
     }
 `;
