@@ -10,6 +10,7 @@ import EditExpenseDialog from '../EditExpenseDialog/EditExpenseDialog';
 import ExpenseTable from '../ExpenseTable/ExpenseTable';
 import { GridTotalAmount, TotalAmount } from './CarExpensesStyles';
 import { formatCategory } from '../../functions/FormatCategory';
+import { Height } from '@mui/icons-material';
 
 const CarExpenses: React.FC = () => {
     const { id } = useParams();
@@ -102,7 +103,7 @@ const CarExpenses: React.FC = () => {
     }));
 
     return (
-        <Box style={{ border:'1rem solid red'}}>
+        <Box style={{ border:'1rem solid red', height: '100%' }}>
             { renderTotalAmount() }
                 <ExpenseTable
                     expenses={mappedExpenses}

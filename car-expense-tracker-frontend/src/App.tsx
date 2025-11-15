@@ -20,8 +20,8 @@ const App: React.FC = () => {
             <Route path='/add' element={<AddCar />} />
             <Route path='/cars/:id' element={<CarDetails />} />
           </Routes>
+          <Footer />
         </div>
-        <Footer />
       </div>
     </Router>
   );
