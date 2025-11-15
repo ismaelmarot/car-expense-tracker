@@ -8,7 +8,7 @@ import { formatNumberByThousands } from '../../functions/formatNumbersByThousand
 import { ExpenseInterface } from '../../interfaces/ExpenseInterface';
 import EditExpenseDialog from '../EditExpenseDialog/EditExpenseDialog';
 import ExpenseTable from '../ExpenseTable/ExpenseTable';
-import { GridTotalAmount, TotalAmount } from './CarExpensesStyles';
+import { BoxCarExpenses, GridTotalAmount, TotalAmount } from './CarExpensesStyles';
 import { formatCategory } from '../../functions/FormatCategory';
 import { Height } from '@mui/icons-material';
 
@@ -103,7 +103,7 @@ const CarExpenses: React.FC = () => {
     }));
 
     return (
-        <Box style={{ border:'1rem solid red', height: '80%' }}>
+        <BoxCarExpenses>
             { renderTotalAmount() }
                 <ExpenseTable
                     expenses={mappedExpenses}
@@ -121,7 +121,7 @@ const CarExpenses: React.FC = () => {
                 onSave={handleSave}
                 onChange={handleChange}
             />
-        </Box>
+        </BoxCarExpenses>
     )
 }
 

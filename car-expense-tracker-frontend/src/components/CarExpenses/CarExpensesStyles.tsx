@@ -1,8 +1,14 @@
 import React from 'react';
 import styled from '@emotion/styled';
-import { Grid, Typography } from '@mui/material';
+import { Box, Grid, Typography } from '@mui/material';
 import { flex } from '../../helpers/setFlex';
 import { GeneralColors } from '../../constants/GeneralColors';
+
+export const BoxCarExpenses = styled(Box)`
+    height: 50vh;
+    border: 3px solid red;
+    padding: 0%.5rem;
+`;
 
 export const GridTotalAmount = styled(Grid)`
     ${flex('row', 'center', 'center')}
