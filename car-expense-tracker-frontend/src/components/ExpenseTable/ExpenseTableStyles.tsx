@@ -7,8 +7,7 @@ export const TableCellRight = styled(TableCell)`
 `;
 
 export const TableContainerStyled = styled(TableContainer)`
-    /* max-height: 20rem; */
-    max-height: 100%;
+    height: 100%;
     box-sizing: border-box;
     border: 3px solid rgba(228,232,236,1);
     border-radius: 3px;
@@ -16,6 +15,6 @@ export const TableContainerStyled = styled(TableContainer)`
 `;
 
 export const TableStyled = styled(Table)`
-    min-width: 650;
+    min-width: 650px;
     width: 100%;
 `;
