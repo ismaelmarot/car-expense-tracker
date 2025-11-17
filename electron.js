@@ -1,5 +1,6 @@
 const { app, BrowserWindow } = require('electron');
 const path = require('path');
+const { exec } = require('child_process');
 
 let mainWindow;
 
@@ -59,22 +60,38 @@ function createWindow() {
   });
 }
 
-app.on('ready', () => {
+// Iniciar el servidor de Express
+function startServer() {
+  const serverProcess = exec('node car-expense-tracker-backend/server.js', (error, stdout, stderr) => {
+    if (error) {
+      console.error(`Error al iniciar el servidor: ${error}`);
+      return;
+    }
+    console.log(`Servidor iniciado: ${stdout}`);
+  });
+
+  serverProcess.stdout.on('data', (data) => {
+    console.log(data);
+  });
+
+  serverProcess.stderr.on('data', (data) => {
+    console.error(data);
+  });
+}
+
+app.whenReady().then(() => {
+  startServer();
   createWindow();
 
-  if (process.platform === 'darwin') {
-    app.dock.hide();
-  }
+  app.on('activate', () => {
+    if (BrowserWindow.getAllWindows().length === 0) {
+      createWindow();
+    }
+  });
 });
 
 app.on('window-all-closed', () => {
   if (process.platform !== 'darwin') {
     app.quit();
-  }
-});
-
-app.on('activate', () => {
-  if (mainWindow === null) {
-    createWindow();
   }
 });

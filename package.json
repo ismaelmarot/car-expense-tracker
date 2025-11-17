@@ -1,6 +1,7 @@
 {
   "name": "car-expense-tracker",
   "version": "1.0.0",
+  "author": "Ismael Marot <ismaelmarot@hotmail.com>",
   "description": "Car Expense Tracker App",
   "main": "electron.js",
   "scripts": {
@@ -29,6 +30,12 @@
       "car-expense-tracker-frontend/build/**/*",
       "car-expense-tracker-backend/**/*",
       "electron.js"
+    ],
+    "extraResources": [
+    {
+      "from": "car-expense-tracker-backend/database.db",
+      "to": "database.db"
+    }
     ],
     "directories": {
       "output": "dist"

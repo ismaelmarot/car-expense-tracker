@@ -7,12 +7,19 @@ const path = require('path');
 const app = express();
 const port = 5001;
 
-// Middleware
+const isProduction = process.env.NODE_ENV === 'production';
+console.log('Antes de la línea de la base de datos');
+
+const dbPath = isProduction
+  ? path.join(process.resourcesPath, 'database.db')
+  : path.join(__dirname, 'database.db');
+
+console.log(`Ruta de la base de datos: ${dbPath}`);
+
 app.use(cors());
 app.use(express.json());
 
-// Open DB SQLite
-const db = new sqlite3.Database('./database.db', (err) => {
+const db = new sqlite3.Database(dbPath, (err) => {
   if (err) {
     console.error('Error al conectar con la base de datos', err);
   } else {
@@ -20,9 +27,7 @@ const db = new sqlite3.Database('./database.db', (err) => {
   }
 });
 
-// DBs - CREATION ===============================================================
 db.serialize(() => {
-  // Create CAR table if it doesn't exist
   db.run(`CREATE TABLE IF NOT EXISTS cars (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
     brand TEXT,
@@ -36,7 +41,6 @@ db.serialize(() => {
     fuel_type TEXT
   )`);
 
-  // Create Expenses table if it doesn't exist
   db.run(`CREATE TABLE IF NOT EXISTS expenses (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
     car_id INTEGER,
@@ -49,9 +53,7 @@ db.serialize(() => {
   )`);
 });
 
-// CARS - ROUTES GET & POST =====================================================
-//===GETs========================================================================
-// GET all the Cars
+// Rutas de Autos
 app.get('/cars', (req, res) => {
   db.all('SELECT * FROM cars', [], (err, rows) => {
     if (err) {
@@ -62,11 +64,9 @@ app.get('/cars', (req, res) => {
   });
 });
 
-//Get Car for ID
 app.get('/cars/:id', (req, res) => {
   const carId = req.params.id;
-  const query = 'SELECT * FROM cars WHERE id = ?';
-  db.get(query, [carId], (err, row) => {
+  db.get('SELECT * FROM cars WHERE id = ?', [carId], (err, row) => {
     if (err) {
       res.status(500).json({ error: err.message });
       return;
@@ -79,8 +79,6 @@ app.get('/cars/:id', (req, res) => {
   });
 });
 
-//===POSTs=======================================================================
-// Add new Car
 app.post('/cars', (req, res) => {
   const { brand, model, year, version, vehicle_type, color, vin, engine, fuel_type } = req.body;
   const query = `INSERT INTO cars (brand, model, year, version, vehicle_type, color, vin, engine, fuel_type)
@@ -94,30 +92,22 @@ app.post('/cars', (req, res) => {
   });
 });
 
-
-//===DELETE======================================================================
-// Delete one Car
 app.delete('/cars/:id', (req, res) => {
   const carId = req.params.id;
-  console.log(`Recibiendo ID del auto para eliminar: ${carId}`);
-  
-  const query = 'DELETE FROM cars WHERE id = ?';
-  db.run(query, [carId], function(err) {
+  db.run('DELETE FROM cars WHERE id = ?', [carId], function(err) {
     if (err) {
-      return res.status(500).json({ error: err.message });
+      res.status(500).json({ error: err.message });
+      return;
     }
     if (this.changes === 0) {
-      console.log(`No se encontró el auto con ID: ${carId}`);
-      return res.status(404).json({ message: "Car not found" });
+      res.status(404).json({ message: "Car not found" });
+      return;
     }
-    console.log(`Auto con ID: ${carId} eliminado exitosamente`);
     res.json({ message: "Car deleted successfully" });
   });
 });
 
-// EXPENSES - ROUTES GET & POST & EDIT ==========================================
-//===GETs========================================================================
-// Get all the Expenses
+// Rutas de Gastos
 app.get('/expenses', (req, res) => {
   db.all('SELECT * FROM expenses', [], (err, rows) => {
     if (err) {
@@ -128,7 +118,6 @@ app.get('/expenses', (req, res) => {
   });
 });
 
-// Get Expense by Car ID
 app.get('/expenses/car/:carId', (req, res) => {
   const carId = req.params.carId;
   db.all('SELECT * FROM expenses WHERE car_id = ?', [carId], (err, rows) => {
@@ -140,26 +129,7 @@ app.get('/expenses/car/:carId', (req, res) => {
   });
 });
 
-// Get Expense by Expense ID
-app.get('/expenses/:id', (req, res) => {
-  const expenseId = req.params.id;
-  const query = 'SELECT * FROM expenses WHERE id = ?';
-  db.get(query, [expenseId], (err, row) => {
-    if (err) {
-      res.status(500).json({ error: err.message });
-      return;
-    }
-    if (!row) {
-      res.status(404).json({ message: "Expense not found" });
-      return;
-    }
-    res.json(row);
-  });
-});
-
-// Add new Expense
 app.post('/expenses', (req, res) => {
-  console.log(req.body)
   const { car_id, description, price, kilometers, category, date } = req.body;
   const currentDate = date || new Date().toISOString();
   const query = `INSERT INTO expenses (car_id, description, price, kilometers, category, date)
@@ -173,58 +143,22 @@ app.post('/expenses', (req, res) => {
   });
 });
 
-// Delete Expense
 app.delete('/expenses/:id', (req, res) => {
   const expenseId = req.params.id;
-  const query = 'DELETE FROM expenses WHERE id = ?';
-  db.run(query, [expenseId], function(err) {
+  db.run('DELETE FROM expenses WHERE id = ?', [expenseId], function(err) {
     if (err) {
-      return res.status(500).json({ error: err.message });
+      res.status(500).json({ error: err.message });
+      return;
     }
     if (this.changes === 0) {
-      return res.status(404).json({ message: "Expense not found" });
+      res.status(404).json({ message: "Expense not found" });
+      return;
     }
     res.json({ message: "Expense deleted successfully" });
   });
 });
 
-// Edit Expense
-app.put('/expenses/:id', (req, res) => {
-  console.log('DENTRO DE APP.PUT');
-  const expenseId = req.params.id;
-  const { car_id, description, price, kilometers, category, date } = req.body;
-
-  console.log('Updating expense with ID:', expenseId);
-  console.log('Received data:', req.body);
-  
-  if (!car_id || !description || !price || !kilometers || !category || !date) {
-    return res.status(400).json({ message: "All fields are required" });
-  }
-
-  const query = `UPDATE expenses
-                 SET car_id = ?, description = ?, price = ?, kilometers = ?, category = ?, date = ?
-                 WHERE id = ?`;
-
-  console.log('Query:', query);
-  console.log('Values:', [car_id, description, price, kilometers, category, date, expenseId]);
-
-  db.run(query, [car_id, description, price, kilometers, category, date, expenseId], function(err) {
-    if (err) {
-      console.error("Error al actualizar el gasto: ", err);
-      return res.status(500).json({ error: err.message });
-    }
-    if (this.changes === 0) {
-      return res.status(404).json({ message: 'Expense not found' });
-    }
-    res.json({
-      message: 'Expense updated successfully',
-      id: expenseId,
-      updateFields: { car_id, description, price, kilometers, category, date }
-    });
-  });
-});
-
-// Endpoint for DB backup =======================================================
+// Endpoint para descargar el backup de la base de datos
 app.get('/api/download-backup', (req, res) => {
   const backupFilePath = path.join(__dirname, 'database.db');
   const backupDestination = path.join(__dirname, 'backup.db');
@@ -250,8 +184,7 @@ app.get('/api/download-backup', (req, res) => {
   }
 });
 
-
-// START SERVER =================================================================
+// Iniciar el servidor
 app.listen(port, () => {
   console.log(`Servidor escuchando en http://localhost:${port}`);
 });
