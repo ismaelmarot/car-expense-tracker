@@ -110,87 +110,80 @@ const AddExpense: React.FC = () => {
         <GridContainer container>
             <GridTitle>Agregar Gasto</GridTitle>
             <GridTable>
-                <Grid xs={7}>
-                    <FormStyled onSubmit={handleSubmit}>
-                        <Grid container>
-                            <GridTextFieldLarge item xs={12}>
-                                <TextFieldStyled      
-                                    label="Descripción"
-                                    value={description}
-                                    onChange={(e) => setDescription(e.target.value)}
-                                    variant='outlined'
-                                    required
-                                />
-                            </GridTextFieldLarge>
-                            <GridTextFieldShort item xs={6}>
-                                <TextFieldStyled
-                                    label="Precio"
-                                    value={price}
-                                    onChange={handlePriceChange}
-                                    variant='outlined'
-                                    required
+                <FormStyled onSubmit={handleSubmit}>
+                    <Grid container>
+                        <GridTextFieldLarge item xs={12}>
+                            <TextFieldStyled      
+                                label="Descripción"
+                                value={description}
+                                onChange={(e) => setDescription(e.target.value)}
+                                variant='outlined'
+                                required
+                            />
+                        </GridTextFieldLarge>
+                        <GridTextFieldShort item xs={6}>
+                            <TextFieldStyled
+                                label="Precio"
+                                value={price}
+                                onChange={handlePriceChange}
+                                variant='outlined'
+                                required
                                     type='number'
                                     InputProps={{
-                                        inputProps: {
-                                            step: 'any',
-                                            min: '0'
-                                        }
-                                    }}
-                                />
-                            </GridTextFieldShort>
-                            <GridTextFieldShort item xs={6}>
-                                <TextFieldStyled
-                                    label="Kilometraje"
-                                    value={kilometers}
-                                    onChange={handleKilometersChange}
-                                    variant='outlined'
-                                    required
-                                    type='number'
-                                    inputProps={{ min: '0' }}
-                                />
-                            </GridTextFieldShort>
-                            <GridTextFieldShort item xs={6}>
-                                <TextFieldStyled
-                                    label="Fecha"
-                                    type='date'
-                                    value={date}
-                                    onChange={(e) => setDate(e.target.value)}
-                                    InputLabelProps={{
-                                        shrink: true,
-                                    }}
-                                    required
-                                />
-                            </GridTextFieldShort>
-
-                            <GridTextFieldShort container xs={6}>
-                                <FormControlStyled fullWidth variant='outlined' required>
-                                    <InputLabel>Categoría</InputLabel>
-                                    <SelectStyled
-                                        value={category}
-                                        onChange={(e) => setCategory(e.target.value as string)}
-                                        label="Categoría"
-                                    >
-                                        <MenuItem value='combustible'>Combustible</MenuItem>
-                                        <MenuItem value='mantenimiento'>Mantenimiento</MenuItem>
-                                        <MenuItem value='seguro'>Seguro</MenuItem>
-                                        <MenuItem value='patente'>Patente</MenuItem>
-                                        <MenuItem value='reparacion'>Reparación</MenuItem>
-                                        <MenuItem value='otros'>Otros</MenuItem>
-                                    </SelectStyled>
-                                </FormControlStyled>
-                            </GridTextFieldShort>
-
-                            {error && (
-                                renderErrorMessage()
-                            )}
-
-                            { renderButtonAddExpense() }
-
-                        </Grid>
-                    </FormStyled>
-                </Grid>
+                                    inputProps: {
+                                        step: 'any',
+                                        min: '0'
+                                    }
+                                }}
+                            />
+                        </GridTextFieldShort>
+                        <GridTextFieldShort item xs={6}>
+                            <TextFieldStyled
+                                label="Kilometraje"
+                                value={kilometers}
+                                onChange={handleKilometersChange}
+                                variant='outlined'
+                                required
+                                type='number'
+                                inputProps={{ min: '0' }}
+                            />
+                        </GridTextFieldShort>
+                        <GridTextFieldShort item xs={6}>
+                            <TextFieldStyled
+                                label="Fecha"
+                                type='date'
+                                value={date}
+                                onChange={(e) => setDate(e.target.value)}
+                                InputLabelProps={{
+                                    shrink: true,
+                                }}
+                                required
+                            />
+                        </GridTextFieldShort>
+                        <GridTextFieldShort container xs={6}>
+                            <FormControlStyled fullWidth variant='outlined' required>
+                                <InputLabel>Categoría</InputLabel>
+                                <SelectStyled
+                                    value={category}
+                                    onChange={(e) => setCategory(e.target.value as string)}
+                                    label="Categoría"
+                                >
+                                    <MenuItem value='combustible'>Combustible</MenuItem>
+                                    <MenuItem value='mantenimiento'>Mantenimiento</MenuItem>
+                                    <MenuItem value='seguro'>Seguro</MenuItem>
+                                    <MenuItem value='patente'>Patente</MenuItem>
+                                    <MenuItem value='reparacion'>Reparación</MenuItem>
+                                    <MenuItem value='otros'>Otros</MenuItem>
+                                </SelectStyled>
+                            </FormControlStyled>
+                        </GridTextFieldShort>
+                        {error && (
+                            renderErrorMessage()
+                        )}
+                        { renderButtonAddExpense() }
+                    </Grid>
+                </FormStyled>
             </GridTable>
-
             <SnackbarNotification
                 open={snackbarOpen}
                 message={snackbarMessage}
