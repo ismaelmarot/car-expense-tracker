@@ -18,4 +18,3 @@ const BackButton: React.FC = () => {
 };
 
 export default BackButton;
-

@@ -55,7 +55,7 @@ export const GridButtonAddExpense = styled(Grid)`
 export const ButtonAddStyled = styled(Button)`
     padding: 1rem 2rem 1rem 1.5rem;
     color: ${GeneralColors.white};
-    background-color: ${GeneralColors.lightBlue};
+    background-color: ${GeneralColors.blue};
 `;
 
 export const ErrorTypography = styled(Typography)`
