@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
 import { addCar } from '../../api/api';
-import { useNavigate } from 'react-router-dom';
 import { ButtonStyled, Container, FormGrid, Title, TextFieldStyled } from './AddCarStyles';
 import BackButton from '../BackButton/BackButton';
 
@@ -20,8 +19,6 @@ const AddCar: React.FC = () => {
             [name]: name === 'vin' ? value.toUpperCase() : value
         });
     };
-
-    const navigate = useNavigate();
 
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
@@ -54,8 +51,8 @@ const AddCar: React.FC = () => {
     return (
         <Container>
             <BackButton />
-            <Title>Agregar nuevo Vehículo</Title>
-            <FormGrid container xs={12} md={6}>
+            <FormGrid container xs={12} md={6} lg={4}>
+                <Title>Agregar Vehículo</Title>
                 <form onSubmit={handleSubmit}>
                     <TextFieldStyled
                         label="Marca"

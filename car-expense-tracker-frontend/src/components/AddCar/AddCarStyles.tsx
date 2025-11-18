@@ -1,12 +1,11 @@
 import React from 'react';
 import styled from '@emotion/styled';
 import { Button, Grid, TextField, Typography } from '@mui/material';
+import { flex } from '../../helpers/setFlex';
+import { GeneralColors } from '../../constants/GeneralColors';
 
 export const Container = styled(Grid)`
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
+    ${flex('column', 'center', 'center')}
     padding: 0 .5rem;
 `;
 
@@ -16,9 +15,10 @@ export const Title = styled(Typography)`
 `;
 
 export const FormGrid = styled(Grid)`
+    ${flex('column', 'center', 'center')}
     padding-top: 2rem;
-    background-color: rgba(228,232,236,1);
     border-radius: 5px;
+    background-color: ${GeneralColors.grey};
 `;
 
 export const ButtonStyled = styled(Button)`
@@ -31,5 +31,5 @@ export const TextFieldStyled = styled(TextField)`
     width: 90%;
     margin: .5rem 0 .5rem;
     border-radius: 5px;
-    background-color: rgba(255, 255, 255,1);
+    background-color: ${GeneralColors.white};
 `;
