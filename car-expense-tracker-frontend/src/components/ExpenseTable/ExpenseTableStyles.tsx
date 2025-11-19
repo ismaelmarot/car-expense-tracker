@@ -6,7 +6,6 @@ import { GeneralColors } from '../../constants/GeneralColors';
 
 export const TableContainerStyled = styled(TableContainer)`
     max-height: 55vh;
-    padding: .5rem;
     box-sizing: border-box;
     border-radius: 3px;
     border: 3px solid ${GeneralColors.grey};

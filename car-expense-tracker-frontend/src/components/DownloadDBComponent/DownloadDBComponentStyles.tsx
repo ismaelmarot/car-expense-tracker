@@ -8,6 +8,7 @@ const IconStyled =`
 `;
 
 export const AccordionStyled = styled(Accordion)`
+    width: 100%;
     margin-bottom: 1rem;
     border-radius: 3px;
 `;
