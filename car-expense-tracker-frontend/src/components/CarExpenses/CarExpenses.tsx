@@ -104,14 +104,14 @@ const CarExpenses: React.FC = () => {
     return (
         <Box>
             { renderTotalAmount() }
-                <ExpenseTable
-                    expenses={mappedExpenses}
-                    handleEdit={handleEdit}
-                    handleDelete={handleDelete}
-                    formatNumberByThousands={formatNumberByThousands}
-                    formatNumberWithCommas={formatNumberWithCommas}
-                    formatDate={formatDate}
-                />
+            <ExpenseTable
+                expenses={mappedExpenses}
+                handleEdit={handleEdit}
+                handleDelete={handleDelete}
+                formatNumberByThousands={formatNumberByThousands}
+                formatNumberWithCommas={formatNumberWithCommas}
+                formatDate={formatDate}
+            />
             <EditExpenseDialog
                 open={open}
                 expense={editExpense}

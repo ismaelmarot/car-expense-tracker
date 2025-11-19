@@ -8,9 +8,9 @@ export const TableContainerStyled = styled(TableContainer)`
     max-height: 55vh;
     padding: .5rem;
     box-sizing: border-box;
-    border: 3px solid rgba(228,232,236,1);
     border-radius: 3px;
-    background-color: white;
+    border: 3px solid ${GeneralColors.grey};
+    background-color: ${GeneralColors.white};
 `;
 
 export const TableCellRight = styled(TableCell)`
