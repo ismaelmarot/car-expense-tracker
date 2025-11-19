@@ -111,7 +111,7 @@ const CarExpensesGraphics: React.FC = () => {
     if (error) return <Typography variant='h6' color="error">{error}</Typography>;
 
     return (
-        <Container container>
+        <Container>
             <TitleStyled>
                 Estad&iacute;sticas
             </TitleStyled>
