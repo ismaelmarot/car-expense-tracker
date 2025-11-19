@@ -4,6 +4,7 @@ import { Table, TableCell } from '@mui/material';
 
 export const TableStyled = styled(Table)`
     width: 100%;
+    
 `;
 
 export const ThStyled = styled(TableCell)`

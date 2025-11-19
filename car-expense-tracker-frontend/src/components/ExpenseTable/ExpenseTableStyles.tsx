@@ -4,17 +4,17 @@ import { Table, TableRow, TableCell, TableContainer } from '@mui/material';
 import { GeneralColors } from '../../constants/GeneralColors';
 
 
-export const TableCellRight = styled(TableCell)`
-    text-align: right;
-`;
-
 export const TableContainerStyled = styled(TableContainer)`
-    max-height: 20rem;
-    margin-right: 2px;
+    max-height: 55vh;
+    padding: .5rem;
     box-sizing: border-box;
     border: 3px solid rgba(228,232,236,1);
     border-radius: 3px;
     background-color: white;
+`;
+
+export const TableCellRight = styled(TableCell)`
+    text-align: right;
 `;
 
 export const TableStyled = styled(Table)`
