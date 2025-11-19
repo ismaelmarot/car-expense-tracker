@@ -1,7 +1,7 @@
 import React from 'react';
 import { ExpenseTableInterface } from '../../interfaces/ExpenseTableInterface';
-import { TableBody, TableCell, TableRow, Typography } from '@mui/material';
-import { TableCellRight, TableContainerStyled, TableStyled } from './ExpenseTableStyles';
+import { TableBody, TableCell, Typography } from '@mui/material';
+import { TableCellRight, TableContainerStyled, TableRowStyled, TableStyled } from './ExpenseTableStyles';
 import ExpenseTableHeader from '../ExpenseTableHeader/ExpenseTableHeader';
 import { headers } from '../../constants/ExpenseTableHeaders';
 import ExpenseActionButtons from '../ExpenseActionButtons/ExpenseActionButtons';
@@ -24,7 +24,7 @@ const ExpenseTable: React.FC<ExpenseTableInterface> =({
                 <ExpenseTableHeader headers={headers} />
                 <TableBody>
                     {expenses.map((expense) => (
-                        <TableRow key={expense.id}>
+                        <TableRowStyled key={expense.id}>
                             <TableCell component='th' scope='row'>
                                 {expense.description}
                             </TableCell>
@@ -44,7 +44,7 @@ const ExpenseTable: React.FC<ExpenseTableInterface> =({
                                 onEdit={() => handleEdit(expense)}
                                 onDelete={() => handleDelete(expense.id)}
                             />
-                        </TableRow>
+                        </TableRowStyled>
                     ))}
                 </TableBody>
             </TableStyled>
