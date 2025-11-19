@@ -1,15 +1,14 @@
 import React from 'react';
 import styled from '@emotion/styled';
 import { Grid, Box, Button } from '@mui/material';
+import { flex } from '../../mixins/setFlex';
 
 export const BoxStyled = styled(Box)`
-    display:flex;
-    justify-content:center;
-    align-items: center;
+    ${flex('column', 'center', 'center')}
     height: 100vh;
 `;
 
-export const GridCarDetails = styled(Grid)`
+export const GridCarDetails = styled(Grid)`}
     display: flex;
     justify-content: senter;
     margin: 0 .5rem;

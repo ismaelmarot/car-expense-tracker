@@ -1,7 +1,7 @@
 import React from 'react';
 import styled from '@emotion/styled';
 import { Button, Grid, TextField, Typography } from '@mui/material';
-import { flex } from '../../helpers/setFlex';
+import { flex } from '../../mixins/setFlex';
 import { GeneralColors } from '../../constants/GeneralColors';
 
 export const Container = styled(Grid)`

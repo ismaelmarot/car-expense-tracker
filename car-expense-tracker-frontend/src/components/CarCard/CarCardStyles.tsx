@@ -1,7 +1,7 @@
 import React from 'react';
 import styled from '@emotion/styled';
 import { Card, Typography } from '@mui/material';
-import { size } from '../../helpers/setSize';
+import { size } from '../../mixins/setSize';
 import { GeneralColors } from '../../constants/GeneralColors';
 
 export const CardStyled = styled(Card)`

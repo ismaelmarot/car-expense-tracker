@@ -3,8 +3,8 @@ import styled from '@emotion/styled';
 import { Link } from 'react-router-dom';
 import { Grid, Typography } from '@mui/material';
 import { GeneralColors } from '../../constants/GeneralColors';
-import { flex } from '../../helpers/setFlex';
-import { size } from '../../helpers/setSize';
+import { flex } from '../../mixins/setFlex';
+import { size } from '../../mixins/setSize';
 
 export const GeneralContainer = styled(Grid)`
     margin-bottom: 3rem;

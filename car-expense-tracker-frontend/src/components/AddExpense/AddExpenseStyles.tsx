@@ -2,7 +2,7 @@ import React from 'react';
 import styled from '@emotion/styled';
 import { Button, FormControl, Select, Grid, TextField, Typography } from '@mui/material';
 import { GeneralColors } from '../../constants/GeneralColors';
-import { flex } from '../../helpers/setFlex';
+import { flex } from '../../mixins/setFlex';
 
 export const GridContainer = styled(Grid)`
     ${flex('column', 'center', 'center')}

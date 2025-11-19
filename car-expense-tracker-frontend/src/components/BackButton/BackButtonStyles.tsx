@@ -2,9 +2,9 @@ import styled from '@emotion/styled';
 import { Link } from 'react-router-dom';
 import { Grid, Button, Typography } from '@mui/material';
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
-import { flex } from '../../helpers/setFlex';
+import { flex } from '../../mixins/setFlex';
+import { size } from '../../mixins/setSize';
 import { GeneralColors } from '../../constants/GeneralColors';
-import { size } from '../../helpers/setSize';
 
 export const Container = styled(Grid)`
     ${flex('row', 'center', 'flex-start')}
