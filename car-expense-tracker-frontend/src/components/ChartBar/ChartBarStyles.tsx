@@ -2,24 +2,25 @@ import React from 'react';
 import styled from '@emotion/styled';
 import { Grid, Typography } from '@mui/material';
 import { Bar } from 'react-chartjs-2';
+import { flex } from '../../mixins/setFlex';
+import { GeneralColors } from '../../constants/GeneralColors';
 
 export const Container = styled(Grid)`
     margin-top: .5rem;
     padding-top: 1rem;
-    background-color: white;
+    background-color: ${GeneralColors.white};
 `;
 
 export const GridBar = styled(Grid)`
-    display: flex;
-    justify-content: center;
+    ${flex('column','center','center')}
     width: 100%;
-    background-color: white;
+    background-color: ${GeneralColors.white}
 `;
 
 export const BarStyled = styled(Bar)`
     width: 100%;
     margin: 0 1rem 2rem;
-    border: 3px solid rgba(228,232,236,1);
+    border: 3px solid ${GeneralColors.grey};
 `;
 
 export const TypographyStyled = styled(Typography)`
