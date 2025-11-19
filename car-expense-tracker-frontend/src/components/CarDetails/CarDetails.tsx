@@ -63,7 +63,7 @@ const CarDetails: React.FC = () => {
     if (!car) {
         return (
             <Container>
-                <Typography variant="h5" color="error">
+                <Typography variant='h5' color='error'>
                     No se encontró información para este auto.
                 </Typography>
             </Container>
