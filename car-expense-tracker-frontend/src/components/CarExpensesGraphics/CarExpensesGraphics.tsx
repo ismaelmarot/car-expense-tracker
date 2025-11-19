@@ -116,10 +116,10 @@ const CarExpensesGraphics: React.FC = () => {
                 Estad&iacute;sticas
             </TitleStyled>
             <ContainerGraphics container>
-                <Grid item xs={12} lg={7}>
+                <Grid item xs={12} xl={6}>
                     <ChartBar title="Gastos por año" data={barChartData} />            
                 </Grid>
-                <Grid item xs={12} lg={5}>
+                <Grid item xs={12} xl={6}>
                     <ChartPie title="Total por categor&iacute;a" data={pieChartData} />
                 </Grid>
             </ContainerGraphics>

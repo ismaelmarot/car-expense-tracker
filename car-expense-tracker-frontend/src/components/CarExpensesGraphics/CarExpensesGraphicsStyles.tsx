@@ -6,6 +6,7 @@ import { GeneralColors } from '../../constants/GeneralColors';
 
 export const Container = styled(Grid)`
   ${flex('column', 'center', 'center')};
+  max-height: 61vh;
 `;
 
 export const TitleStyled = styled(Typography)`
@@ -20,4 +21,7 @@ export const TitleStyled = styled(Typography)`
 
 export const ContainerGraphics = styled(Grid)`
   width: 100%;
+  max-height: 100%;
+  overflow-y: auto;
+  padding-right: 1rem;
 `;
