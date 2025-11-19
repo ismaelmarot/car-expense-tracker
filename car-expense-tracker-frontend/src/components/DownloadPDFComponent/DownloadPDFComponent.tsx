@@ -103,7 +103,7 @@ const DownloadPDFComponent: React.FC = () => {
             </AccordionSummary>
             <AccordionDetails>
                 <Button variant='contained' color='primary' onClick={handleOpen}>
-                    Ver Gastos
+                    Descargar PDF
                 </Button>
 
                 <Dialog open={open} onClose={handleClose} maxWidth='md' fullWidth>

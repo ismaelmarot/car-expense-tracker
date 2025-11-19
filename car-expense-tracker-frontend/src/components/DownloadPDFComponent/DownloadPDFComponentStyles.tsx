@@ -2,6 +2,8 @@ import React from 'react';
 import styled from '@emotion/styled';
 import { Accordion, Button, DialogActions, Grid, Typography } from '@mui/material';
 import PictureAsPdfIcon from '@mui/icons-material/PictureAsPdf';
+import { GeneralColors } from '../../constants/GeneralColors';
+import { flex } from '../../mixins/setFlex';
 
 const IconStyled =`
     font-size: 2rem;
@@ -27,13 +29,12 @@ export const DialogActionsStyled = styled(DialogActions)`
 
 export const ButtonDownloadPDF = styled(Button)`
     border-radius: 3px;
-    color: rgba(255, 255, 255,1);
-    background-color: rgba(24,118,209,1);
+    color: ${GeneralColors.white};
+    background-color: ${GeneralColors.blue};
 `;
 
 export const VehicleDescription = styled(Grid)`
-    display: flex;
-    align-items: center;
+    ${flex('column','center','center')}
 `;
 
 export const VehicleDescriptionText = styled(Typography)`
@@ -42,7 +43,5 @@ export const VehicleDescriptionText = styled(Typography)`
 `;
 
 export const ExpencesToDate = styled(Grid)`
-    display: flex;
-    align-items: center;
-    justify-content: end;
+    ${flex('column','center','flex-end')}
 `;
