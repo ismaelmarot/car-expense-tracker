@@ -1,16 +1,15 @@
 import React from 'react';
 import styled from '@emotion/styled';
 import { Grid } from '@mui/material';
+import { flex } from '../../mixins/setFlex';
 
 export const GeneralContainer = styled(Grid)`
-    display: flex;
-    flex-direction: row;
+    ${flex('row','center','center')}
     border-right: 3px solid white;
 `;
 
 export const Container = styled(Grid)`
-    display: flex;
-    align-items: center;
+    ${flex('row','center','flex-start')}
     font-size: 1.5rem;
     font-weight: bold;
 `;
