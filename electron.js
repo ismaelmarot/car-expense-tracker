@@ -4,94 +4,85 @@ const { exec } = require('child_process');
 
 let mainWindow;
 
-function createWindow() {
-  mainWindow = new BrowserWindow({
-    width: 800,
-    height: 600,
-    minWidth: 400,
-    minHeight: 600,  
-    webPreferences: {
-      nodeIntegration: false,
-      contextIsolation: true,
-    },
-    icon: path.join(__dirname, 'car-expense-tracker-frontend/public/app-car-icon.png'),
+// Bloquear instancias múltiples
+const gotLock = app.requestSingleInstanceLock();
+if (!gotLock) {
+  // Si no conseguimos el lock, cerramos esta instancia
+  app.quit();
+} else {
+  // Si ya hay otra instancia, cuando esta se abra, centramos / restauramos la ventana
+  app.on('second-instance', () => {
+    if (mainWindow) {
+      if (mainWindow.isMinimized()) mainWindow.restore();
+      mainWindow.focus();
+    }
   });
 
-  if (process.env.NODE_ENV === 'development') {
-    const url = 'http://localhost:3000';
+  // Ruta persistente de base de datos de Electron
+  const userDataPath = app.getPath("userData");
+  const dbPath = path.join(userDataPath, "database.db");
+  process.env.DB_PATH = dbPath;
 
-    const loadReactApp = async () => {
-      let attempts = 0;
-      while (attempts < 5) {
-        try {
-          await mainWindow.loadURL(url);
-          console.log(`Successfully loaded: ${url}`);
-          return;
-        } catch (error) {
-          attempts++;
-          console.log(`Attempt ${attempts} failed. Retrying...`);
-          await new Promise((resolve) => setTimeout(resolve, 1000));
-        }
+  function createWindow() {
+    mainWindow = new BrowserWindow({
+      width: 900,
+      height: 700,
+      minWidth: 400,
+      minHeight: 600,
+      webPreferences: {
+        nodeIntegration: false,
+        contextIsolation: true,
       }
-      console.error('Failed to load React app after 5 attempts.');
-    };
+    });
 
-    loadReactApp();
-    mainWindow.webContents.openDevTools();
-  } else {
-    const indexPath = path.join(__dirname, 'car-expense-tracker-frontend/build/index.html');
-    console.log('Loading indexPath:', indexPath);
+    const isDev = !app.isPackaged;
 
-    mainWindow.loadFile(indexPath).catch((err) => {
-      console.error('Failed to load index.html:', err);
+    if (isDev) {
+      mainWindow.loadURL("http://localhost:3000");
+      mainWindow.webContents.openDevTools();
+    } else {
+      const indexPath = path.join(__dirname, "build", "index.html");
+      console.log("Cargando PRODUCCIÓN CRA:", indexPath);
+
+      mainWindow.loadFile(indexPath)
+        .then(() => console.log("index.html cargado correctamente"))
+        .catch((err) => console.error("Error cargando index.html:", err));
+
+      // Abrir devtools en producción para debug (puedes quitar esto después)
+      mainWindow.webContents.openDevTools();
+    }
+
+    mainWindow.on("closed", () => {
+      mainWindow = null;
     });
   }
 
-  mainWindow.webContents.on('did-fail-load', (event, errorCode, errorDescription) => {
-    console.error(`Failed to load content: (${errorCode}) ${errorDescription}`);
-  });
+  function startBackend() {
+    const cmd = `node ${path.join(
+      __dirname,
+      "car-expense-tracker-backend",
+      "server.js"
+    )}`;
 
-  mainWindow.webContents.on('dom-ready', () => {
-    console.log('DOM ready');
-  });
+    console.log("Iniciando backend con:", cmd);
 
-  mainWindow.on('closed', () => {
-    mainWindow = null;
-  });
-}
+    const server = exec(cmd);
 
-// Iniciar el servidor de Express
-function startServer() {
-  const serverProcess = exec('node car-expense-tracker-backend/server.js', (error, stdout, stderr) => {
-    if (error) {
-      console.error(`Error al iniciar el servidor: ${error}`);
-      return;
-    }
-    console.log(`Servidor iniciado: ${stdout}`);
-  });
-
-  serverProcess.stdout.on('data', (data) => {
-    console.log(data);
-  });
-
-  serverProcess.stderr.on('data', (data) => {
-    console.error(data);
-  });
-}
-
-app.whenReady().then(() => {
-  startServer();
-  createWindow();
-
-  app.on('activate', () => {
-    if (BrowserWindow.getAllWindows().length === 0) {
-      createWindow();
-    }
-  });
-});
-
-app.on('window-all-closed', () => {
-  if (process.platform !== 'darwin') {
-    app.quit();
+    server.stdout.on("data", (data) => console.log("[BACKEND]", data.trim()));
+    server.stderr.on("data", (data) => console.error("[BACKEND ERROR]", data.trim()));
   }
-});
+
+  app.whenReady().then(() => {
+    console.log("Usando DB en:", dbPath);
+    startBackend();
+    createWindow();
+  });
+
+  app.on("window-all-closed", () => {
+    if (process.platform !== "darwin") app.quit();
+  });
+
+  app.on("activate", () => {
+    if (BrowserWindow.getAllWindows().length === 0) createWindow();
+  });
+}
