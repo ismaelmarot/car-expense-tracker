@@ -7,10 +7,8 @@ let mainWindow;
 // Bloquear instancias múltiples
 const gotLock = app.requestSingleInstanceLock();
 if (!gotLock) {
-  // Si no conseguimos el lock, cerramos esta instancia
   app.quit();
 } else {
-  // Si ya hay otra instancia, cuando esta se abra, centramos / restauramos la ventana
   app.on('second-instance', () => {
     if (mainWindow) {
       if (mainWindow.isMinimized()) mainWindow.restore();
@@ -41,14 +39,16 @@ if (!gotLock) {
       mainWindow.loadURL("http://localhost:3000");
       mainWindow.webContents.openDevTools();
     } else {
-      const indexPath = path.join(__dirname, "build", "index.html");
-      console.log("Cargando PRODUCCIÓN CRA:", indexPath);
+      // En producción, inferimos la ruta correcta dentro del paquete ASAR
+      // Ajustá 'car-expense-tracker-frontend' y 'build' según tu estructura final
+      const indexPath = path.join(__dirname, "car-expense-tracker-frontend", "build", "index.html");
+      console.log("Cargando PRODUCCIÓN (‘index.html’) desde:", indexPath);
 
-      mainWindow.loadFile(indexPath)
+      mainWindow.loadURL(`file://${indexPath}`)
         .then(() => console.log("index.html cargado correctamente"))
         .catch((err) => console.error("Error cargando index.html:", err));
 
-      // Abrir devtools en producción para debug (puedes quitar esto después)
+      // Puedes comentar la línea siguiente cuando ya esté todo funcionando
       mainWindow.webContents.openDevTools();
     }
 
@@ -67,13 +67,12 @@ if (!gotLock) {
     console.log("Iniciando backend con:", cmd);
 
     const server = exec(cmd);
-
     server.stdout.on("data", (data) => console.log("[BACKEND]", data.trim()));
     server.stderr.on("data", (data) => console.error("[BACKEND ERROR]", data.trim()));
   }
 
   app.whenReady().then(() => {
-    console.log("Usando DB en:", dbPath);
+    console.log("Usando base de datos en:", dbPath);
     startBackend();
     createWindow();
   });
