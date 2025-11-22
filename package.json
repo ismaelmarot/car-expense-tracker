@@ -5,15 +5,15 @@
   "description": "Car Expense Tracker App",
   "main": "electron.js",
   "scripts": {
-    "start-frontend": "cd car-expense-tracker-frontend && yarn start",
+    "start-frontend": "cd car-expense-tracker-frontend && npm start",
     "start-backend": "cd car-expense-tracker-backend && node server.js",
-    "build": "cd car-expense-tracker-frontend && yarn build",
+    "build": "cd car-expense-tracker-frontend && npm run build",
     "electron": "electron .",
-    "package": "electron-builder",
-    "start": "concurrently 'yarn start:react' 'yarn start:electron'",
-    "start:react": "cd car-expense-tracker-frontend && yarn start",
+    "package": "cd car-expense-tracker-frontend && npm install --legacy-peer-deps && npm run build && cd .. && npx electron-builder",
+    "start": "concurrently \"npm run start:react\" \"npm run start:electron\"",
+    "start:react": "cd car-expense-tracker-frontend && npm start",
     "start:electron": "wait-on http://localhost:3000 && electron .",
-     "electron-build": "electron-builder"
+    "electron-build": "npx electron-builder"
   },
   "dependencies": {
     "concurrently": "^9.1.0"
@@ -28,14 +28,17 @@
     "productName": "Car_Expense_Tracker",
     "files": [
       "car-expense-tracker-frontend/build/**/*",
-      "car-expense-tracker-backend/**/*",
       "electron.js"
     ],
     "extraResources": [
-    {
-      "from": "car-expense-tracker-backend/database.db",
-      "to": "database.db"
-    }
+      {
+        "from": "car-expense-tracker-backend",
+        "to": "car-expense-tracker-backend"
+      },
+      {
+        "from": "car-expense-tracker-backend/database.db",
+        "to": "database.db"
+      }
     ],
     "directories": {
       "output": "dist"
