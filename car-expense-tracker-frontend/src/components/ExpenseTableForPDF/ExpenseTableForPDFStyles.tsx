@@ -1,4 +1,3 @@
-import React from 'react';
 import styled from '@emotion/styled';
 import { Table, TableCell } from '@mui/material';
 import { GeneralColors } from '../../constants/GeneralColors';

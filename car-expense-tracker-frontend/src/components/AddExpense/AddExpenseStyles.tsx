@@ -1,4 +1,3 @@
-import React from 'react';
 import styled from '@emotion/styled';
 import { Button, FormControl, Select, Grid, TextField, Typography } from '@mui/material';
 import { GeneralColors } from '../../constants/GeneralColors';

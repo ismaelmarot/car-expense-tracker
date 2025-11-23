@@ -1,4 +1,3 @@
-import React from 'react';
 import styled from '@emotion/styled';
 import { Card, Typography } from '@mui/material';
 import { size } from '../../mixins/setSize';

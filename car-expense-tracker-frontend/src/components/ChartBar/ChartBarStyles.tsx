@@ -1,4 +1,3 @@
-import React from 'react';
 import styled from '@emotion/styled';
 import { Grid, Typography } from '@mui/material';
 import { Bar } from 'react-chartjs-2';

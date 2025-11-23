@@ -1,4 +1,3 @@
-import React from 'react';
 import styled from '@emotion/styled';
 import { Snackbar, Alert, Backdrop } from '@mui/material';
 import { flex } from '../../mixins/setFlex';
