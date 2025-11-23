@@ -5,15 +5,12 @@ const fs = require('fs');
 
 let mainWindow;
 
-// Asegurarse que el nombre de la app sea siempre el mismo (afecta userData)
 try {
   app.setName('Car_Expense_Tracker');
 } catch (err) {
-  // setName puede fallar en algunos entornos; no es crítico
   console.warn('app.setName falló:', err && err.message);
 }
 
-// Bloquear instancias múltiples
 const gotLock = app.requestSingleInstanceLock();
 if (!gotLock) {
   app.quit();
@@ -25,7 +22,6 @@ if (!gotLock) {
     }
   });
 
-  // Ruta persistente de base de datos de Electron (siempre basada en userData)
   const userDataPath = app.getPath("userData");
   const dbPath = path.join(userDataPath, "database.db");
   process.env.DB_PATH = dbPath;
@@ -34,9 +30,12 @@ if (!gotLock) {
     mainWindow = new BrowserWindow({
       width: 900,
       height: 700,
-      minWidth: 400,
-      minHeight: 600,
       show: false,
+      fullscreen: true,
+      fullscreenable: true,
+      resizable: false,
+      minimizable: false,
+      maximizable: false,
       webPreferences: {
         nodeIntegration: false,
         contextIsolation: true,
@@ -51,7 +50,6 @@ if (!gotLock) {
       mainWindow.loadURL(devUrl).catch(err => console.error('Error loadURL dev:', err));
       mainWindow.webContents.openDevTools({ mode: 'detach' });
     } else {
-      // Ruta esperada del build en producción
       const indexPath = path.resolve(__dirname, 'car-expense-tracker-frontend', 'build', 'index.html');
       console.log('Modo PROD: intentando cargar index.html desde:', indexPath);
 
@@ -78,7 +76,6 @@ if (!gotLock) {
   }
 
   function startBackend() {
-    // Determinar ruta del servidor según entorno.
     let serverScript;
     if (app.isPackaged) {
       serverScript = path.join(process.resourcesPath, 'car-expense-tracker-backend', 'server.js');
@@ -89,13 +86,11 @@ if (!gotLock) {
     console.log('Intentando iniciar backend. script:', serverScript);
     console.log('Usando base de datos en:', dbPath);
 
-    // Probar si 'node' está disponible en el PATH (spawnSync devuelve status 0 si encontró)
     try {
       const nodeCheck = spawnSync('node', ['-v'], { encoding: 'utf8' });
       if (nodeCheck.error || nodeCheck.status !== 0) {
         console.warn('node no disponible en PATH o falló node -v. Haremos fallback a require() del servidor. info:', nodeCheck.error || nodeCheck.stderr || nodeCheck.stdout);
         try {
-          // Intentar ejecutar el server.js en el mismo proceso de Electron (fallback)
           require(serverScript);
           console.log('Backend iniciado mediante require() (fallback).');
           return;
@@ -106,10 +101,8 @@ if (!gotLock) {
       }
     } catch (err) {
       console.warn('Error comprobando node en PATH:', err);
-      // seguir e intentar fallback abajo
     }
 
-    // Si estamos aquí, intentamos iniciar con node (comportamiento preferido)
     const cmd = `node "${serverScript}"`;
     console.log("Iniciando backend con:", cmd);
 
@@ -120,7 +113,6 @@ if (!gotLock) {
 
     server.on("exit", (code, signal) => {
       console.log(`Proceso backend finalizó con código ${code} ${signal ? `(signal: ${signal})` : ''}`);
-      // Intentar fallback si el proceso terminó con error
       if (code !== 0) {
         try {
           require(serverScript);
@@ -133,7 +125,6 @@ if (!gotLock) {
   }
 
   app.whenReady().then(() => {
-    // Asegurar carpeta para DB
     try {
       const dbDir = path.dirname(dbPath);
       if (!fs.existsSync(dbDir)) fs.mkdirSync(dbDir, { recursive: true });
