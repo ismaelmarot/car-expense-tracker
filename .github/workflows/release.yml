@@ -1,4 +1,4 @@
-name: Build Electron App
+name: Build and Release Electron App
 
 on:
   push:
@@ -6,18 +6,21 @@ on:
       - 'v*'
 
 jobs:
+
   build-windows:
+    name: Build Windows Installer
     runs-on: windows-latest
+
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
 
-      - name: Setup NodeJS
+      - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
           node-version: 20
 
-      # --- FRONTEND ---
+      # FRONTEND
       - name: Install frontend dependencies
         run: |
           cd car-expense-tracker-frontend
@@ -28,37 +31,39 @@ jobs:
           cd car-expense-tracker-frontend
           npm run build
 
-      # --- PREP BACKEND ---
+      # BACKEND
       - name: Install backend dependencies
         run: |
           cd car-expense-tracker-backend
           npm install
 
-      # --- ELECTRON BUILD ---
-      - name: Install root dependencies (Electron)
+      # ROOT / ELECTRON
+      - name: Install Electron dependencies
         run: npm install
 
-      - name: Build Electron App (Windows)
+      - name: Build Electron App (exe)
         run: npm run electron-build
 
-      - name: Upload Windows artifact
+      - name: Upload Windows installer
         uses: actions/upload-artifact@v4
         with:
-          name: windows-build
+          name: windows-installer
           path: dist/*.exe
 
   build-mac:
+    name: Build macOS Installer
     runs-on: macos-latest
+
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
 
-      - name: Setup NodeJS
+      - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
           node-version: 20
 
-      # --- FRONTEND ---
+      # FRONTEND
       - name: Install frontend dependencies
         run: |
           cd car-expense-tracker-frontend
@@ -69,21 +74,59 @@ jobs:
           cd car-expense-tracker-frontend
           npm run build
 
-      # --- BACKEND ---
+      # BACKEND
       - name: Install backend dependencies
         run: |
           cd car-expense-tracker-backend
           npm install
 
-      # --- ELECTRON ---
-      - name: Install root dependencies (Electron)
+      # ROOT / ELECTRON
+      - name: Install Electron dependencies
         run: npm install
 
-      - name: Build Electron App (Mac)
+      - name: Build Electron App (dmg)
         run: npm run electron-build
 
-      - name: Upload Mac artifact
+      - name: Upload macOS installer
         uses: actions/upload-artifact@v4
         with:
-          name: mac-build
+          name: mac-installer
           path: dist/*.dmg
+
+  release:
+    name: Create GitHub Release
+    needs: [build-windows, build-mac]
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Download Windows artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: windows-installer
+          path: ./windows
+
+      - name: Download macOS artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: mac-installer
+          path: ./mac
+
+      - name: Create Release
+        uses: softprops/action-gh-release@v2
+        with:
+          name: "Car Expense Tracker ${{ github.ref_name }}"
+          body: |
+            ## 🚗 Car Expense Tracker – Release ${{ github.ref_name }}
+
+            ### ✔ Windows (.exe)
+            Incluye instalador para Windows
+
+            ### ✔ macOS (.dmg)
+            Incluye instalador para Mac
+
+            Fecha: **${{ steps.date.outputs.today }}**
+          files: |
+            windows/*.exe
+            mac/*.dmg
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
