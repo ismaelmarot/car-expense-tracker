@@ -6,127 +6,66 @@ on:
       - 'v*'
 
 jobs:
-
   build-windows:
-    name: Build Windows Installer
     runs-on: windows-latest
-
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
 
-      - name: Setup Node.js
+      - name: Setup NodeJS
         uses: actions/setup-node@v4
         with:
           node-version: 20
 
-      # FRONTEND
+      - name: Install root dependencies
+        run: npm install --legacy-peer-deps
+
       - name: Install frontend dependencies
-        run: |
-          cd car-expense-tracker-frontend
-          npm install
+        run: cd car-expense-tracker-frontend && npm install --legacy-peer-deps
+
+      - name: Install backend dependencies
+        run: cd car-expense-tracker-backend && npm install --legacy-peer-deps
 
       - name: Build frontend
-        run: |
-          cd car-expense-tracker-frontend
-          npm run build
+        run: cd car-expense-tracker-frontend && npm run build
 
-      # BACKEND
-      - name: Install backend dependencies
-        run: |
-          cd car-expense-tracker-backend
-          npm install
-
-      # ROOT / ELECTRON
-      - name: Install Electron dependencies
-        run: npm install
-
-      - name: Build Electron App (exe)
+      - name: Build Windows installer
         run: npm run electron-build
 
-      - name: Upload Windows installer
+      - name: Upload Windows artifact
         uses: actions/upload-artifact@v4
         with:
-          name: windows-installer
+          name: windows-build
           path: dist/*.exe
 
   build-mac:
-    name: Build macOS Installer
     runs-on: macos-latest
-
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
 
-      - name: Setup Node.js
+      - name: Setup NodeJS
         uses: actions/setup-node@v4
         with:
           node-version: 20
 
-      # FRONTEND
+      - name: Install root dependencies
+        run: npm install --legacy-peer-deps
+
       - name: Install frontend dependencies
-        run: |
-          cd car-expense-tracker-frontend
-          npm install
+        run: cd car-expense-tracker-frontend && npm install --legacy-peer-deps
+
+      - name: Install backend dependencies
+        run: cd car-expense-tracker-backend && npm install --legacy-peer-deps
 
       - name: Build frontend
-        run: |
-          cd car-expense-tracker-frontend
-          npm run build
+        run: cd car-expense-tracker-frontend && npm run build
 
-      # BACKEND
-      - name: Install backend dependencies
-        run: |
-          cd car-expense-tracker-backend
-          npm install
-
-      # ROOT / ELECTRON
-      - name: Install Electron dependencies
-        run: npm install
-
-      - name: Build Electron App (dmg)
+      - name: Build macOS installer
         run: npm run electron-build
 
-      - name: Upload macOS installer
+      - name: Upload macOS artifact
         uses: actions/upload-artifact@v4
         with:
-          name: mac-installer
+          name: mac-build
           path: dist/*.dmg
-
-  release:
-    name: Create GitHub Release
-    needs: [build-windows, build-mac]
-    runs-on: ubuntu-latest
-
-    steps:
-      - name: Download Windows artifact
-        uses: actions/download-artifact@v4
-        with:
-          name: windows-installer
-          path: ./windows
-
-      - name: Download macOS artifact
-        uses: actions/download-artifact@v4
-        with:
-          name: mac-installer
-          path: ./mac
-
-      - name: Create Release
-        uses: softprops/action-gh-release@v2
-        with:
-          name: "Car Expense Tracker ${{ github.ref_name }}"
-          body: |
-            ## 🚗 Car Expense Tracker – Release ${{ github.ref_name }}
-
-            ### ✔ Windows (.exe)
-            Incluye instalador para Windows
-
-            ### ✔ macOS (.dmg)
-            Incluye instalador para Mac
-
-            Fecha: **${{ steps.date.outputs.today }}**
-          files: |
-            windows/*.exe
-            mac/*.dmg
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
