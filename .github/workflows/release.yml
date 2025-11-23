@@ -17,11 +17,26 @@ jobs:
         with:
           node-version: 20
 
-      - name: Install dependencies
-        run: npm install
+      # --- FRONTEND ---
+      - name: Install frontend dependencies
+        run: |
+          cd car-expense-tracker-frontend
+          npm install
 
       - name: Build frontend
-        run: npm run build
+        run: |
+          cd car-expense-tracker-frontend
+          npm run build
+
+      # --- PREP BACKEND ---
+      - name: Install backend dependencies
+        run: |
+          cd car-expense-tracker-backend
+          npm install
+
+      # --- ELECTRON BUILD ---
+      - name: Install root dependencies (Electron)
+        run: npm install
 
       - name: Build Electron App (Windows)
         run: npm run electron-build
@@ -43,11 +58,26 @@ jobs:
         with:
           node-version: 20
 
-      - name: Install dependencies
-        run: npm install
+      # --- FRONTEND ---
+      - name: Install frontend dependencies
+        run: |
+          cd car-expense-tracker-frontend
+          npm install
 
       - name: Build frontend
-        run: npm run build
+        run: |
+          cd car-expense-tracker-frontend
+          npm run build
+
+      # --- BACKEND ---
+      - name: Install backend dependencies
+        run: |
+          cd car-expense-tracker-backend
+          npm install
+
+      # --- ELECTRON ---
+      - name: Install root dependencies (Electron)
+        run: npm install
 
       - name: Build Electron App (Mac)
         run: npm run electron-build
