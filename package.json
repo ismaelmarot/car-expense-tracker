@@ -7,19 +7,19 @@
   "scripts": {
     "start-frontend": "cd car-expense-tracker-frontend && npm start",
     "start-backend": "cd car-expense-tracker-backend && node server.js",
-    "build": "cd car-expense-tracker-frontend && npm run build",
+    "build-frontend": "cd car-expense-tracker-frontend && npm run build",
     "electron": "electron .",
-    "package": "cd car-expense-tracker-frontend && npm install --legacy-peer-deps && npm run build && cd .. && npx electron-builder",
+    "package": "npm run build-frontend && npx electron-builder",
     "start": "concurrently \"npm run start:react\" \"npm run start:electron\"",
     "start:react": "cd car-expense-tracker-frontend && npm start",
     "start:electron": "wait-on http://localhost:3000 && electron .",
-    "electron-build": "npx electron-builder"
+    "electron-build": "npm run build-frontend && npx electron-builder"
   },
   "dependencies": {
     "concurrently": "^9.1.0"
   },
   "devDependencies": {
-    "electron": "33.2.1",
+    "electron": "^33.2.1",
     "electron-builder": "^25.1.8",
     "wait-on": "^8.0.1"
   },
@@ -47,7 +47,14 @@
     "mac": {
       "target": "dmg",
       "icon": "car-expense-tracker-frontend/public/app-car-icon.png"
-    }
+    },
+    "publish": [
+      {
+        "provider": "github",
+        "owner": "ismaelmarot",
+        "repo": "car-expense-tracker"
+      }
+    ]
   },
   "license": "ISC"
 }
