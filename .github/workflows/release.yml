@@ -9,33 +9,16 @@ jobs:
   build-windows:
     runs-on: windows-latest
     steps:
-      - name: Checkout code
-        uses: actions/checkout@v4
-
-      - name: Setup NodeJS
-        uses: actions/setup-node@v4
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
         with:
           node-version: 20
-
-      - name: Install root dependencies
-        run: npm install --legacy-peer-deps
-
-      - name: Install frontend dependencies
-        run: cd car-expense-tracker-frontend && npm install --legacy-peer-deps
-
-      - name: Install backend dependencies
-        run: cd car-expense-tracker-backend && npm install --legacy-peer-deps
-
-      - name: Build frontend
-        run: cd car-expense-tracker-frontend && npm run build
-
-      - name: Build Windows installer
-        run: npm run electron-build
-        env:
-          GH_TOKEN: ${{ secrets.GH_TOKEN }}
-
-      - name: Upload Windows artifact
-        uses: actions/upload-artifact@v4
+      - run: npm install --legacy-peer-deps
+      - run: cd car-expense-tracker-frontend && npm install --legacy-peer-deps
+      - run: cd car-expense-tracker-backend && npm install --legacy-peer-deps
+      - run: cd car-expense-tracker-frontend && npm run build
+      - run: npx electron-builder --win --x64 --publish never
+      - uses: actions/upload-artifact@v4
         with:
           name: windows-build
           path: dist/*.exe
@@ -43,33 +26,33 @@ jobs:
   build-mac:
     runs-on: macos-latest
     steps:
-      - name: Checkout code
-        uses: actions/checkout@v4
-
-      - name: Setup NodeJS
-        uses: actions/setup-node@v4
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
         with:
           node-version: 20
-
-      - name: Install root dependencies
-        run: npm install --legacy-peer-deps
-
-      - name: Install frontend dependencies
-        run: cd car-expense-tracker-frontend && npm install --legacy-peer-deps
-
-      - name: Install backend dependencies
-        run: cd car-expense-tracker-backend && npm install --legacy-peer-deps
-
-      - name: Build frontend
-        run: cd car-expense-tracker-frontend && npm run build
-
-      - name: Build macOS installer
-        run: npm run electron-build
-        env:
-          GH_TOKEN: ${{ secrets.GH_TOKEN }}
-
-      - name: Upload macOS artifact
-        uses: actions/upload-artifact@v4
+      - run: npm install --legacy-peer-deps
+      - run: cd car-expense-tracker-frontend && npm install --legacy-peer-deps
+      - run: cd car-expense-tracker-backend && npm install --legacy-peer-deps
+      - run: cd car-expense-tracker-frontend && npm run build
+      - run: npx electron-builder --mac --arm64 --publish never
+      - uses: actions/upload-artifact@v4
         with:
           name: mac-build
           path: dist/*.dmg
+
+  publish:
+    runs-on: ubuntu-latest
+    needs: [build-windows, build-mac]
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/download-artifact@v4
+        with:
+          name: windows-build
+          path: dist/
+      - uses: actions/download-artifact@v4
+        with:
+          name: mac-build
+          path: dist/
+      - run: npx electron-builder --publish always
+        env:
+          GH_TOKEN: ${{ secrets.GH_TOKEN }}
