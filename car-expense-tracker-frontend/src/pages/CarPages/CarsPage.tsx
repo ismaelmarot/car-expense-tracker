@@ -8,7 +8,7 @@ import { CardStyled, LinkAddCarCard, LinkCard, Title, TypographyStyled, GeneralC
 
 const CarsPage: React.FC = () => {
     const [cars, setCars] = useState<CarInterface[]>([]);
-    const [loading, setLoading] = useState<boolean>(true);
+    const [, setLoading] = useState<boolean>(true);
 
     const fetchCars = async () => {
         try {

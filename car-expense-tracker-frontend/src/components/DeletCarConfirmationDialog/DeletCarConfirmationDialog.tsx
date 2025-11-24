@@ -1,5 +1,5 @@
 import React from 'react';
-import { Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, Button } from '@mui/material';
+import { Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle } from '@mui/material';
 import { DeleteCarConfirmationDialogInterface } from '../../interfaces/DeleteCarConfirmationDialogInterface';
 import { ButtonCancel, ButtonConfirm } from './DeletCarConfirmationDialogStyles';
 
