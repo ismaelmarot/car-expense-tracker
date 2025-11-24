@@ -28,13 +28,10 @@
     "productName": "Car_Expense_Tracker",
     "files": [
       "car-expense-tracker-frontend/build/**/*",
+      "car-expense-tracker-backend/**/*",
       "electron.js"
     ],
     "extraResources": [
-      {
-        "from": "car-expense-tracker-backend",
-        "to": "car-expense-tracker-backend"
-      },
       {
         "from": "car-expense-tracker-backend/database.db",
         "to": "database.db"
@@ -45,7 +42,7 @@
     },
     "win": {
       "target": "nsis",
-      "icon": "car-expense-tracker-frontend/public/app-car-icon.png"
+      "icon": "car-expense-tracker-frontend/public/icon.ico"
     },
     "mac": {
       "target": "dmg",
