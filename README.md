@@ -1,7 +1,7 @@
 
 # **Car Expense Tracker**
 
-**Version:** 1.0.0
+**Version:** 1.1.5
 
 An application to track car expenses, designed to simplify the management of multiple vehicles' expenses and categorize them. It also includes advanced features like generating PDF reports and displaying statistics through interactive charts.
 
