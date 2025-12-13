@@ -40,13 +40,13 @@ export const LinkAddCarCard = styled(LinkCard)`
     font-size: 1.8rem;
 `;
 
-export const CardStyled = styled(Grid)`
-    ${size('100%', '300px')}
-    background-color: ${GeneralColors.white};
-    border: 3px solid ${GeneralColors.grey};
-    border-radius: 5px;
-    transition: font-size 0.3s ease;
-    &:hover {
-        border-color: ${GeneralColors.blue};
-    }
-`;
+// export const CardStyled = styled(Grid)`
+//     ${size('100%', '300px')}
+//     background-color: ${GeneralColors.white};
+//     border: 3px solid ${GeneralColors.grey};
+//     border-radius: 5px;
+//     transition: font-size 0.3s ease;
+//     &:hover {
+//         border-color: ${GeneralColors.blue};
+//     }
+// `;
