@@ -76,53 +76,38 @@ if (!gotLock) {
   }
 
   function startBackend() {
-    let serverScript;
-    if (app.isPackaged) {
-      serverScript = path.join(process.resourcesPath, 'car-expense-tracker-backend', 'server.js');
-    } else {
-      serverScript = path.join(__dirname, 'car-expense-tracker-backend', 'server.js');
-    }
-
-    console.log('Intentando iniciar backend. script:', serverScript);
-    console.log('Usando base de datos en:', dbPath);
-
+  let serverScript;
+  if (app.isPackaged) {
+    serverScript = path.join(process.resourcesPath, 'car-expense-tracker-backend', 'server.js');
+    console.log('Modo PROD: intentando cargar backend con require desde:', serverScript);
     try {
-      const nodeCheck = spawnSync('node', ['-v'], { encoding: 'utf8' });
-      if (nodeCheck.error || nodeCheck.status !== 0) {
-        console.warn('node no disponible en PATH o falló node -v. Haremos fallback a require() del servidor. info:', nodeCheck.error || nodeCheck.stderr || nodeCheck.stdout);
-        try {
-          require(serverScript);
-          console.log('Backend iniciado mediante require() (fallback).');
-          return;
-        } catch (err) {
-          console.error('Fallback require() falló:', err);
-          return;
-        }
-      }
+      require(serverScript);
+      console.log('Backend cargado correctamente (desde resources).');
     } catch (err) {
-      console.warn('Error comprobando node en PATH:', err);
-    }
-
-    const cmd = `node "${serverScript}"`;
-    console.log("Iniciando backend con:", cmd);
-
-    const server = exec(cmd, { env: process.env });
-
-    server.stdout.on("data", (data) => console.log("[BACKEND]", data.toString().trim()));
-    server.stderr.on("data", (data) => console.error("[BACKEND ERROR]", data.toString().trim()));
-
-    server.on("exit", (code, signal) => {
-      console.log(`Proceso backend finalizó con código ${code} ${signal ? `(signal: ${signal})` : ''}`);
-      if (code !== 0) {
-        try {
-          require(serverScript);
-          console.log('Backend iniciado mediante require() tras fallo del proceso hijo.');
-        } catch (err) {
-          console.error('No se pudo arrancar backend por ningún método:', err);
-        }
+      console.error('Error cargando backend empaquetado con require:', err);
+      try {
+        const logPath = path.join(app.getPath('userData'), 'backend-error.log');
+        fs.appendFileSync(logPath, `Error require backend: ${new Date().toISOString()} - ${err.stack || err}\n`);
+        console.log('Error escrito en', logPath);
+      } catch (e) {
+        console.error('No se pudo escribir log de error:', e);
       }
-    });
+    }
+  } else {
+    serverScript = path.join(__dirname, 'car-expense-tracker-backend', 'server.js');
+    console.log('Modo DEV: intentando iniciar backend con node desde:', serverScript);
+    try {
+      const child = require('child_process').spawn('node', [serverScript], {
+        env: process.env,
+        stdio: 'inherit',
+      });
+      child.on('error', (err) => console.error('Error iniciando backend child process:', err));
+      child.on('exit', (code) => console.log('Backend child exited with code', code));
+    } catch (err) {
+      console.error('Excepción intentando spawn backend en dev:', err);
+    }
   }
+}
 
   app.whenReady().then(() => {
     try {
