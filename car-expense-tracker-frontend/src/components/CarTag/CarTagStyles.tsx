@@ -13,7 +13,7 @@ export const Container = styled(Grid)`
     font-weight: bold;
 `;
 
-// export const GridItem = styled(Grid)`
-//     padding: .3rem;
-//     text-align: left;
-// `;
+export const GridItem = styled(Grid)`
+    padding: .3rem;
+    text-align: left;
+`;
