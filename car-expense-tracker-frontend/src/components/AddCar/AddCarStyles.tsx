@@ -26,9 +26,9 @@ export const ButtonStyled = styled(Button)`
     padding: 1rem 0;
 `;
 
-// export const TextFieldStyled = styled(TextField)`
-//     width: 90%;
-//     margin: .5rem 0 .5rem;
-//     border-radius: 5px;
-//     background-color: ${GeneralColors.white};
-// `;
+export const TextFieldStyled = styled(TextField)`
+    width: 90%;
+    margin: .5rem 0 .5rem;
+    border-radius: 5px;
+    background-color: ${GeneralColors.white};
+`;
