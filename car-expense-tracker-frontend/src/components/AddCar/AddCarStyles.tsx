@@ -8,17 +8,17 @@ export const Container = styled(Grid)`
     padding: 0 .5rem;
 `;
 
-export const Title = styled(Typography)`
-    font-size: 2rem;
-    margin-bottom: 1rem;
-`;
+// export const Title = styled(Typography)`
+//     font-size: 2rem;
+//     margin-bottom: 1rem;
+// `;
 
-export const FormGrid = styled(Grid)`
-    ${flex('column', 'center', 'center')}
-    padding-top: 2rem;
-    border-radius: 5px;
-    background-color: ${GeneralColors.grey};
-`;
+// export const FormGrid = styled(Grid)`
+//     ${flex('column', 'center', 'center')}
+//     padding-top: 2rem;
+//     border-radius: 5px;
+//     background-color: ${GeneralColors.grey};
+// `;
 
 export const ButtonStyled = styled(Button)`
     width: 50%;
