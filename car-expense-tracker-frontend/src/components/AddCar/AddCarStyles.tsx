@@ -13,12 +13,12 @@ export const Title = styled(Typography)`
     margin-bottom: 1rem;
 `;
 
-// export const FormGrid = styled(Grid)`
-//     ${flex('column', 'center', 'center')}
-//     padding-top: 2rem;
-//     border-radius: 5px;
-//     background-color: ${GeneralColors.grey};
-// `;
+export const FormGrid = styled(Grid)`
+    ${flex('column', 'center', 'center')}
+    padding-top: 2rem;
+    border-radius: 5px;
+    background-color: ${GeneralColors.grey};
+`;
 
 export const ButtonStyled = styled(Button)`
     width: 50%;
