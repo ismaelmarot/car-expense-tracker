@@ -175,7 +175,7 @@ export const CardsGrid = styled(Box)`
 export const Card = styled(Box)`
   background: #ffffff;
   border-radius: 16px;
-  padding: 1.25rem;
+  padding: 1.5rem;
   cursor: pointer;
   transition: all 0.2s ease;
   border: 1px solid rgba(0, 0, 0, 0.06);
