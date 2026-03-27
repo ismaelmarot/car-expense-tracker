@@ -1,6 +1,6 @@
 const { app, BrowserWindow } = require('electron');
 const path = require('path');
-const { spawn } = require('child_process');
+const { spawn, execSync } = require('child_process');
 const fs = require('fs');
 const http = require('http');
 
@@ -30,6 +30,31 @@ if (!gotLock) {
 
   const BACKEND_PORT = 5001;
 
+  function findNodePath() {
+    const platform = process.platform;
+    
+    if (platform === 'win32') {
+      return process.execPath.replace(/[^\/\\]*$/, '').replace(/\//g, '\\') + 'node.exe';
+    } else if (platform === 'darwin' || platform === 'linux') {
+      try {
+        const nodePath = execSync('which node', { encoding: 'utf8' }).trim();
+        console.log('Node encontrado en:', nodePath);
+        return nodePath;
+      } catch {
+        const commonPaths = [
+          '/usr/local/bin/node',
+          '/usr/bin/node',
+          '/opt/homebrew/bin/node'
+        ];
+        for (const p of commonPaths) {
+          if (fs.existsSync(p)) return p;
+        }
+        return 'node';
+      }
+    }
+    return 'node';
+  }
+
   function checkBackendReady(port, callback, retries = 0) {
     const maxRetries = 30;
     const req = http.get(`http://localhost:${port}/cars`, (res) => {
@@ -53,23 +78,23 @@ if (!gotLock) {
   function startBackend() {
     return new Promise((resolve, reject) => {
       let serverScript;
-      let nodePath;
       
       if (app.isPackaged) {
         serverScript = path.join(process.resourcesPath, 'car-expense-tracker-backend', 'server.js');
-        nodePath = process.execPath.replace(/[^\/\\]*$/, 'node');
       } else {
         serverScript = path.join(__dirname, 'car-expense-tracker-backend', 'server.js');
-        nodePath = 'node';
       }
 
-      console.log('Iniciando backend:', serverScript);
+      const nodePath = findNodePath();
+      console.log('Iniciando backend con:', nodePath);
+      console.log('Script:', serverScript);
       
       const env = { ...process.env, PORT: BACKEND_PORT.toString() };
       
       backendProcess = spawn(nodePath, [serverScript], {
         env,
-        stdio: ['pipe', 'pipe', 'pipe']
+        stdio: ['pipe', 'pipe', 'pipe'],
+        shell: true
       });
 
       backendProcess.stdout.on('data', (data) => {
@@ -101,14 +126,10 @@ if (!gotLock) {
 
   function createWindow() {
     mainWindow = new BrowserWindow({
-      width: 900,
-      height: 700,
+      width: 1200,
+      height: 800,
       show: false,
-      fullscreen: true,
-      fullscreenable: true,
-      resizable: false,
-      minimizable: false,
-      maximizable: false,
+      resizable: true,
       webPreferences: {
         nodeIntegration: false,
         contextIsolation: true,
@@ -124,13 +145,30 @@ if (!gotLock) {
       mainWindow.webContents.openDevTools({ mode: 'detach' });
       mainWindow.once('ready-to-show', () => mainWindow.show());
     } else {
-      const indexPath = path.resolve(__dirname, 'car-expense-tracker-frontend', 'build', 'index.html');
+      // En producción, __dirname está dentro del .asar
+      // Necesitamos cargar desde app.asar/car-expense-tracker-frontend/build/
+      const indexPath = path.join(__dirname, 'car-expense-tracker-frontend', 'build', 'index.html');
+      console.log('Modo PROD: __dirname es:', __dirname);
       console.log('Modo PROD: cargando index.html desde:', indexPath);
 
       if (!fs.existsSync(indexPath)) {
         console.error('index.html no encontrado en:', indexPath);
-        mainWindow.loadURL('data:text/html;charset=utf-8,' + encodeURIComponent('<h2>Error: index.html no encontrado</h2><p>Ver consola para más detalles.</p>'));
-        mainWindow.webContents.openDevTools({ mode: 'detach' });
+        // Intentar con path alternativo (dentro de app.asar)
+        const altPath = path.join(process.resourcesPath, 'app.asar', 'car-expense-tracker-frontend', 'build', 'index.html');
+        console.log('Intentando path alternativo:', altPath);
+        if (fs.existsSync(altPath)) {
+          mainWindow.loadFile(altPath).then(() => {
+            console.log('index.html cargado desde path alternativo');
+            mainWindow.once('ready-to-show', () => mainWindow.show());
+          }).catch(err => {
+            console.error('Error cargando index.html alternativo:', err);
+            mainWindow.loadURL('data:text/html;charset=utf-8,' + encodeURIComponent('<h2>Error: App no pudo cargar</h2>'));
+            mainWindow.webContents.openDevTools({ mode: 'detach' });
+          });
+        } else {
+          mainWindow.loadURL('data:text/html;charset=utf-8,' + encodeURIComponent('<h2>Error: index.html no encontrado</h2><p>' + indexPath + '</p>'));
+          mainWindow.webContents.openDevTools({ mode: 'detach' });
+        }
       } else {
         mainWindow.loadFile(indexPath)
           .then(() => {
@@ -160,7 +198,6 @@ if (!gotLock) {
 
     console.log("MAIN: Usando base de datos en:", dbPath);
     
-    // Siempre iniciar backend (tanto dev como prod)
     try {
       await startBackend();
     } catch (err) {

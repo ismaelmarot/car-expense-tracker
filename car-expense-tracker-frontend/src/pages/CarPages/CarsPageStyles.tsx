@@ -29,15 +29,14 @@ export const LinkCard = styled(Link)`
     ${flex('column', 'center', 'center')}
     ${size('100%', '100%')}
     text-decoration: none;
-    transition: font-size 0.3s ease;
-    &:hover {
-        font-size: 2rem;
-        color: ${GeneralColors.blue};
-    }
+    transition: all 0.3s ease;
 `;
 
-export const LinkAddCarCard = styled(LinkCard)`
-    font-size: 1.8rem;
+export const LinkAddCarCard = styled(Link)`
+    ${size('100%', '100%')}
+    text-decoration: none;
+    transition: all 0.3s ease;
+    display: block;
 `;
 
 export const CardStyled = styled(Grid)`
@@ -45,7 +44,7 @@ export const CardStyled = styled(Grid)`
     background-color: ${GeneralColors.white};
     border: 3px solid ${GeneralColors.grey};
     border-radius: 5px;
-    transition: font-size 0.3s ease;
+    transition: all 0.3s ease;
     &:hover {
         border-color: ${GeneralColors.blue};
     }
