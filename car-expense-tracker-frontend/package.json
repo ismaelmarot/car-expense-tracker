@@ -3,6 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
+    "@craco/craco": "^7.1.0",
     "@emotion/react": "^11.13.5",
     "@emotion/styled": "^11.13.5",
     "@mui/icons-material": "^6.2.0",
@@ -15,6 +16,7 @@
     "@types/react": "^18.0.0",
     "@types/react-dom": "^18.0.0",
     "axios": "^1.7.9",
+    "babel-plugin-module-resolver": "^5.0.3",
     "chart.js": "^4.4.7",
     "jspdf": "^2.5.2",
     "randomcolor": "^0.6.2",
@@ -27,9 +29,9 @@
     "web-vitals": "^2.1.0"
   },
   "scripts": {
-    "start": "react-scripts start",
-    "build": "react-scripts build",
-    "test": "react-scripts test",
+    "start": "craco start",
+    "build": "craco build",
+    "test": "craco test",
     "eject": "react-scripts eject",
     "electron": "electron .",
     "package": "electron-builder"
@@ -70,5 +72,9 @@
       }
     ]
   },
-  "homepage": "./"
+  "homepage": "./",
+  "devDependencies": {
+    "customize-cra": "^1.0.0",
+    "react-app-rewired": "^2.2.1"
+  }
 }

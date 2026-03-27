@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { getCarById, deleteCar } from '../../api/api';
-import { Container, Typography, CircularProgress, Grid } from '@mui/material';
+import { Container, Typography, CircularProgress, Grid, Box } from '@mui/material';
 import { CarInterface } from '../../interfaces/CarInterface';
 import TabsCar from '../TabsCar/TabsCar';
 import BackButton from '../BackButton/BackButton';
@@ -47,9 +47,9 @@ const CarDetails: React.FC = () => {
                 navigate('/');
             } catch (error) {
                 console.error("Error deleting car: ", error);
+                alert("Error al eliminar el vehículo");
             }
         }
-        window.location.reload();
     };
 
     if (loading) {

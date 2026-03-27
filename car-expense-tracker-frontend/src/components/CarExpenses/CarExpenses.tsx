@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Box, Typography } from '@mui/material';
+import { Typography } from '@mui/material';
 import { getCarExpenses, deleteExpense, updateExpense } from '../../api/api';
 import { useParams } from 'react-router-dom';
 import { formatDate } from '../../functions/formatDate';
@@ -7,9 +7,45 @@ import { formatNumberWithCommas } from '../../functions/formatNumberWithCommas';
 import { formatNumberByThousands } from '../../functions/formatNumbersByThousands';
 import { ExpenseInterface } from '../../interfaces/ExpenseInterface';
 import EditExpenseDialog from '../EditExpenseDialog/EditExpenseDialog';
-import ExpenseTable from '../ExpenseTable/ExpenseTable';
-import { GridTotalAmount, TotalAmount } from './CarExpensesStyles';
+import { 
+  Container, 
+  TotalCard, 
+  TotalLabel, 
+  TotalAmountNew, 
+  ExpenseList, 
+  TableHeader,
+  HeaderCell,
+  ExpenseItem, 
+  ExpenseName,
+  ExpenseDate,
+  ExpenseKm,
+  ExpenseCategory,
+  ExpensePrice,
+  MobileDate,
+  EmptyState,
+  EmptyIcon,
+  EmptyText,
+  PopupOverlay,
+  PopupCard,
+  PopupHeader,
+  PopupTitle,
+  PopupContent,
+  DetailRow,
+  DetailLabel,
+  DetailValue,
+  CategoryBadge,
+  PopupActions,
+  PopupButton,
+  CloseButton,
+  PopupPriceSection,
+  PriceLabel,
+  PriceValue
+} from './CarExpensesStyles';
 import { formatCategory } from '../../functions/FormatCategory';
+import EditIcon from '@mui/icons-material/Edit';
+import DeleteIcon from '@mui/icons-material/Delete';
+import CloseIcon from '@mui/icons-material/Close';
+import DeleteCarConfirmationDialog from '../DeletCarConfirmationDialog/DeletCarConfirmationDialog';
 
 const CarExpenses: React.FC = () => {
     const { id } = useParams();
@@ -17,18 +53,18 @@ const CarExpenses: React.FC = () => {
     const [loading, setLoading] = useState<boolean>(true);
     const [error, setError] = useState<string>('');
     const [editExpense, setEditExpense] = useState<ExpenseInterface | null>(null);
-    const [open, setOpen] = useState<boolean>(false);
+    const [openEditDialog, setOpenEditDialog] = useState<boolean>(false);
+    const [selectedExpense, setSelectedExpense] = useState<ExpenseInterface | null>(null);
+    const [showPopup, setShowPopup] = useState<boolean>(false);
+    const [showDeleteConfirm, setShowDeleteConfirm] = useState<boolean>(false);
 
     useEffect(() => {
         const fetchExpenses = async () => {
             try {
                 const data = await getCarExpenses(Number(id));
-                const sortedData = data.sort((a: { date: string | number | Date; }, b: { date: string | number | Date; }) => {
-                    const dateA = new Date(a.date).getTime();
-                    const dateB = new Date(b.date).getTime();
-                    return dateB - dateA;
+                const sortedData = data.sort((a: any, b: any) => {
+                    return new Date(b.date).getTime() - new Date(a.date).getTime();
                 });
-
                 setExpenses(sortedData);
                 setLoading(false);
             } catch (err) {
@@ -43,6 +79,9 @@ const CarExpenses: React.FC = () => {
         try {
             deleteExpense(expenseId);
             setExpenses(expenses.filter(expense => expense.id !== expenseId));
+            setShowPopup(false);
+            setSelectedExpense(null);
+            setShowDeleteConfirm(false);
         } catch (err) {
             setError("Hubo un error al eliminar el gasto.");
         }
@@ -50,12 +89,13 @@ const CarExpenses: React.FC = () => {
 
     const handleEdit = (expense: ExpenseInterface) => {
         setEditExpense(expense);
-        setOpen(true);
+        setOpenEditDialog(true);
+        setShowPopup(false);
     };
 
-    const handleClose = () => {
+    const handleCloseEdit = () => {
         setEditExpense(null);
-        setOpen(false);
+        setOpenEditDialog(false);
     }
 
     const handleSave = async () => {
@@ -68,8 +108,10 @@ const CarExpenses: React.FC = () => {
                 );
                 return updatedExpenses.sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime());
             });
-            handleClose();
-            setEditExpense(null);
+            if (selectedExpense && selectedExpense.id === editExpense.id) {
+                setSelectedExpense(editExpense);
+            }
+            handleCloseEdit();
         } catch (err) {
             setError("Hubo un error al guardar los cambios.");
         }
@@ -80,47 +122,128 @@ const CarExpenses: React.FC = () => {
         setEditExpense({ ...editExpense, [field]: value });
     };
 
-    const totalSpent = expenses.reduce((total, expense) => total + expense.price, 0);
-
-    if (loading) return <Typography variant='h6'>Cargando gastos...</Typography>;
-
-    if (error) return <Typography variant='h6' color='error'>{error}</Typography>;
-
-    function renderTotalAmount() {
-        return (
-            <GridTotalAmount>
-                <TotalAmount>
-                    Total: $ { formatNumberWithCommas(totalSpent) }
-                </TotalAmount>
-            </GridTotalAmount>
-        )
+    const handleItemClick = (expense: ExpenseInterface) => {
+        setSelectedExpense(expense);
+        setShowPopup(true);
     };
 
-    const mappedExpenses = expenses.map(expense => ({
-        ...expense,
-        category: formatCategory(expense.category)
-    }));
+    const handleClosePopup = () => {
+        setShowPopup(false);
+        setSelectedExpense(null);
+    };
+
+    const totalSpent = expenses.reduce((total, expense) => total + expense.price, 0);
+
+    if (loading) return (
+        <Container>
+            <Typography variant='h6' sx={{ textAlign: 'center', color: '#86868b' }}>Cargando gastos...</Typography>
+        </Container>
+    );
+
+    if (error) return (
+        <Container>
+            <Typography variant='h6' color='error' sx={{ textAlign: 'center' }}>{error}</Typography>
+        </Container>
+    );
 
     return (
-        <Box>
-            { renderTotalAmount() }
-            <ExpenseTable
-                expenses={mappedExpenses}
-                handleEdit={handleEdit}
-                handleDelete={handleDelete}
-                formatNumberByThousands={formatNumberByThousands}
-                formatNumberWithCommas={formatNumberWithCommas}
-                formatDate={formatDate}
-            />
+        <Container>
+            <TotalCard>
+                <TotalLabel>Total gastado</TotalLabel>
+                <TotalAmountNew>$ {formatNumberWithCommas(totalSpent)}</TotalAmountNew>
+            </TotalCard>
+            
+            {expenses.length === 0 ? (
+                <EmptyState>
+                    <EmptyIcon>📋</EmptyIcon>
+                    <EmptyText>No hay gastos registrados para este vehículo.</EmptyText>
+                </EmptyState>
+            ) : (
+                <ExpenseList>
+                    <TableHeader>
+                        <HeaderCell>Descripción</HeaderCell>
+                        <HeaderCell>Km</HeaderCell>
+                        <HeaderCell>Categoría</HeaderCell>
+                        <HeaderCell>Fecha</HeaderCell>
+                        <HeaderCell>$</HeaderCell>
+                    </TableHeader>
+                    {expenses.map((expense) => (
+                        <ExpenseItem key={expense.id} onClick={() => handleItemClick(expense)}>
+                            <ExpenseName>{expense.description}</ExpenseName>
+                            <MobileDate>{formatDate(expense.date)}</MobileDate>
+                            <ExpenseKm>{formatNumberByThousands(expense.kilometers)}</ExpenseKm>
+                            <ExpenseCategory>
+                                <CategoryBadge category={formatCategory(expense.category)}>
+                                    {formatCategory(expense.category)}
+                                </CategoryBadge>
+                            </ExpenseCategory>
+                            <ExpenseDate>{formatDate(expense.date)}</ExpenseDate>
+                            <ExpensePrice>{formatNumberWithCommas(expense.price)}</ExpensePrice>
+                        </ExpenseItem>
+                    ))}
+                </ExpenseList>
+            )}
+            
+            {showPopup && selectedExpense && (
+                <PopupOverlay onClick={handleClosePopup}>
+                    <PopupCard onClick={(e: any) => e.stopPropagation()}>
+                        <PopupHeader>
+                            <CloseButton onClick={handleClosePopup}>
+                                <CloseIcon sx={{ fontSize: 16, color: '#fff' }} />
+                            </CloseButton>
+                            <PopupTitle>{selectedExpense.description}</PopupTitle>
+                        </PopupHeader>
+                        <PopupContent>
+                            <PopupPriceSection>
+                                <PriceLabel>Monto total</PriceLabel>
+                                <PriceValue>$ {formatNumberWithCommas(selectedExpense.price)}</PriceValue>
+                            </PopupPriceSection>
+                            <DetailRow>
+                                <DetailLabel>Fecha</DetailLabel>
+                                <DetailValue>{formatDate(selectedExpense.date)}</DetailValue>
+                            </DetailRow>
+                            <DetailRow>
+                                <DetailLabel>Kilómetros</DetailLabel>
+                                <DetailValue>{formatNumberByThousands(selectedExpense.kilometers)} km</DetailValue>
+                            </DetailRow>
+                            <DetailRow>
+                                <DetailLabel>Categoría</DetailLabel>
+                                <CategoryBadge category={formatCategory(selectedExpense.category)}>
+                                    {formatCategory(selectedExpense.category)}
+                                </CategoryBadge>
+                            </DetailRow>
+                        </PopupContent>
+                        <PopupActions>
+                            <PopupButton variant="edit" onClick={() => handleEdit(selectedExpense)}>
+                                <EditIcon sx={{ fontSize: 16 }} />
+                                Editar
+                            </PopupButton>
+                            <PopupButton variant="delete" onClick={() => setShowDeleteConfirm(true)}>
+                                <DeleteIcon sx={{ fontSize: 16 }} />
+                                Eliminar
+                            </PopupButton>
+                        </PopupActions>
+                    </PopupCard>
+                </PopupOverlay>
+            )}
+            
             <EditExpenseDialog
-                open={open}
+                open={openEditDialog}
                 expense={editExpense}
                 error={error}
-                onClose={handleClose}
+                onClose={handleCloseEdit}
                 onSave={handleSave}
                 onChange={handleChange}
             />
-        </Box>
+            
+            <DeleteCarConfirmationDialog
+                open={showDeleteConfirm}
+                title="Eliminar gasto"
+                description={`¿Estás seguro de que deseas eliminar "${selectedExpense?.description}"? Esta acción no se puede deshacer.`}
+                onConfirm={() => selectedExpense && handleDelete(selectedExpense.id)}
+                onCancel={() => setShowDeleteConfirm(false)}
+            />
+        </Container>
     )
 }
 

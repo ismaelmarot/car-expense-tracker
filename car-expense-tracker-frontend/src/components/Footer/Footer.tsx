@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import LegalModal from '../LegalModal/LegalModal';
 import { getCurrentYear } from '../../functions/getCurrentYear';
-import { Container, Item, LinkStyled } from './FooterStyles';
+import { Container, FooterText, FooterLink, Divider } from './FooterStyles';
 
 const Footer: React.FC = () => {
     const [openLegal, setOpenLegal] = useState(false);
@@ -13,17 +13,21 @@ const Footer: React.FC = () => {
     const handleCloseLegal = () => {
         setOpenLegal(false);
     };
+
     return (
         <>
-
-            <Container container>
-                <Item item>Vehicles Expenses Tracker - © {getCurrentYear()}</Item>
-                <Item item> | </Item>
-                <Item item>Creado por ismaelmarot</Item>
-                <Item item> | </Item>
-                <LinkStyled onClick={handleOpenLegal}>
-                    T&eacute;rminos Legales
-                </LinkStyled>
+            <Container>
+                <FooterText>
+                    Vehicles Expenses Tracker © {getCurrentYear()}
+                </FooterText>
+                <Divider>•</Divider>
+                <FooterText>
+                    Creado por ismaelmarot
+                </FooterText>
+                <Divider>•</Divider>
+                <FooterLink onClick={handleOpenLegal}>
+                    Términos Legales
+                </FooterLink>
             </Container>
 
             <LegalModal open={openLegal} onClose={handleCloseLegal} />

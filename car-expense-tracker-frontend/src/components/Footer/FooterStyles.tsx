@@ -1,21 +1,35 @@
 import styled from '@emotion/styled';
-import { Grid, Link } from '@mui/material';
+import { Box, Link, Typography } from '@mui/material';
 
-export const Container = styled(Grid)`
-    display: flex;
-    justify-content: center;
-    color: rgba(255, 255, 255, 1);
-    background-color: rgba(0,0,0,1);
+export const Container = styled(Box)`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 1rem;
+  background: #ffffff;
+  border-top: 1px solid rgba(0, 0, 0, 0.06);
+  flex-wrap: wrap;
+  gap: 0.5rem;
 `;
 
-export const Item = styled(Grid)`
-    padding: .3rem .5rem;
+export const FooterText = styled(Typography)`
+  font-size: 0.8125rem;
+  color: #86868b;
 `;
 
-export const LinkStyled = styled(Link)`
-    display: flex;
-    align-items: center;
-    text-decoration: none;
-    cursor: pointer;
-    color: rgba(255, 255, 255, 1);
+export const FooterLink = styled(Link)`
+  font-size: 0.8125rem;
+  color: #0071e3;
+  text-decoration: none;
+  cursor: pointer;
+  transition: color 0.2s ease;
+  
+  &:hover {
+    color: #0077ed;
+  }
+`;
+
+export const Divider = styled.span`
+  color: #d1d1d6;
+  margin: 0 0.25rem;
 `;

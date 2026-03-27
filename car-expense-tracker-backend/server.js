@@ -22,7 +22,7 @@ try {
 }
 
 app.use(cors());
-app.use(express.json());
+app.use(express.json({ limit: '10mb' }));
 
 const db = new sqlite3.Database(dbPath, (err) => {
   if (err) console.error("Error al abrir DB:", err);
@@ -33,8 +33,16 @@ db.serialize(() => {
   db.run(`CREATE TABLE IF NOT EXISTS cars (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
     brand TEXT, model TEXT, year INTEGER, version TEXT,
-    vehicle_type TEXT, color TEXT, vin TEXT, engine TEXT, fuel_type TEXT
+    vehicle_type TEXT, color TEXT, vin TEXT, engine TEXT, fuel_type TEXT,
+    photo TEXT
   )`);
+
+  // Add photo column if it doesn't exist (for existing databases)
+  db.run(`ALTER TABLE cars ADD COLUMN photo TEXT`, (err) => {
+    if (err && !err.message.includes('duplicate column')) {
+      console.log('Error adding photo column (maybe already exists):', err.message);
+    }
+  });
 
   db.run(`CREATE TABLE IF NOT EXISTS expenses (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -61,23 +69,39 @@ app.get('/cars/:id', (req, res) => {
 });
 
 app.post('/cars', (req, res) => {
-  const { brand, model, year, version, vehicle_type, color, vin, engine, fuel_type } = req.body;
+  console.log('POST /cars body:', req.body);
+  const { brand, model, year, version, vehicle_type, color, vin, engine, fuel_type, photo } = req.body;
+  console.log('Adding car:', { brand, model, year, vin, photo: photo ? 'HAS PHOTO' : 'NO PHOTO' });
   db.run(
-    `INSERT INTO cars (brand, model, year, version, vehicle_type, color, vin, engine, fuel_type)
-     VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)`,
-    [brand, model, year, version, vehicle_type, color, vin, engine, fuel_type],
+    `INSERT INTO cars (brand, model, year, version, vehicle_type, color, vin, engine, fuel_type, photo)
+     VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
+    [brand, model, year, version, vehicle_type, color, vin, engine, fuel_type, photo],
     function (err) {
-      if (err) return res.status(500).json({ error: err.message });
+      if (err) {
+        console.error('Error inserting car:', err);
+        return res.status(500).json({ error: err.message });
+      }
+      console.log('Car added with ID:', this.lastID);
       res.json({ id: this.lastID });
     }
   );
 });
 
 app.delete('/cars/:id', (req, res) => {
-  db.run('DELETE FROM cars WHERE id = ?', [req.params.id], function (err) {
-    if (err) return res.status(500).json({ error: err.message });
-    if (this.changes === 0) return res.status(404).json({ message: "Car not found" });
-    res.json({ message: "Car deleted successfully" });
+  const carId = req.params.id;
+  
+  db.serialize(() => {
+    // Primero eliminamos los gastos asociados al auto
+    db.run('DELETE FROM expenses WHERE car_id = ?', [carId], (err) => {
+      if (err) return res.status(500).json({ error: 'Error deleting expenses: ' + err.message });
+      
+      // Luego eliminamos el auto
+      db.run('DELETE FROM cars WHERE id = ?', [carId], function (err) {
+        if (err) return res.status(500).json({ error: 'Error deleting car: ' + err.message });
+        if (this.changes === 0) return res.status(404).json({ message: "Car not found" });
+        res.json({ message: "Car deleted successfully" });
+      });
+    });
   });
 });
 
