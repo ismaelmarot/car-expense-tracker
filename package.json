@@ -5,8 +5,8 @@
   "description": "Car Expense Tracker App",
   "main": "electron.js",
   "scripts": {
-    "start-frontend": "cd car-expense-tracker-frontend && npm start",
-    "start-backend": "cd car-expense-tracker-backend && node server.js",
+    "frontend": "cd car-expense-tracker-frontend && npm start",
+    "backend": "cd car-expense-tracker-backend && node server.js",
     "build-frontend": "cd car-expense-tracker-frontend && npm run build",
     "electron": "electron .",
     "package": "npm run build-frontend && npx electron-builder",

@@ -1,56 +1,7 @@
-import { Link } from 'react-router-dom'
-import { Grid } from '@mui/material'
-import { GeneralColors } from '../../constants/GeneralColors'
-import { flex } from '../../mixins/setFlex'
-import { size } from '../../mixins/setSize'
-
-// export const GeneralContainer = styled(Grid)`
-//     margin-bottom: 3rem;
-// `;
-
-// export const Container = styled(Grid)`
-//     margin: 2rem 1rem;
-// `;
-
-// export const Title = styled(Grid)`
-//     margin: 0 .5rem;
-//     border-radius: 3px;
-//     background-color: ${GeneralColors.blue};
-// `;
-
-// export const TypographyStyled = styled(Typography)`
-//     font-size: 2rem;
-//     font-weight: bold;
-//     color: ${GeneralColors.white};
-// `;
-
-// export const LinkCard = styled(Link)`
-//     ${flex('column', 'center', 'center')}
-//     ${size('100%', '100%')}
-//     text-decoration: none;
-//     transition: all 0.3s ease;
-// `;
-
-// export const LinkAddCarCard = styled(Link)`
-//     ${size('100%', '100%')}
-//     text-decoration: none;
-//     transition: all 0.3s ease;
-//     display: block;
-// `;
-
-// export const CardStyled = styled(Grid)`
-//     ${size('100%', '300px')}
-//     background-color: ${GeneralColors.white};
-//     border: 3px solid ${GeneralColors.grey};
-//     border-radius: 5px;
-//     transition: all 0.3s ease;
-//     &:hover {
-//         border-color: ${GeneralColors.blue};
-//     }
-// `;
-import { Box, Typography } from '@mui/material'
 import styled from '@emotion/styled'
-
+import { flex, size } from '@/mixins'
+import { Box, Typography } from '@mui/material'
+import DirectionsCarIcon from '@mui/icons-material/DirectionsCar'
 
 export const Container = styled(Box)`
   padding: 2rem 1.5rem;
@@ -63,7 +14,7 @@ export const Container = styled(Box)`
   @media (max-width: 600px) {
     padding: 1.5rem 1rem;
   }
-`;
+`
 
 export const Header = styled(Box)`
   display: flex;
@@ -72,19 +23,19 @@ export const Header = styled(Box)`
   margin-bottom: 1.5rem;
   gap: 1rem;
   flex-wrap: wrap;
-`;
+`
 
 const HeaderLeft = styled(Box)`
   display: flex;
   flex-direction: column;
   gap: 0.25rem;
-`;
+`
 
 export const HeaderRight = styled(Box)`
   display: flex;
   align-items: center;
   gap: 0.625rem;
-`;
+`
 
 export const Title = styled(Typography)`
   font-size: 2.25rem;
@@ -96,12 +47,12 @@ export const Title = styled(Typography)`
   @media (max-width: 600px) {
     font-size: 1.625rem;
   }
-`;
+`
 
 export const Subtitle = styled(Typography)`
   font-size: 0.9375rem;
   color: #86868b;
-`;
+`
 
 export const IconBtn = styled(Box)`
   display: flex;
@@ -126,7 +77,7 @@ export const IconBtn = styled(Box)`
     height: 38px;
     border-radius: 19px;
   }
-`;
+`
 
 export const PrimaryBtn = styled(Box)`
   display: flex;
@@ -156,7 +107,7 @@ export const PrimaryBtn = styled(Box)`
     padding: 0 0.875rem;
     border-radius: 19px;
   }
-`;
+`
 
 export const CardsGrid = styled(Box)`
   display: grid;
@@ -170,7 +121,7 @@ export const CardsGrid = styled(Box)`
   @media (max-width: 600px) {
     grid-template-columns: 1fr;
   }
-`;
+`
 
 export const Card = styled(Box)`
   background: #ffffff;
@@ -183,6 +134,7 @@ export const Card = styled(Box)`
   flex-direction: column;
   align-items: center;
   justify-content: center;
+  gap: 0.5rem;
   text-align: center;
   position: relative;
   min-height: 140px;
@@ -196,35 +148,30 @@ export const Card = styled(Box)`
   &:active {
     transform: scale(0.99);
   }
-`;
+`
 
-export const CardIcon = styled(Box)`
-  position: absolute;
-  top: 1rem;
-  left: 1rem;
-  width: 44px;
-  height: 44px;
-  background: linear-gradient(135deg, #0071e3 0%, #00a0f0 100%);
-  border-radius: 11px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  color: white;
+export const CardPhoto = styled(Box)`
+  width: 48px;
+  height: 48px;
+  border-radius: 12px;
+  background-size: cover;
+  background-position: center;
   box-shadow: 0 4px 12px rgba(0, 113, 227, 0.25);
-`;
+  margin: 0.5rem;
+`
 
 export const CardTitle = styled(Typography)`
   font-size: 1.125rem;
   font-weight: 600;
   color: #1d1d1f;
-  margin-top: 0.5rem;
-`;
+  text-align: center;
+`
 
 export const CardSubtitle = styled(Typography)`
   font-size: 0.875rem;
   color: #86868b;
-  margin-top: 0.25rem;
-`;
+  text-align: center;
+`
 
 export const AddCard = styled(Box)`
   background: #fafbfc;
@@ -246,7 +193,7 @@ export const AddCard = styled(Box)`
     color: #0071e3;
     background: linear-gradient(135deg, #f0f7ff 0%, #e8f5fe 100%);
   }
-`;
+`
 
 export const EmptyState = styled(Box)`
   display: flex;
@@ -255,13 +202,13 @@ export const EmptyState = styled(Box)`
   justify-content: center;
   padding: 5rem 2rem;
   text-align: center;
-`;
+`
 
 export const ListContainer = styled(Box)`
   display: flex;
   flex-direction: column;
   gap: 0.625rem;
-`;
+`
 
 export const ListItem = styled(Box)`
   display: flex;
@@ -279,47 +226,44 @@ export const ListItem = styled(Box)`
     border-color: rgba(0, 113, 227, 0.2);
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.04);
   }
-`;
+`
 
 export const CarIconList = styled(Box)`
-  width: 44px;
-  height: 44px;
-  background: linear-gradient(135deg, #0071e3 0%, #00a0f0 100%);
-  border-radius: 12px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  color: white;
-  flex-shrink: 0;
-  box-shadow: 0 4px 12px rgba(0, 113, 227, 0.25);
-`;
+    ${flex('column','center','center')}
+    ${size('5rem','5rem')}
+    flex-shrink: 0;
+    border-radius: 16px;
+    color: white;
+    background: linear-gradient(135deg, #0071e3 0%, #00a0f0 100%);
+    box-shadow: 0 4px 12px rgba(0, 113, 227, 0.25);
+`
 
 export const CarInfo = styled(Box)`
-  flex: 1;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 0.25rem;
-  min-width: 0;
-`;
+    ${flex('row','center','center')}
+    flex: 1;
+    gap: 0.25rem;
+    min-width: 0;
+    height: 5rem;
+`
 
 export const CarName = styled(Typography)`
-  font-size: 0.9375rem;
+  font-size: 2rem;
   font-weight: 600;
   color: #1d1d1f;
-`;
+`
 
 export const CarDetail = styled(Typography)`
-  font-size: 0.8125rem;
+  font-size: 1.8rem;
   color: #86868b;
-`;
+`
 
 export const ChevronIcon = styled(Box)`
-  color: #aeaeb2;
   display: flex;
   align-items: center;
   flex-shrink: 0;
-`;
+  font-size: 2rem;
+  color: #aeaeb2;
+`
 
 export const ListAddItem = styled(Box)`
   background: #fafbfc;
@@ -341,4 +285,62 @@ export const ListAddItem = styled(Box)`
     color: #0071e3;
     background: #f0f7ff;
   }
+`
+
+export const ImageCarPhoto = styled(Box)<{ image: string ; size?: number ; margin?: number }>(
+    ({ image, size = 2, margin}) => ({
+        width: `${size}rem`,
+        height: `${size}rem`,
+        margin: `${margin}rem`,
+        flexShrink: 0,
+        borderRadius: '16px',
+        backgroundImage: `url(${image})`,
+        backgroundSize: 'cover',
+        backgroundPosition: 'center',
+        boxShadow: '0 4px 12px rgba(0, 113, 227, 0.25)',
+    })
+)
+
+export const ImageCarIcon = styled(DirectionsCarIcon)<{ size?: number ; margin?: number} >(
+    ({ size = 2, margin }) =>({
+        margin: `${margin}rem`,
+        fontSize: `${size}rem`,
+    })
+)
+
+export const CardIcon = styled(Box)<{ size?: number, margin?: number }>(
+  ({ size = 3, margin }) => ({
+    display: 'flex',
+    flexDirection: 'column',
+    alignItems: 'center',
+    justifyContent: 'center',
+    width: `${size}rem`,
+    height: `${size}rem`,
+    background: 'linear-gradient(135deg, #0071e3 0%, #00a0f0 100%)',
+    borderRadius: '16px',
+    color: 'white',
+    margin: `${margin}`,
+    boxShadow: '0 4px 12px rgba(0, 113, 227, 0.25)',
+  })
+)
+
+export const ItemList = styled.div`
+    ${flex('row','center','space-around')}
+    padding: .5rem;
+    border-radius: 24px;
+    border: 1.5px solid #d1d1d6;
+    box-shadow: '0 4px 12px rgba(0, 113, 227, 0.25)';
+    background-color: white;
+`
+
+export const CartStyled = styled(Card)`
+    border-radius: 24px;
+    border: 1.5px solid #d1d1d6;
+    box-shadow: '0 4px 12px rgba(0, 113, 227, 0.25)';
+    background-color: white;
+`
+
+export const StyledCard = styled(Card)`
+  border: 3px solid red;
+  cursor: pointer;
 `;

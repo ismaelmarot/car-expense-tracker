@@ -1,8 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { getCars } from '@/api'
-import { Card, ListItem } from '@mui/material'
-import { CarInterface } from '../../interfaces/CarInterface'
+import { CarInterface } from '@/interfaces'
 import AddIcon from '@mui/icons-material/Add'
 import DirectionsCarIcon from '@mui/icons-material/DirectionsCar'
 import FormatListBulletedIcon from '@mui/icons-material/FormatListBulleted'
@@ -24,11 +23,15 @@ import {
   Header,
   HeaderRight,
   IconBtn,
+  ImageCarIcon,
+  ImageCarPhoto,
   ListAddItem,
   ListContainer,
   PrimaryBtn,
   Subtitle,
-  Title
+  Title,
+  ItemList,
+  StyledCard
 } from './CarsPageStyles'
 
 const CarsPage: React.FC = () => {
@@ -105,21 +108,12 @@ const CarsPage: React.FC = () => {
                     {viewMode === 'list' ? (
                         <ListContainer>
                             {cars.map((car) => (
-                                <ListItem key={car.id} onClick={() => navigate(`/cars/${car.id}`)}>
+                                <ItemList key={car.id} onClick={() => navigate(`/cars/${car.id}`)}>
                                     {car.photo ? (
-                                        <div style={{ 
-                                            width: '44px', 
-                                            height: '44px', 
-                                            borderRadius: '12px', 
-                                            backgroundImage: `url(${car.photo})`, 
-                                            backgroundSize: 'cover', 
-                                            backgroundPosition: 'center',
-                                            flexShrink: 0,
-                                            boxShadow: '0 4px 12px rgba(0, 113, 227, 0.25)'
-                                        }} />
+                                        <ImageCarPhoto image={car.photo} size={5} />
                                     ) : (
                                         <CarIconList>
-                                            <DirectionsCarIcon sx={{ fontSize: 24 }} />
+                                            <ImageCarIcon size={4} />
                                         </CarIconList>
                                     )}
                                     <CarInfo>
@@ -129,7 +123,7 @@ const CarsPage: React.FC = () => {
                                     <ChevronIcon>
                                         →
                                     </ChevronIcon>
-                                </ListItem>
+                                </ItemList>
                             ))}
                             <ListAddItem onClick={() => navigate('/add')}>
                                 <AddIcon sx={{ fontSize: 20 }} />
@@ -139,29 +133,21 @@ const CarsPage: React.FC = () => {
                     ) : (
                         <CardsGrid>
                             {cars.map((car) => (
-                                <Card key={car.id} onClick={() => navigate(`/cars/${car.id}`)}>
-                                    {car.photo ? (
-                                        <div style={{ 
-                                            width: '48px', 
-                                            height: '48px', 
-                                            borderRadius: '12px', 
-                                            backgroundImage: `url(${car.photo})`, 
-                                            backgroundSize: 'cover', 
-                                            backgroundPosition: 'center',
-                                            marginBottom: '0.5rem'
-                                        }} />
-                                    ) : (
-                                        <CardIcon>
-                                            <DirectionsCarIcon sx={{ fontSize: 26 }} />
-                                        </CardIcon>
-                                    )}
+                                <StyledCard key={car.id} onClick={() => navigate(`/cars/${car.id}`)}>
+                                  {car.photo ? (
+                                    <ImageCarPhoto image={car.photo} size={5} margin={1} />
+                                  ) : (
+                                    <CardIcon size={5} margin={2}>
+                                      <ImageCarIcon size={5} margin={1} />
+                                      </CardIcon>
+                                  )}
                                     <CardTitle>{car.brand} {car.model}</CardTitle>
                                     <CardSubtitle>{car.year} • {car.vin}</CardSubtitle>
-                                </Card>
+                                </StyledCard>
                             ))}
                             <AddCard onClick={() => navigate('/add')}>
-                                <AddIcon sx={{ fontSize: 32 }} />
-                                <CardSubtitle>Agregar vehículo</CardSubtitle>
+                              <AddIcon sx={{ fontSize: 32 }} />
+                              <CardSubtitle>Agregar vehículo</CardSubtitle>
                             </AddCard>
                         </CardsGrid>
                     )}
