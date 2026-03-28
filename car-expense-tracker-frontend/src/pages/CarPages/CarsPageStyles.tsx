@@ -139,7 +139,7 @@ export const Card = styled(Box)`
   min-height: 140px;
   
   &:hover {
-    transform: translateY(-2px);
+    transform: translateY(-2px) scale(1.02);
     box-shadow: 0 8px 24px rgba(0, 0, 0, 0.08);
     border-color: rgba(0, 113, 227, 0.2);
   }
@@ -217,13 +217,17 @@ export const ListItem = styled(Box)`
   border-radius: 14px;
   cursor: pointer;
   transition: all 0.2s ease;
-  border: 1px solid rgba(0, 0, 0, 0.04);
+  border: 1px solid rgba(0, 0, 0, 0.06);
   gap: 0.875rem;
   
   &:hover {
-    background: #fafbfc;
+    transform: translateY(-2px) scale(1.02);
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.08);
     border-color: rgba(0, 113, 227, 0.2);
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.04);
+  }
+  
+  &:active {
+    transform: scale(0.99);
   }
 `
 
@@ -240,20 +244,29 @@ export const CarIconList = styled(Box)`
 export const CarInfo = styled(Box)`
     ${flex('row','center','center')}
     flex: 1;
-    gap: 0.25rem;
     min-width: 0;
     height: 5rem;
+
+    @media (max-width: 600px) {
+        flex-direction: column;
+    }
 `
 
 export const CarName = styled(Typography)`
   font-size: 2rem;
   font-weight: 600;
   color: #1d1d1f;
+  @media (max-width: 600px) {
+        font-size: 1.6rem;
+    }
 `
 
 export const CarDetail = styled(Typography)`
   font-size: 1.8rem;
   color: #86868b;
+  @media (max-width: 600px) {
+        font-size: 1rem;
+    }
 `
 
 export const ChevronIcon = styled(Box)`
@@ -266,7 +279,7 @@ export const ChevronIcon = styled(Box)`
 
 export const ListAddItem = styled(Box)`
   background: #fafbfc;
-  border-radius: 14px;
+  border-radius: 24px;
   padding: 1rem 1.25rem;
   cursor: pointer;
   transition: all 0.2s ease;
@@ -278,6 +291,7 @@ export const ListAddItem = styled(Box)`
   color: #86868b;
   font-size: 0.9375rem;
   font-weight: 500;
+  min-height: 5.5rem;
   
   &:hover {
     border-color: #0071e3;
@@ -327,9 +341,20 @@ export const ItemList = styled.div`
     ${flex('row','center','space-around')}
     padding: .5rem;
     border-radius: 24px;
-    border: 1.5px solid #d1d1d6;
     box-shadow: '0 4px 12px rgba(0, 113, 227, 0.25)';
     background-color: white;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    
+    &:hover {
+        transform: translateY(-2px) scale(1.02);
+        box-shadow: 0 8px 24px rgba(0, 0, 0, 0.08);
+        border-color: rgba(0, 113, 227, 0.2);
+    }
+    
+    &:active {
+        transform: scale(0.99);
+    }
 `
 
 export const CartStyled = styled(Card)`
