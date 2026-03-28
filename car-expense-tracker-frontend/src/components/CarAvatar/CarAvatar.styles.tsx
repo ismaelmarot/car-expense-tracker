@@ -9,6 +9,7 @@ export const Container = styled(Box)`
   margin: 0 auto;
   width: 100%;
   flex: 1;
+  border: 3px solid red;
   
   @media (max-width: 600px) {
     padding: 1.5rem 1rem;
@@ -340,5 +341,6 @@ export const CartStyled = styled(Card)`
 `
 
 export const StyledCard = styled(Card)`
+  border: 3px solid red;
   cursor: pointer;
-`
+`;

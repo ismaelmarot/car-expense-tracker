@@ -37,7 +37,7 @@
     },
     "win": {
       "target": "nsis",
-      "icon": "car-expense-tracker-frontend/public/icon.ico"
+      "icon": "car-expense-tracker-frontend/public/app-car-icon.png"
     },
     "mac": {
       "target": "dmg",
