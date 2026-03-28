@@ -105,6 +105,24 @@ app.delete('/cars/:id', (req, res) => {
   });
 });
 
+app.put('/cars/:id', (req, res) => {
+  const { brand, model, year, version, vehicle_type, color, vin, engine, fuel_type, photo } = req.body;
+  const carId = req.params.id;
+  
+  db.run(
+    `UPDATE cars SET 
+      brand = ?, model = ?, year = ?, version = ?, 
+      vehicle_type = ?, color = ?, vin = ?, engine = ?, fuel_type = ?, photo = ?
+     WHERE id = ?`,
+    [brand, model, year, version, vehicle_type, color, vin, engine, fuel_type, photo, carId],
+    function (err) {
+      if (err) return res.status(500).json({ error: err.message });
+      if (this.changes === 0) return res.status(404).json({ message: "Car not found" });
+      res.json({ message: "Car updated successfully" });
+    }
+  );
+});
+
 app.get('/expenses', (req, res) => {
   db.all('SELECT * FROM expenses', [], (err, rows) => {
     if (err) return res.status(500).json({ error: err.message });

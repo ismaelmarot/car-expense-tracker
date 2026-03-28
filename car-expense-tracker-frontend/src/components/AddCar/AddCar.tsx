@@ -1,4 +1,4 @@
-import React, { useState, useRef, useEffect } from 'react'
+import React, { useState, useRef } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { addCar } from '@/api'
 import { 
@@ -14,7 +14,9 @@ import {
   PhotoPreview,
   PhotoOverlay,
   PhotoLabel,
+  PhotoIcon,
   Form, 
+  FormRow,
   InputGroup, 
   InputLabel, 
   Input, 
@@ -24,7 +26,7 @@ import {
   AddCarForm
 } from './AddCarStyles'
 
-const AddCar: React.FC = () => {
+export const AddCar: React.FC = () => {
     const navigate = useNavigate()
     const fileInputRef = useRef<HTMLInputElement>(null)
     
@@ -37,12 +39,6 @@ const AddCar: React.FC = () => {
     })
     
     const [photo, setPhoto] = useState<string | null>(null)
-
-    useEffect(() => {
-        console.log('Photo state changed:', photo ? 'HAS PHOTO' : 'NO PHOTO')
-    }, [photo])
-
-    console.log('AddCar render, photo:', photo ? 'HAS PHOTO' : 'NO PHOTO')
 
     const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         const { name, value } = e.target
@@ -59,14 +55,9 @@ const AddCar: React.FC = () => {
     const handlePhotoChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         const file = e.target.files?.[0]
         if (file) {
-            console.log('File selected:', file.name, file.size)
             const reader = new FileReader()
-            reader.onerror = (error) => {
-                console.error('FileReader error:', error)
-            }
             reader.onloadend = () => {
                 const result = reader.result as string
-                console.log('Photo set:', result.substring(0, 100) + '...')
                 setPhoto(result)
             };
             reader.readAsDataURL(file)
@@ -81,7 +72,6 @@ const AddCar: React.FC = () => {
             year: Number(carData.year),
             photo: photo || undefined
         }
-        console.log('Submitting car:', car, 'Photo state:', photo)
 
         try {
             const response = await addCar(car)
@@ -107,97 +97,104 @@ const AddCar: React.FC = () => {
             </Header>
 
             <AddCarForm>
-            <PhotoSection>
-                {photo ? (
-                    <PhotoPreview 
-                        style={{ backgroundImage: `url(${photo})` }}
-                        onClick={handlePhotoClick}
-                    >
-                        <PhotoOverlay className='photo-overlay'>
-                            <span style={{ color: 'white', fontSize: '0.875rem' }}>Cambiar</span>
-                        </PhotoOverlay>
-                    </PhotoPreview>
-                ) : (
-                    <PhotoContainer onClick={handlePhotoClick}>
-                        <span style={{ fontSize: '2rem', color: '#aeaeb2' }}>📷</span>
-                    </PhotoContainer>
-                )}
-                <PhotoLabel>Agregar foto del vehículo</PhotoLabel>
-                <HiddenInput
-                    ref={fileInputRef}
-                    type='file'
-                    accept='image/*'
-                    onChange={handlePhotoChange}
-                />
-            </PhotoSection>
-
-            <Form onSubmit={handleSubmit}>
-                <InputGroup>
-                    <InputLabel>Marca</InputLabel>
-                    <Input
-                        placeholder="Ej: Toyota"
-                        name='brand'
-                        value={carData.brand}
-                        onChange={handleInputChange}
-                        required
+                <PhotoSection>
+                    {photo ? (
+                        <PhotoPreview 
+                            style={{ backgroundImage: `url(${photo})` }}
+                            onClick={handlePhotoClick}
+                        >
+                            <PhotoOverlay className='photo-overlay'>
+                                <span style={{ color: 'white', fontSize: '0.875rem' }}>Cambiar</span>
+                            </PhotoOverlay>
+                        </PhotoPreview>
+                    ) : (
+                        <PhotoContainer onClick={handlePhotoClick}>
+                            <PhotoIcon>
+                                <span style={{ fontSize: '1.5rem' }}>+</span>
+                                <span style={{ fontSize: '0.75rem' }}>Agregar foto</span>
+                            </PhotoIcon>
+                        </PhotoContainer>
+                    )}
+                    <PhotoLabel>
+                        {photo ? 'Toca para cambiar la foto' : 'Opcional: agrega una foto de tu vehículo'}
+                    </PhotoLabel>
+                    <HiddenInput
+                        ref={fileInputRef}
+                        type='file'
+                        accept='image/*'
+                        onChange={handlePhotoChange}
                     />
-                </InputGroup>
+                </PhotoSection>
 
-                <InputGroup>
-                    <InputLabel>Modelo</InputLabel>
-                    <Input
-                        placeholder="Ej: Corolla"
-                        name='model'
-                        value={carData.model}
-                        onChange={handleInputChange}
-                        required
-                    />
-                </InputGroup>
+                <Form onSubmit={handleSubmit}>
+                    <FormRow>
+                        <InputGroup>
+                            <InputLabel>Marca</InputLabel>
+                            <Input
+                                placeholder="Ej: Toyota"
+                                name='brand'
+                                value={carData.brand}
+                                onChange={handleInputChange}
+                                required
+                            />
+                        </InputGroup>
 
-                <InputGroup>
-                    <InputLabel>
-                        Versión<OptionalLabel>(opcional)</OptionalLabel>
-                    </InputLabel>
-                    <Input
-                        placeholder="Ej: SE-G"
-                        name='version'
-                        value={carData.version}
-                        onChange={handleInputChange}
-                    />
-                </InputGroup>
+                        <InputGroup>
+                            <InputLabel>Modelo</InputLabel>
+                            <Input
+                                placeholder="Ej: Corolla"
+                                name='model'
+                                value={carData.model}
+                                onChange={handleInputChange}
+                                required
+                            />
+                        </InputGroup>
+                    </FormRow>
 
-                <InputGroup>
-                    <InputLabel>Año</InputLabel>
-                    <Input
-                        placeholder="Ej: 2023"
-                        name='year'
-                        value={carData.year}
-                        onChange={handleInputChange}
-                        maxLength={4}
-                        pattern='[0-9]{4}'
-                        inputMode='numeric'
-                        required
-                    />
-                </InputGroup>
+                    <FormRow>
+                        <InputGroup>
+                            <InputLabel>
+                                Versión<OptionalLabel>(opcional)</OptionalLabel>
+                            </InputLabel>
+                            <Input
+                                placeholder="Ej: SE-G"
+                                name='version'
+                                value={carData.version}
+                                onChange={handleInputChange}
+                            />
+                        </InputGroup>
 
-                <InputGroup>
-                    <InputLabel>Patente</InputLabel>
-                    <Input
-                        placeholder="Ej: ABC123"
-                        name='vin'
-                        value={carData.vin}
-                        onChange={handleInputChange}
-                        required
-                    />
-                </InputGroup>
+                        <InputGroup>
+                            <InputLabel>Año</InputLabel>
+                            <Input
+                                placeholder="Ej: 2023"
+                                name='year'
+                                value={carData.year}
+                                onChange={handleInputChange}
+                                maxLength={4}
+                                pattern='[0-9]{4}'
+                                inputMode='numeric'
+                                required
+                            />
+                        </InputGroup>
+                    </FormRow>
 
-                <SubmitButton type='submit'>
-                    Agregar Vehículo
-                </SubmitButton>
-            </Form>
+                    <InputGroup>
+                        <InputLabel>Patente</InputLabel>
+                        <Input
+                            placeholder="Ej: ABC123"
+                            name='vin'
+                            value={carData.vin}
+                            onChange={handleInputChange}
+                            required
+                        />
+                    </InputGroup>
+
+                    <SubmitButton type='submit'>
+                        Agregar Vehículo
+                    </SubmitButton>
+                </Form>
             </AddCarForm>
         </Container>
-    );
+    )
 }
-
-export default AddCar

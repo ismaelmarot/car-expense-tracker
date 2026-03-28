@@ -1,4 +1,20 @@
 {
-  "short_name": "React App",
-  "name": "Create React App Sample"
+  "short_name": "Car Expenses",
+  "name": "Vehicles Expenses Tracker",
+  "icons": [
+    {
+      "src": "app-car-icon.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    },
+    {
+      "src": "app-car-icon.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    }
+  ],
+  "start_url": ".",
+  "display": "standalone",
+  "theme_color": "#0071e3",
+  "background_color": "#ffffff"
 }

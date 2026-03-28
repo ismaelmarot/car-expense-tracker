@@ -26,6 +26,16 @@ export const deleteCar = async (id: number) => {
     }
 };
 
+export const updateCar = async (id: number, car: Car) => {
+    try {
+        const response = await api.put(`/cars/${id}`, car)
+        return response.data
+    } catch (error) {
+        console.error(`Error updating car with ID ${id}:`, error)
+        throw error
+    }
+};
+
 // Funcitions for Expenses ----------------------------------------------------------------
 export const addExpense = async (expense: Expense) => {
     try {

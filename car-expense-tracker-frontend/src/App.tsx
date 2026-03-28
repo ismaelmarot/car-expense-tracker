@@ -1,12 +1,12 @@
-import React from 'react';
-import './App.css';
-import { HashRouter as Router, Route, Routes } from 'react-router-dom';
-import { Box } from '@mui/material';
-import styled from '@emotion/styled';
-import CarsPage from './pages/CarPages/CarsPage';
-import AddCar from './components/AddCar/AddCar';
-import CarDetails from './components/CarDetails/CarDetails';
-import Footer from './components/Footer/Footer';
+import React from 'react'
+import './App.css'
+import { HashRouter as Router, Route, Routes } from 'react-router-dom'
+import { Box } from '@mui/material'
+import styled from '@emotion/styled'
+import CarsPage from './pages/CarPages/CarsPage'
+import { AddCar } from './components/AddCar/AddCar'
+import CarDetails from './components/CarDetails/CarDetails'
+import Footer from './components/Footer/Footer'
 
 const AppContainer = styled(Box)`
   display: flex;

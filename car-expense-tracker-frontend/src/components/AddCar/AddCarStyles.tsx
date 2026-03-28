@@ -1,8 +1,11 @@
-import { flex } from '@/mixins'
+import { flex, size } from '@/mixins'
 import styled from '@emotion/styled'
 import { Box, Typography } from '@mui/material'
 
 export const Container = styled(Box)`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
   width: 100%;
   max-width: 1200px;
   flex: 1;
@@ -15,9 +18,12 @@ export const Container = styled(Box)`
 `
 
 export const Header = styled(Box)`
-  ${flex('row','center','space-between')}
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
   margin-bottom: 1.5rem;
   gap: 1rem;
+  width: 100%;
 `
 
 export const HeaderLeft = styled(Box)`
@@ -47,36 +53,6 @@ export const PageTitle = styled(Typography)`
 export const PageSubtitle = styled(Typography)`
   font-size: 0.9375rem;
   color: #86868b;
-`
-
-export const ActionButton = styled(Box)`
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  height: 42px;
-  padding: 0 1.25rem;
-  background: #0071e3;
-  color: white;
-  border-radius: 21px;
-  font-size: 0.9375rem;
-  font-weight: 500;
-  cursor: pointer;
-  transition: all 0.2s ease;
-  gap: 0.375rem;
-  
-  &:hover {
-    background: #0077ed;
-  }
-  
-  &:active {
-    transform: scale(0.97);
-  }
-  
-  @media (max-width: 480px) {
-    height: 38px;
-    padding: 0 0.875rem;
-    border-radius: 19px;
-  }
 `
 
 export const BackButton = styled(Box)`
@@ -109,43 +85,64 @@ export const BackButton = styled(Box)`
   }
 `
 
+export const AddCarForm = styled.div`
+  display: flex;
+  flex-direction: column;
+  background: #ffffff;
+  width: 80%;
+  border-radius: 24px;
+  padding: 2rem;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+  border: 1px solid rgba(0, 0, 0, 0.06);
+  
+  @media (max-width: 600px) {
+    width: 100%;
+    padding: 1rem;
+  }
+`
+
 export const PhotoSection = styled(Box)`
   display: flex;
   flex-direction: column;
   align-items: center;
   margin-bottom: 2rem;
+  padding-bottom: 2rem;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.06);
 `
 
 export const PhotoContainer = styled(Box)`
-  width: 120px;
-  height: 120px;
-  border-radius: 24px;
-  background: linear-gradient(135deg, #f5f5f7 0%, #ececf1 100%);
-  border: 2px dashed #d1d1d6;
-  display: flex;
-  align-items: center;
-  justify-content: center;
+  ${flex('column','center','center')}
+  ${size('10rem','10rem')}
+  border-radius: 50%;
   cursor: pointer;
   transition: all 0.2s ease;
   overflow: hidden;
   background-size: cover;
   background-position: center;
+  border: 2px dashed #d1d1d6;
+  background: linear-gradient(135deg, #f5f5f7 0%, #ececf1 100%);
   
   &:hover {
     border-color: #0071e3;
     background: linear-gradient(135deg, #f0f7ff 0%, #e8f4fd 100%);
+    transform: scale(1.02);
   }
 `
 
 export const PhotoPreview = styled(Box)`
-  width: 120px;
-  height: 120px;
-  border-radius: 24px;
+  width: 100px;
+  height: 100px;
+  border-radius: 50%;
   background-size: cover;
   background-position: center;
   position: relative;
-  border: 2px solid #d1d1d6;
+  border: 2px solid rgba(0, 0, 0, 0.06);
   cursor: pointer;
+  transition: all 0.2s ease;
+  
+  &:hover {
+    border-color: #0071e3;
+  }
   
   &:hover .photo-overlay {
     opacity: 1;
@@ -155,8 +152,8 @@ export const PhotoPreview = styled(Box)`
 export const PhotoOverlay = styled(Box)`
   position: absolute;
   inset: 0;
-  background: rgba(0, 0, 0, 0.4);
-  border-radius: 24px;
+  background: rgba(0, 0, 0, 0.5);
+  border-radius: 50%;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -174,21 +171,19 @@ export const PhotoLabel = styled(Typography)`
 export const Form = styled.form`
   display: flex;
   flex-direction: column;
-  width: 60%;
-
+  gap: 1.25rem;
 `
 
 export const InputGroup = styled(Box)`
   display: flex;
   flex-direction: column;
-  margin-top: 1rem;
+  gap: 0.5rem;
 `
 
 export const InputLabel = styled(Typography)`
   font-size: 0.875rem;
   font-weight: 500;
   color: #1d1d1f;
-  margin-left: 1rem;
 `
 
 export const Input = styled.input`
@@ -197,7 +192,7 @@ export const Input = styled.input`
   padding: 0 1rem;
   font-size: 1rem;
   border: 1px solid #d1d1d6;
-  border-radius: 35px;
+  border-radius: 12px;
   outline: none;
   color: #1d1d1f;
   background: #ffffff;
@@ -220,7 +215,7 @@ export const Input = styled.input`
 export const SubmitButton = styled.button`
   width: 100%;
   height: 50px;
-  margin-top: 1.5rem;
+  margin-top: 0.5rem;
   background: #0071e3;
   color: white;
   border: none;
@@ -255,9 +250,20 @@ export const HiddenInput = styled.input`
   display: none;
 `
 
-export const AddCarForm = styled.div`
+export const PhotoIcon = styled(Box)`
   display: flex;
   flex-direction: column;
-  justify-content: center;
   align-items: center;
+  gap: 0.5rem;
+  color: #86868b;
+`
+
+export const FormRow = styled(Box)`
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1rem;
+  
+  @media (max-width: 500px) {
+    grid-template-columns: 1fr;
+  }
 `
