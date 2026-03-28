@@ -11,14 +11,18 @@ import Footer from './components/Footer/Footer'
 const AppContainer = styled(Box)`
   display: flex;
   flex-direction: column;
-  min-height: 100vh;
+  height: 100vh;
   background: #f5f5f7;
+  overflow: hidden;
 `;
 
 const MainContent = styled(Box)`
   flex: 1;
-  overflow-y: auto;
   width: 100%;
+  display: flex;
+  flex-direction: column;
+  overflow-y: auto;
+  overflow-x: hidden;
 `;
 
 const App: React.FC = () => {

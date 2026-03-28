@@ -8,6 +8,7 @@ export const ButtonCancel = styled(Button)`
 
 export const ButtonConfirm = styled(Button)`
     padding: .5rem;
+    border-radius: 35px;
     color: ${GeneralColors.white};
     background-color: ${GeneralColors.red};
 `;

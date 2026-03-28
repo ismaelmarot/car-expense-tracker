@@ -1,10 +1,23 @@
 import React, { useState, useEffect } from 'react';
-import { MenuItem, InputLabel, Grid } from '@mui/material';
+import { MenuItem } from '@mui/material';
 import { addExpense } from '../../api/api';
 import { useParams } from 'react-router-dom';
 import AddCircleOutlineIcon from '@mui/icons-material/AddCircleOutline';
-import { GridContainer, FormStyled, TextFieldStyled, GridTextFieldLarge, GridTextFieldShort, GridButtonAddExpense, ButtonAddStyled, ErrorTypography, AddExpenseTypography, FormControlStyled, SelectStyled, GridTitle, GridTable } from './AddExpenseStyles';
 import SnackbarNotification from '../SnackbarNotification/SnackbarNotification';
+import { 
+  Container, 
+  FormHeader, 
+  FormTitle, 
+  FormSubtitle,
+  Form, 
+  FormRow,
+  InputGroup, 
+  InputLabel, 
+  Input, 
+  SelectInput, 
+  SubmitButton,
+  ErrorMessage
+} from './AddExpenseStyles';
 
 const AddExpense: React.FC = () => {
     const { id } = useParams();
@@ -48,19 +61,18 @@ const AddExpense: React.FC = () => {
             setPrice('');
             setKilometers('');
             setCategory('');
-            setDate('');
+            const currentDate = new Date().toISOString().split('T')[0];
+            setDate(currentDate);
             
             setSnackbarMessage("Gasto agregado correctamente.");
             setSnackbarSeverity('success');
             setSnackbarOpen(true);            
         } catch (error) {
             console.log("Error al agregar el gasto: ", error);
-            alert("Hubo un error al agregar el gasto.");
 
             setSnackbarMessage("Hubo un error al agregar el gasto.");
             setSnackbarSeverity('error');
             setSnackbarOpen(true);
-
         }
     };
 
@@ -87,111 +99,115 @@ const AddExpense: React.FC = () => {
         }
     };
 
-    function renderButtonAddExpense() {
-        return (
-            <GridButtonAddExpense>
-                <ButtonAddStyled type='submit'>
-                    <AddCircleOutlineIcon /> 
-                    <AddExpenseTypography>Agregar</AddExpenseTypography>
-                </ButtonAddStyled>
-            </GridButtonAddExpense>
-        )
-    };
-
-    function renderErrorMessage() {
-        return (
-            <ErrorTypography color='error' variant='body2'>
-                {error}
-            </ErrorTypography>
-        )
-    };
-
     return (
-        <GridContainer container>
-            <GridTitle>Agregar Gasto</GridTitle>
-            <GridTable>
-                <FormStyled onSubmit={handleSubmit}>
-                    <Grid container>
-                        <GridTextFieldLarge item xs={12}>
-                            <TextFieldStyled      
-                                label="Descripción"
-                                value={description}
-                                onChange={(e) => setDescription(e.target.value)}
-                                variant='outlined'
-                                required
-                            />
-                        </GridTextFieldLarge>
-                        <GridTextFieldShort item xs={6}>
-                            <TextFieldStyled
-                                label="Precio"
-                                value={price}
-                                onChange={handlePriceChange}
-                                variant='outlined'
-                                required
-                                    type='number'
-                                    InputProps={{
-                                    inputProps: {
-                                        step: 'any',
-                                        min: '0'
-                                    }
-                                }}
-                            />
-                        </GridTextFieldShort>
-                        <GridTextFieldShort item xs={6}>
-                            <TextFieldStyled
-                                label="Kilometraje"
-                                value={kilometers}
-                                onChange={handleKilometersChange}
-                                variant='outlined'
-                                required
-                                type='number'
-                                inputProps={{ min: '0' }}
-                            />
-                        </GridTextFieldShort>
-                        <GridTextFieldShort item xs={6}>
-                            <TextFieldStyled
-                                label="Fecha"
-                                type='date'
-                                value={date}
-                                onChange={(e) => setDate(e.target.value)}
-                                InputLabelProps={{
-                                    shrink: true,
-                                }}
-                                required
-                            />
-                        </GridTextFieldShort>
-                        <GridTextFieldShort container xs={6}>
-                            <FormControlStyled fullWidth variant='outlined' required>
-                                <InputLabel>Categoría</InputLabel>
-                                <SelectStyled
-                                    value={category}
-                                    onChange={(e) => setCategory(e.target.value as string)}
-                                    label="Categoría"
-                                >
-                                    <MenuItem value='combustible'>Combustible</MenuItem>
-                                    <MenuItem value='mantenimiento'>Mantenimiento</MenuItem>
-                                    <MenuItem value='seguro'>Seguro</MenuItem>
-                                    <MenuItem value='patente'>Patente</MenuItem>
-                                    <MenuItem value='reparacion'>Reparación</MenuItem>
-                                    <MenuItem value='otros'>Otros</MenuItem>
-                                </SelectStyled>
-                            </FormControlStyled>
-                        </GridTextFieldShort>
-                        {error && (
-                            renderErrorMessage()
-                        )}
-                        { renderButtonAddExpense() }
-                    </Grid>
-                </FormStyled>
-            </GridTable>
+        <Container>
+            <FormHeader>
+                <FormTitle>Agregar Gasto</FormTitle>
+                <FormSubtitle>Registra un nuevo gasto para tu vehículo</FormSubtitle>
+            </FormHeader>
+
+            <Form onSubmit={handleSubmit}>
+                <InputGroup>
+                    <InputLabel>Descripción</InputLabel>
+                    <Input
+                        fullWidth
+                        placeholder="Ej: Cambio de aceite"
+                        value={description}
+                        onChange={(e) => setDescription(e.target.value)}
+                        required
+                    />
+                </InputGroup>
+
+                <FormRow>
+                    <InputGroup>
+                        <InputLabel>Precio</InputLabel>
+                        <Input
+                            fullWidth
+                            placeholder="Ej: 5000"
+                            value={price}
+                            onChange={handlePriceChange}
+                            required
+                            type="text"
+                            inputProps={{ inputMode: 'numeric' }}
+                        />
+                    </InputGroup>
+
+                    <InputGroup>
+                        <InputLabel>Kilometraje</InputLabel>
+                        <Input
+                            fullWidth
+                            placeholder="Ej: 125000"
+                            value={kilometers}
+                            onChange={handleKilometersChange}
+                            required
+                            type="text"
+                            inputProps={{ inputMode: 'numeric' }}
+                        />
+                    </InputGroup>
+                </FormRow>
+
+                <FormRow>
+                    <InputGroup>
+                        <InputLabel>Fecha</InputLabel>
+                        <Input
+                            fullWidth
+                            type="date"
+                            value={date}
+                            onChange={(e) => setDate(e.target.value)}
+                            required
+                        />
+                    </InputGroup>
+
+                    <InputGroup>
+                        <InputLabel>Categoría</InputLabel>
+                        <SelectInput fullWidth required>
+                            <Input
+                                select
+                                value={category}
+                                onChange={(e) => setCategory(e.target.value as string)}
+                                placeholder="Seleccionar"
+                            >
+                                <MenuItem value='combustible'>Combustible</MenuItem>
+                                <MenuItem value='peajes'>Peajes</MenuItem>
+                                <MenuItem value='estacionamiento'>Estacionamiento</MenuItem>
+                                <MenuItem value='lavado'>Lavado</MenuItem>
+                                <MenuItem value='service'>Service (cambio de aceite, filtros)</MenuItem>
+                                <MenuItem value='mantenimiento'>Mantenimiento</MenuItem>
+                                <MenuItem value='neumaticos'>Neumáticos</MenuItem>
+                                <MenuItem value='repuestos'>Repuestos</MenuItem>
+                                <MenuItem value='reparacion'>Reparación</MenuItem>
+                                <MenuItem value='reparaciones_mecanicas'>Reparaciones mecánicas</MenuItem>
+                                <MenuItem value='electricidad'>Electricidad</MenuItem>
+                                <MenuItem value='chapa_pintura'>Chapa y pintura</MenuItem>
+                                <MenuItem value='seguro'>Seguro</MenuItem>
+                                <MenuItem value='patente'>Patente</MenuItem>
+                                <MenuItem value='vtv_itv'>VTV / ITV</MenuItem>
+                                <MenuItem value='multas'>Multas</MenuItem>
+                                <MenuItem value='grua_asistencia'>Grúa / asistencia</MenuItem>
+                                <MenuItem value='accesorios'>Accesorios</MenuItem>
+                                <MenuItem value='mejoras_tuning'>Mejoras / tuning</MenuItem>
+                                <MenuItem value='otros'>Otros</MenuItem>
+                            </Input>
+                        </SelectInput>
+                    </InputGroup>
+                </FormRow>
+
+                {error && <ErrorMessage>{error}</ErrorMessage>}
+
+                <SubmitButton type="submit">
+                    <AddCircleOutlineIcon sx={{ fontSize: 20 }} />
+                    Agregar Gasto
+                </SubmitButton>
+            </Form>
+
             <SnackbarNotification
                 open={snackbarOpen}
                 message={snackbarMessage}
                 severity={snackbarSeverity}
                 onClose={handleSnackbarClose}
             />
-        </GridContainer>
-    )
+        </Container>
+    );
 };
 
 export default AddExpense;

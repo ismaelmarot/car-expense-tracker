@@ -1,11 +1,29 @@
-import React from 'react';
-import { EditExpenseDialogPropsInterface  } from '../../interfaces/EditExpenseDialogPropsInterface';
-import { Dialog, DialogTitle, MenuItem, Select, Button } from '@mui/material';
-import { ButtonSave, DialogActionsStyled, DialogContentStyled, FormControlStyled, InputLabelStyled, TextFieldStyled, TypographyError } from './EditExpenseDialogStyled';
+import React from 'react'
+import { EditExpenseDialogPropsInterface  } from '../../interfaces/EditExpenseDialogPropsInterface'
+import { Dialog, DialogTitle, MenuItem, Select, Button } from '@mui/material'
+import {
+    ButtonSave,
+    DialogActionsStyled,
+    DialogContentStyled,
+    FormControlStyled,
+    InputLabelStyled,
+    TextFieldStyled,
+    TypographyError
+} from './EditExpenseDialogStyled'
 
-const EditExpenseDialog: React.FC<EditExpenseDialogPropsInterface> = ({ open, expense, error, onClose, onSave, onChange }) => {
+export const EditExpenseDialog: React.FC<EditExpenseDialogPropsInterface> = ({ open, expense, error, onClose, onSave, onChange }) => {
     return (
-        <Dialog open={open} onClose={onClose}>
+        <Dialog
+            open={open}
+            onClose={onClose}
+            PaperProps={{
+                sx: {
+                borderRadius: '20px',
+                padding: '0.5rem',
+                boxShadow: '0 20px 60px rgba(0,0,0,0.2)',
+                },
+            }}
+        >
             <DialogTitle>Editar Gasto</DialogTitle>
             <DialogContentStyled>
                 {error && (
@@ -63,7 +81,5 @@ const EditExpenseDialog: React.FC<EditExpenseDialogPropsInterface> = ({ open, ex
                 </DialogActionsStyled>
             </DialogContentStyled>
         </Dialog>
-    );
-};
-
-export default EditExpenseDialog;
+    )
+}

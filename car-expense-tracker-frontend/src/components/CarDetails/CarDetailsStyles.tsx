@@ -6,7 +6,10 @@ export const Container = styled(Box)`
   max-width: 1200px;
   margin: 0 auto;
   width: 100%;
-  flex: 1;
+  display: flex;
+  flex-direction: column;
+  overflow-x: hidden;
+  box-sizing: border-box;
   
   @media (max-width: 600px) {
     padding: 1.5rem 1rem;
@@ -82,14 +85,13 @@ export const CarInfoCard = styled(Box)`
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
   border: 1px solid rgba(0, 0, 0, 0.06);
   margin-bottom: 1.5rem;
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 1.5rem;
+  display: flex;
   align-items: center;
+  gap: 1.5rem;
   
   @media (max-width: 600px) {
-    grid-template-columns: 1fr;
-    text-align: center;
+    padding: 1rem;
+    gap: 1rem;
   }
 `;
 
@@ -98,14 +100,12 @@ export const PhotoSection = styled(Box)`
   flex-direction: column;
   align-items: center;
   position: relative;
-  height: 100%;
-  justify-content: center;
+  flex-shrink: 0;
 `;
 
 export const PhotoContainer = styled(Box)`
-  width: 100%;
-  max-width: 180px;
-  aspect-ratio: 1;
+  width: 160px;
+  height: 160px;
   border-radius: 20px;
   background: linear-gradient(135deg, #f5f5f7 0%, #ececf1 100%);
   display: flex;
@@ -114,8 +114,6 @@ export const PhotoContainer = styled(Box)`
   cursor: pointer;
   transition: all 0.2s ease;
   overflow: hidden;
-  background-size: cover;
-  background-position: center;
   border: 2px solid rgba(0, 0, 0, 0.06);
   position: relative;
   
@@ -123,21 +121,33 @@ export const PhotoContainer = styled(Box)`
     border-color: #0071e3;
     background: linear-gradient(135deg, #f0f7ff 0%, #e8f4fd 100%);
   }
+  
+  @media (max-width: 600px) {
+    width: 80px;
+    height: 80px;
+    border-radius: 14px;
+  }
 `;
 
 export const PhotoPreview = styled(Box)`
-  width: 100%;
-  max-width: 180px;
-  aspect-ratio: 1;
+  width: 160px;
+  height: 160px;
   border-radius: 20px;
   background-size: cover;
   background-position: center;
   position: relative;
   border: 2px solid rgba(0, 0, 0, 0.06);
   cursor: pointer;
+  overflow: hidden;
   
   &:hover .photo-overlay {
     opacity: 1;
+  }
+  
+  @media (max-width: 600px) {
+    width: 80px;
+    height: 80px;
+    border-radius: 14px;
   }
 `;
 
@@ -151,16 +161,20 @@ export const PhotoOverlay = styled(Box)`
   justify-content: center;
   opacity: 0;
   transition: opacity 0.2s ease;
+  
+  @media (max-width: 600px) {
+    border-radius: 14px;
+  }
 `;
 
 export const EditIcon = styled(Box)`
   position: absolute;
   bottom: 8px;
   right: 8px;
-  width: 36px;
-  height: 36px;
+  width: 32px;
+  height: 32px;
   border-radius: 50%;
-  background: rgba(255, 255, 255, 0.9);
+  background: rgba(255, 255, 255, 0.95);
   backdrop-filter: blur(10px);
   color: #1d1d1f;
   display: flex;
@@ -176,19 +190,87 @@ export const EditIcon = styled(Box)`
     background: #ffffff;
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
   }
+  
+  @media (max-width: 600px) {
+    width: 26px;
+    height: 26px;
+    bottom: 4px;
+    right: 4px;
+  }
 `;
 
 export const DetailsContainer = styled(Box)`
   display: flex;
   flex-direction: column;
-  gap: 0.5rem;
+  gap: 0.375rem;
+  flex: 1;
+`;
+
+export const DetailLabel = styled(Typography)`
+  font-size: 0.75rem;
+  font-weight: 500;
+  color: #86868b;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
 `;
 
 export const DetailValue = styled(Typography)`
   font-size: 1.125rem;
-  font-weight: 500;
+  font-weight: 600;
   color: #1d1d1f;
-  line-height: 1.4;
+  line-height: 1.3;
+  
+  @media (max-width: 600px) {
+    font-size: 0.9375rem;
+  }
+`;
+
+export const DetailRow = styled(Box)`
+  display: flex;
+  flex-direction: column;
+  gap: 0.125rem;
+  padding: 0.5rem 0;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.04);
+  
+  &:last-of-type {
+    border-bottom: none;
+  }
+`;
+
+export const DeleteButton = styled(Box)`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 34px;
+  padding: 0 1rem;
+  background: transparent;
+  color: #ff3b30;
+  border: 1px solid rgba(255, 59, 48, 0.3);
+  border-radius: 17px;
+  font-size: 0.8125rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  gap: 0.375rem;
+  margin-top: 0.75rem;
+  align-self: flex-start;
+  
+  &:hover {
+    background: #ff3b30;
+    color: white;
+    border-color: #ff3b30;
+  }
+  
+  &:active {
+    transform: scale(0.97);
+  }
+  
+  @media (max-width: 600px) {
+    margin-top: 0.5rem;
+    height: 30px;
+    font-size: 0.75rem;
+    padding: 0 0.75rem;
+  }
 `;
 
 export const TabsContainer = styled(Box)`
@@ -198,22 +280,9 @@ export const TabsContainer = styled(Box)`
   margin-top: 1rem;
   
   @media (max-width: 600px) {
-    overflow-x: auto;
-    padding-bottom: 0.5rem;
-    
-    &::-webkit-scrollbar {
-      height: 4px;
-    }
-    
-    &::-webkit-scrollbar-track {
-      background: #f5f5f7;
-      border-radius: 2px;
-    }
-    
-    &::-webkit-scrollbar-thumb {
-      background: #d1d1d6;
-      border-radius: 2px;
-    }
+    justify-content: space-around;
+    gap: 0.375rem;
+    flex-wrap: wrap;
   }
 `;
 
@@ -245,6 +314,13 @@ export const TabButton = styled(Box)<{ active?: boolean }>`
   @media (max-width: 600px) {
     flex: none;
     min-width: max-content;
+    padding: 0 0.75rem;
+  }
+`;
+
+export const TabLabel = styled.span`
+  @media (max-width: 600px) {
+    display: none;
   }
 `;
 
@@ -268,4 +344,12 @@ export const ErrorContainer = styled(Box)`
   justify-content: center;
   padding: 5rem 2rem;
   text-align: center;
+`;
+
+export const TabContent = styled(Box)`
+  margin-top: 1rem;
+  flex: 1;
+  overflow-y: auto;
+  overflow-x: hidden;
+  min-height: 0;
 `;

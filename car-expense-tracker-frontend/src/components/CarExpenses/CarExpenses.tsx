@@ -6,7 +6,7 @@ import { formatDate } from '../../functions/formatDate';
 import { formatNumberWithCommas } from '../../functions/formatNumberWithCommas';
 import { formatNumberByThousands } from '../../functions/formatNumbersByThousands';
 import { ExpenseInterface } from '../../interfaces/ExpenseInterface';
-import EditExpenseDialog from '../EditExpenseDialog/EditExpenseDialog';
+import { EditExpenseDialog } from '../EditExpenseDialog/EditExpenseDialog';
 import { 
   Container, 
   TotalCard, 
@@ -45,6 +45,7 @@ import { formatCategory } from '../../functions/FormatCategory';
 import EditIcon from '@mui/icons-material/Edit';
 import DeleteIcon from '@mui/icons-material/Delete';
 import CloseIcon from '@mui/icons-material/Close';
+import ReceiptLongIcon from '@mui/icons-material/ReceiptLong';
 import DeleteCarConfirmationDialog from '../DeletCarConfirmationDialog/DeletCarConfirmationDialog';
 
 const CarExpenses: React.FC = () => {
@@ -155,7 +156,7 @@ const CarExpenses: React.FC = () => {
             
             {expenses.length === 0 ? (
                 <EmptyState>
-                    <EmptyIcon>📋</EmptyIcon>
+                    <ReceiptLongIcon sx={{ fontSize: 48, color: '#86868b', mb: 1 }} />
                     <EmptyText>No hay gastos registrados para este vehículo.</EmptyText>
                 </EmptyState>
             ) : (

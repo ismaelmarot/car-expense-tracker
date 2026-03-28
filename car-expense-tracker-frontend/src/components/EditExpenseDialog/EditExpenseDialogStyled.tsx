@@ -13,6 +13,8 @@ export const DialogActionsStyled = styled(DialogActions)`
 export const ButtonSave = styled(Button)`
     color: ${GeneralColors.white};
     background-color: ${GeneralColors.blue};
+    border-radius: 35px;
+    padding: 8px 19px;
 `;
 
 export const DialogContentStyled = styled(DialogContent)`
@@ -22,11 +24,18 @@ export const DialogContentStyled = styled(DialogContent)`
 export const TextFieldStyled = styled(TextField)`
     width: 100%;
     margin-bottom: 1rem;
+    
+    & .MuiOutlinedInput-root {
+        border-radius: 35px;
+    }
 `;
 
 export const FormControlStyled = styled(FormControl)`
     width: 100%;
     margin-bottom: 1rem;
+    & .MuiOutlinedInput-root {
+        border-radius: 35px;
+    }
 `;
 
 export const InputLabelStyled = styled(InputLabel)`

@@ -21,10 +21,10 @@ export const TotalAmount = styled(Typography)`
 `;
 
 export const Container = styled(Box)`
-  padding: 1.5rem;
   width: 100%;
   background: #ffffff;
-  border-radius: 14px;
+  border-radius: 35px 35px 14px 14px;
+  overflow: hidden;
 `;
 
 export const TotalCard = styled(Box)`
@@ -32,9 +32,11 @@ export const TotalCard = styled(Box)`
   align-items: center;
   justify-content: space-between;
   background: linear-gradient(135deg, #1d1d1f 0%, #2c2c2e 100%);
-  border-radius: 14px;
+  border-radius: 35px;
   padding: 1rem 1.25rem;
-  margin-bottom: 1rem;
+  position: sticky;
+  top: 0;
+  z-index: 10;
 `;
 
 export const TotalLabel = styled(Typography)`
@@ -53,12 +55,16 @@ export const ExpenseList = styled(Box)`
   flex-direction: column;
   gap: 0.5rem;
   width: 100%;
+  padding: 1rem;
 `;
 
 export const TableHeader = styled(Box)`
   display: none;
   padding: 0.5rem 1.25rem;
-  margin-bottom: 0.25rem;
+  background: #ffffff;
+  position: sticky;
+  top: 0;
+  z-index: 5;
   
   @media (min-width: 768px) {
     display: grid;
@@ -87,11 +93,11 @@ export const ExpenseItem = styled(Box)`
   justify-content: space-between;
   width: 100%;
   background: #ffffff;
-  border-radius: 14px;
   padding: 0.875rem 1rem;
   border: 1px solid rgba(0, 0, 0, 0.07);
   cursor: pointer;
   box-sizing: border-box;
+  border-radius: 35px !important;
   
   &:hover {
     border-color: rgba(0, 0, 0, 0.1);
@@ -322,7 +328,7 @@ export const PopupButton = styled(Box)<{ variant?: 'edit' | 'delete' }>`
   justify-content: center;
   gap: 0.5rem;
   padding: 12px 16px;
-  border-radius: 14px;
+  border-radius: 35px;
   font-size: 0.9375rem;
   font-weight: 500;
   cursor: pointer;
