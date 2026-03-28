@@ -1,13 +1,13 @@
+import { flex } from '@/mixins'
 import styled from '@emotion/styled'
 import { Box, Typography } from '@mui/material'
 
 export const Container = styled(Box)`
-  padding: 2rem 1.5rem;
-  max-width: 1200px;
-  margin: 0 auto;
   width: 100%;
+  max-width: 1200px;
   flex: 1;
-  border: 3px solid red;
+  margin: 0 auto;
+  padding: 2rem 1.5rem;
   
   @media (max-width: 600px) {
     padding: 1.5rem 1rem;
@@ -15,12 +15,9 @@ export const Container = styled(Box)`
 `
 
 export const Header = styled(Box)`
-  display: flex;
-  align-items: flex-start;
-  justify-content: space-between;
+  ${flex('row','center','space-between')}
   margin-bottom: 1.5rem;
   gap: 1rem;
-    border: 3px dashed red;
 `
 
 export const HeaderLeft = styled(Box)`
@@ -88,18 +85,17 @@ export const BackButton = styled(Box)`
   justify-content: center;
   height: 42px;
   padding: 0 1.25rem;
-  background: #f5f5f7;
-  color: #1d1d1f;
+  background: #0071e3;
+  color: white;
   border-radius: 21px;
   font-size: 0.9375rem;
   font-weight: 500;
   cursor: pointer;
   transition: all 0.2s ease;
   gap: 0.375rem;
-  border: 1px solid rgba(0, 0, 0, 0.04);
   
   &:hover {
-    background: #e8e8ed;
+    background: #0077ed;
   }
   
   &:active {
@@ -178,19 +174,21 @@ export const PhotoLabel = styled(Typography)`
 export const Form = styled.form`
   display: flex;
   flex-direction: column;
-  gap: 1.25rem;
+  width: 60%;
+
 `
 
 export const InputGroup = styled(Box)`
   display: flex;
   flex-direction: column;
-  gap: 0.5rem;
+  margin-top: 1rem;
 `
 
 export const InputLabel = styled(Typography)`
   font-size: 0.875rem;
   font-weight: 500;
   color: #1d1d1f;
+  margin-left: 1rem;
 `
 
 export const Input = styled.input`
@@ -255,4 +253,11 @@ export const OptionalLabel = styled.span`
 
 export const HiddenInput = styled.input`
   display: none;
+`
+
+export const AddCarForm = styled.div`
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
 `

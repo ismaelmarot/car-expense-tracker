@@ -20,7 +20,8 @@ import {
   Input, 
   SubmitButton,
   OptionalLabel,
-  HiddenInput
+  HiddenInput,
+  AddCarForm
 } from './AddCarStyles'
 
 const AddCar: React.FC = () => {
@@ -105,6 +106,7 @@ const AddCar: React.FC = () => {
                 </HeaderRight>
             </Header>
 
+            <AddCarForm>
             <PhotoSection>
                 {photo ? (
                     <PhotoPreview 
@@ -193,6 +195,7 @@ const AddCar: React.FC = () => {
                     Agregar Vehículo
                 </SubmitButton>
             </Form>
+            </AddCarForm>
         </Container>
     );
 }
