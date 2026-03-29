@@ -39,7 +39,7 @@ export const EditExpenseDialog: React.FC<EditExpenseDialogPropsInterface> = ({ o
 
     useEffect(() => {
         if (expense) {
-            setPriceDisplay(formatPrice(String(expense.price).replace('.', ',')));
+            setPriceDisplay(formatPrice(String(expense.amount).replace('.', ',')));
             setKmDisplay(formatKilometers(String(expense.kilometers)));
         }
     }, [expense]);
@@ -50,7 +50,7 @@ export const EditExpenseDialog: React.FC<EditExpenseDialogPropsInterface> = ({ o
         const formatted = formatPrice(cleanValue);
         setPriceDisplay(formatted);
         const rawValue = parseFloat(cleanValue.replace(/\./g, '').replace(',', '.')) || 0;
-        onChange('price', rawValue);
+        onChange('amount', rawValue);
     };
 
     const handleKmChange = (e: React.ChangeEvent<HTMLInputElement>) => {

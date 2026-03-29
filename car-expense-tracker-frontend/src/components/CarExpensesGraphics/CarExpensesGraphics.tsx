@@ -63,7 +63,7 @@ const CarExpensesGraphics: React.FC = () => {
             const expensesByYear = categoriesExpenses.map(category => {
                 return expenses
                     .filter(exp => new Date(exp.date).getFullYear() === year && exp.category === category)
-                    .reduce((sum, exp) => sum + exp.price, 0);
+                    .reduce((sum, exp) => sum + exp.amount, 0);
             });
 
             return {
@@ -88,7 +88,7 @@ const CarExpensesGraphics: React.FC = () => {
         const totalExpensesByCategory = categoriesExpenses.map(category => {
             return expenses
                 .filter(exp => exp.category === category)
-                .reduce((sum, exp) => sum + exp.price, 0);
+                .reduce((sum, exp) => sum + exp.amount, 0);
         });
 
         return {

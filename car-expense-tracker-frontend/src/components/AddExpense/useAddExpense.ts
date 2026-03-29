@@ -76,7 +76,7 @@ export const useAddExpense = () => {
             await addExpense({
                 car_id: Number(id),
                 description,
-                price: parsedPrice,
+                amount: parsedPrice,
                 kilometers: parsedKilometers,
                 category,
                 date,

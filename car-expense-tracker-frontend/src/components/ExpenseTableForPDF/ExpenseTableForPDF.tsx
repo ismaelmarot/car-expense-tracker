@@ -24,7 +24,7 @@ const ExpenseTableForPDF: React.FC<ExpenseTableForPDFInterface> = ({ expenses })
                             <TdStyled>{expense.description}</TdStyled>
                             <TdStyledRight>{expense.category}</TdStyledRight>
                             <TdStyledRight>{expense.kilometers}</TdStyledRight>
-                            <TdStyledRight>{formatNumberWithCommas(expense.price)}</TdStyledRight>
+                            <TdStyledRight>{formatNumberWithCommas(expense.amount)}</TdStyledRight>
                             <TdStyledRight>{formatDate(expense.date)}</TdStyledRight>
                         </tr>
                     ))}

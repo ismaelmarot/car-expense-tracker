@@ -197,7 +197,7 @@ const CarExpenses: React.FC = () => {
         setCurrentPhotoIndex(prev => (prev < viewerPhotos.length - 1 ? prev + 1 : 0));
     };
 
-    const totalSpent = expenses.reduce((total, expense) => total + expense.price, 0);
+    const totalSpent = expenses.reduce((total, expense) => total + (expense.amount || 0), 0);
 
     if (loading) return (
         <Container>
@@ -243,7 +243,7 @@ const CarExpenses: React.FC = () => {
                                 </CategoryBadge>
                             </ExpenseCategory>
                             <ExpenseDate>{formatDate(expense.date)}</ExpenseDate>
-                            <ExpensePrice>{formatNumberWithCommas(expense.price)}</ExpensePrice>
+                            <ExpensePrice>{formatNumberWithCommas(expense.amount)}</ExpensePrice>
                         </ExpenseItem>
                     ))}
                 </ExpenseList>
@@ -261,7 +261,7 @@ const CarExpenses: React.FC = () => {
                         <PopupContent>
                             <PopupPriceSection>
                                 <PriceLabel>{t('totalAmount')}</PriceLabel>
-                                <PriceValue>$ {formatNumberWithCommas(selectedExpense.price)}</PriceValue>
+                                <PriceValue>$ {formatNumberWithCommas(selectedExpense.amount)}</PriceValue>
                             </PopupPriceSection>
                             <DetailRow>
                                 <DetailLabel>{t('date')}</DetailLabel>
