@@ -1,14 +1,15 @@
-import React, { useState, useRef } from 'react'
+import React from 'react'
 import { useNavigate } from 'react-router-dom'
-import { addCar } from '@/api'
 import { Box } from '@mui/material'
-import { 
-  Container, 
-  Header, 
+import { useAddCar } from './useAddCar'
+import { useLanguage } from '../../contexts/LanguageContext'
+import {
+  Container,
+  Header,
   HeaderLeft,
   HeaderRight,
-  BackButton, 
-  PageTitle, 
+  BackButton,
+  PageTitle,
   PageSubtitle,
   PhotoSection,
   PhotoContainer,
@@ -16,106 +17,35 @@ import {
   PhotoOverlay,
   PhotoLabel,
   PhotoIcon,
-  Form, 
+  Form,
   FormRow,
-  InputGroup, 
-  InputLabel, 
-  Input, 
+  InputGroup,
+  InputLabel,
+  Input,
   SubmitButton,
   OptionalLabel,
   HiddenInput,
   AddCarForm
 } from './AddCarStyles'
+
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore'
 import BuildIcon from '@mui/icons-material/Build'
-import { useLanguage } from '../../contexts/LanguageContext'
 
 export const AddCar: React.FC = () => {
     const navigate = useNavigate()
     const { t } = useLanguage()
-    const fileInputRef = useRef<HTMLInputElement>(null)
-    
-    const [carData, setCarData] = useState({
-        brand: '',
-        model: '',
-        year: '',
-        vin: '',
-        version: '',
-        last_service_km: '',
-        service_interval_km: '',
-        vtv_date: '',
-        extintor_date: ''
-    })
-    
-    const [photo, setPhoto] = useState<string | null>(null)
-    const [showAdditionalInfo, setShowAdditionalInfo] = useState(false)
 
-    const formatKm = (value: string): string => {
-        const cleanValue = value.replace(/[^\d]/g, '')
-        return cleanValue.replace(/\B(?=(\d{3})+(?!\d))/g, '.')
-    }
-
-    const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-        const { name, value } = e.target
-        if (name === 'last_service_km' || name === 'service_interval_km') {
-            setCarData({
-                ...carData,
-                [name]: formatKm(value)
-            })
-        } else {
-            setCarData({
-                ...carData,
-                [name]: name === 'vin' ? value.toUpperCase() : value
-            })
-        }
-    }
-
-    const handlePhotoClick = () => {
-        fileInputRef.current?.click()
-    }
-
-    const handlePhotoChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-        const file = e.target.files?.[0]
-        if (file) {
-            const reader = new FileReader()
-            reader.onloadend = () => {
-                const result = reader.result as string
-                setPhoto(result)
-            };
-            reader.readAsDataURL(file)
-        }
-    }
-
-    const handleSubmit = async (e: React.FormEvent) => {
-        e.preventDefault()
-
-        const car = {
-            brand: carData.brand,
-            model: carData.model,
-            year: Number(carData.year),
-            vin: carData.vin,
-            version: carData.version || undefined,
-            photo: photo || undefined,
-            last_service_km: carData.last_service_km ? Number(carData.last_service_km.replace(/\./g, '').replace(/,/g, '')) : undefined,
-            service_interval_km: carData.service_interval_km ? Number(carData.service_interval_km.replace(/\./g, '').replace(/,/g, '')) : undefined,
-            vtv_date: carData.vtv_date || undefined,
-            extintor_date: carData.extintor_date || undefined
-        }
-
-        console.log('=== SENDING CAR DATA ===');
-        console.log('last_service_km:', car.last_service_km);
-        console.log('service_interval_km:', car.service_interval_km);
-        console.log('vtv_date:', car.vtv_date);
-        console.log('extintor_date:', car.extintor_date);
-
-        try {
-            const response = await addCar(car)
-            console.log('Car added: ', response.data)
-            navigate('/')
-        } catch (error) {
-            console.log('Error adding car: ', error)
-        }
-    }
+    const {
+        carData,
+        photo,
+        showAdditionalInfo,
+        setShowAdditionalInfo,
+        fileInputRef,
+        handleInputChange,
+        handlePhotoClick,
+        handlePhotoChange,
+        handleSubmit
+    } = useAddCar()
 
     return (
         <Container>
@@ -132,14 +62,17 @@ export const AddCar: React.FC = () => {
             </Header>
 
             <AddCarForm>
+                {/* FOTO */}
                 <PhotoSection>
                     {photo ? (
-                        <PhotoPreview 
+                        <PhotoPreview
                             style={{ backgroundImage: `url(${photo})` }}
                             onClick={handlePhotoClick}
                         >
-                            <PhotoOverlay className='photo-overlay'>
-                                <span style={{ color: 'white', fontSize: '0.875rem' }}>Cambiar</span>
+                            <PhotoOverlay>
+                                <span style={{ color: 'white', fontSize: '0.875rem' }}>
+                                    Cambiar
+                                </span>
                             </PhotoOverlay>
                         </PhotoPreview>
                     ) : (
@@ -150,9 +83,11 @@ export const AddCar: React.FC = () => {
                             </PhotoIcon>
                         </PhotoContainer>
                     )}
+
                     <PhotoLabel>
                         {photo ? t('tapToChangePhoto') : t('optionalPhoto')}
                     </PhotoLabel>
+
                     <HiddenInput
                         ref={fileInputRef}
                         type='file'
@@ -161,12 +96,12 @@ export const AddCar: React.FC = () => {
                     />
                 </PhotoSection>
 
+                {/* FORM */}
                 <Form onSubmit={handleSubmit}>
                     <FormRow>
                         <InputGroup>
                             <InputLabel>{t('brand')}</InputLabel>
                             <Input
-                                placeholder="Ej: Toyota"
                                 name='brand'
                                 value={carData.brand}
                                 onChange={handleInputChange}
@@ -177,7 +112,6 @@ export const AddCar: React.FC = () => {
                         <InputGroup>
                             <InputLabel>{t('model')}</InputLabel>
                             <Input
-                                placeholder="Ej: Corolla"
                                 name='model'
                                 value={carData.model}
                                 onChange={handleInputChange}
@@ -189,10 +123,9 @@ export const AddCar: React.FC = () => {
                     <FormRow>
                         <InputGroup>
                             <InputLabel>
-                                {t('version')}<OptionalLabel>{t('optional')}</OptionalLabel>
+                                {t('version')} <OptionalLabel>{t('optional')}</OptionalLabel>
                             </InputLabel>
                             <Input
-                                placeholder="Ej: SE-G"
                                 name='version'
                                 value={carData.version}
                                 onChange={handleInputChange}
@@ -202,13 +135,9 @@ export const AddCar: React.FC = () => {
                         <InputGroup>
                             <InputLabel>{t('year')}</InputLabel>
                             <Input
-                                placeholder="Ej: 2023"
                                 name='year'
                                 value={carData.year}
                                 onChange={handleInputChange}
-                                maxLength={4}
-                                pattern='[0-9]{4}'
-                                inputMode='numeric'
                                 required
                             />
                         </InputGroup>
@@ -218,7 +147,6 @@ export const AddCar: React.FC = () => {
                         <InputGroup>
                             <InputLabel>{t('licensePlate')}</InputLabel>
                             <Input
-                                placeholder="Ej: ABC123"
                                 name='vin'
                                 value={carData.vin}
                                 onChange={handleInputChange}
@@ -230,71 +158,57 @@ export const AddCar: React.FC = () => {
 
                     <Box sx={{ borderTop: '1px solid #e5e5ea', mt: 1 }} />
 
-                    <Box 
+                    {/* TOGGLE INFO */}
+                    <Box
                         onClick={() => setShowAdditionalInfo(!showAdditionalInfo)}
                         sx={{
                             display: 'flex',
-                            alignItems: 'center',
                             justifyContent: 'space-between',
                             cursor: 'pointer',
                             py: 1
                         }}
                     >
-                        <Box sx={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
-                            <BuildIcon sx={{ fontSize: 18, color: '#86868b' }} />
-                            <span style={{ fontSize: '0.8125rem', fontWeight: 500, color: '#86868b' }}>
-                                {t('additionalInfo')}
-                            </span>
+                        <Box sx={{ display: 'flex', gap: '0.5rem' }}>
+                            <BuildIcon sx={{ fontSize: 18 }} />
+                            <span>{t('additionalInfo')}</span>
                         </Box>
-                        <ExpandMoreIcon 
-                            sx={{ 
-                                fontSize: 20, 
-                                color: '#86868b',
+
+                        <ExpandMoreIcon
+                            sx={{
                                 transform: showAdditionalInfo ? 'rotate(180deg)' : 'rotate(0deg)',
-                                transition: 'transform 0.2s ease'
-                            }} 
+                                transition: '0.2s'
+                            }}
                         />
                     </Box>
 
+                    {/* INFO EXTRA */}
                     {showAdditionalInfo && (
                         <>
                             <FormRow>
                                 <InputGroup>
-                                    <InputLabel>
-                                        {t('lastServiceKm')}<OptionalLabel>({t('optional')})</OptionalLabel>
-                                    </InputLabel>
+                                    <InputLabel>{t('lastServiceKm')}</InputLabel>
                                     <Input
-                                        placeholder="Ej: 50.000"
                                         name='last_service_km'
                                         value={carData.last_service_km}
                                         onChange={handleInputChange}
-                                        type="text"
-                                        inputMode="numeric"
                                     />
                                 </InputGroup>
 
                                 <InputGroup>
-                                    <InputLabel>
-                                        {t('serviceEveryKm')}<OptionalLabel>({t('optional')})</OptionalLabel>
-                                    </InputLabel>
+                                    <InputLabel>{t('serviceEveryKm')}</InputLabel>
                                     <Input
-                                        placeholder="Ej: 10.000"
                                         name='service_interval_km'
                                         value={carData.service_interval_km}
                                         onChange={handleInputChange}
-                                        type="text"
-                                        inputMode="numeric"
                                     />
                                 </InputGroup>
                             </FormRow>
 
                             <FormRow>
                                 <InputGroup>
-                                    <InputLabel>
-                                        {t('vtvDate')}<OptionalLabel>({t('optional')})</OptionalLabel>
-                                    </InputLabel>
+                                    <InputLabel>{t('vtvDate')}</InputLabel>
                                     <Input
-                                        type="date"
+                                        type='date'
                                         name='vtv_date'
                                         value={carData.vtv_date}
                                         onChange={handleInputChange}
@@ -302,11 +216,9 @@ export const AddCar: React.FC = () => {
                                 </InputGroup>
 
                                 <InputGroup>
-                                    <InputLabel>
-                                        {t('extinguisherDate')}<OptionalLabel>({t('optional')})</OptionalLabel>
-                                    </InputLabel>
+                                    <InputLabel>{t('extinguisherDate')}</InputLabel>
                                     <Input
-                                        type="date"
+                                        type='date'
                                         name='extintor_date'
                                         value={carData.extintor_date}
                                         onChange={handleInputChange}
