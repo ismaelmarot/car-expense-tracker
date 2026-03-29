@@ -4,6 +4,7 @@ import { getCarExpenses } from '../../api/api';
 import { ExpenseInterface } from '../../interfaces/ExpenseInterface';
 import { formatNumberWithCommas } from '../../functions/formatNumberWithCommas';
 import { formatCategory } from '../../functions/FormatCategory';
+import { useLanguage } from '../../contexts/LanguageContext';
 import {
   Chart as ChartJS,
   CategoryScale,
@@ -85,6 +86,7 @@ const formatMonth = (date: Date): string => {
 
 const ExpenseStats: React.FC = () => {
   const { id } = useParams();
+  const { t } = useLanguage();
   const [expenses, setExpenses] = useState<ExpenseInterface[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
   const [selectedExpense, setSelectedExpense] = useState<ExpenseInterface | null>(null);
@@ -195,7 +197,7 @@ const ExpenseStats: React.FC = () => {
     return {
       labels,
       datasets: [{
-        label: 'Gastos',
+        label: t('expenses'),
         data: data,
         borderColor: '#0071e3',
         backgroundColor: 'rgba(0, 113, 227, 0.1)',
@@ -243,13 +245,15 @@ const ExpenseStats: React.FC = () => {
     return {
       labels: sorted.map(exp => exp.description.substring(0, 20) + (exp.description.length > 20 ? '...' : '')),
       datasets: [{
-        label: 'Gasto',
+        label: t('expense'),
         data: sorted.map(exp => exp.price),
         backgroundColor: sorted.map((_, i) => {
           const colors = ['#0071e3', '#34c759', '#ff9500', '#ff3b30', '#af52de'];
           return colors[i % colors.length];
         }),
-        borderRadius: 8
+        borderRadius: 8,
+        borderSkipped: 'left' as const,
+        barThickness: 16
       }]
     };
   }, [expenses]);
@@ -262,10 +266,12 @@ const ExpenseStats: React.FC = () => {
     return {
       labels: years,
       datasets: [{
-        label: 'Gasto anual',
+        label: t('annualExpense'),
         data: years.map(year => stats.yearlyTotals[year]),
         backgroundColor: years.map((_, i) => i % 2 === 0 ? '#0071e3' : '#34c759'),
-        borderRadius: 8
+        borderRadius: 8,
+        borderSkipped: 'bottom' as const,
+        barThickness: 16
       }]
     };
   }, [stats]);
@@ -284,10 +290,12 @@ const ExpenseStats: React.FC = () => {
     return {
       labels: monthNames,
       datasets: [{
-        label: 'Gastos',
+        label: t('expenses'),
         data: monthTotals,
         backgroundColor: monthTotals.map(val => val > 0 ? '#0071e3' : '#f5f5f7'),
-        borderRadius: 8
+        borderRadius: 8,
+        borderSkipped: 'bottom' as const,
+        barThickness: 16
       }]
     };
   }, [expenses]);
@@ -319,10 +327,12 @@ const ExpenseStats: React.FC = () => {
     return {
       labels: last8Weeks,
       datasets: [{
-        label: 'Gastos',
+        label: t('expenses'),
         data: last8Weeks.map(week => weeklyTotals[week]),
         backgroundColor: '#0071e3',
-        borderRadius: 8
+        borderRadius: 8,
+        borderSkipped: 'bottom' as const,
+        barThickness: 16
       }]
     };
   }, [expenses]);
@@ -448,7 +458,7 @@ const ExpenseStats: React.FC = () => {
     return (
       <Container>
         <LoadingContainer>
-          <PageTitle>Cargando estadísticas...</PageTitle>
+          <PageTitle>{t('loadingStats')}</PageTitle>
         </LoadingContainer>
       </Container>
     );
@@ -479,28 +489,28 @@ const ExpenseStats: React.FC = () => {
           <SummaryIcon style={{ background: '#e8f4fd', color: '#0071e3' }}>
             <AttachMoneyIcon sx={{ fontSize: 24 }} />
           </SummaryIcon>
-          <SummaryLabel>Total gastado</SummaryLabel>
+          <SummaryLabel>{t('totalSpent')}</SummaryLabel>
           <SummaryValue>$ {formatNumberWithCommas(stats.total)}</SummaryValue>
         </SummaryCard>
         <SummaryCard>
           <SummaryIcon style={{ background: '#e8f5e9', color: '#34c759' }}>
             <BarChartIcon sx={{ fontSize: 24 }} />
           </SummaryIcon>
-          <SummaryLabel>Promedio por gasto</SummaryLabel>
+          <SummaryLabel>{t('averagePerExpense')}</SummaryLabel>
           <SummaryValue>$ {formatNumberWithCommas(Math.round(stats.average))}</SummaryValue>
         </SummaryCard>
         <SummaryCard>
           <SummaryIcon style={{ background: '#fff3e0', color: '#ff9500' }}>
             <ListAltIcon sx={{ fontSize: 24 }} />
           </SummaryIcon>
-          <SummaryLabel>Gastos registrados</SummaryLabel>
+          <SummaryLabel>{t('registeredExpenses')}</SummaryLabel>
           <SummaryValue>{stats.count}</SummaryValue>
         </SummaryCard>
         <SummaryCard>
           <SummaryIcon style={{ background: '#fce4ec', color: '#ff3b30' }}>
             <DirectionsCarIcon sx={{ fontSize: 24 }} />
           </SummaryIcon>
-          <SummaryLabel>Kilómetros totales</SummaryLabel>
+          <SummaryLabel>{t('totalKilometers')}</SummaryLabel>
           <SummaryValue>{formatNumberWithCommas(stats.totalKm)} km</SummaryValue>
         </SummaryCard>
       </SummaryGrid>
@@ -511,37 +521,37 @@ const ExpenseStats: React.FC = () => {
           <SummaryIcon style={{ background: '#f3e5f5', color: '#af52de' }}>
             <CalendarMonthIcon sx={{ fontSize: 24 }} />
           </SummaryIcon>
-          <SummaryLabel>Gasto mensual promedio</SummaryLabel>
+          <SummaryLabel>{t('monthlyAverageExpense')}</SummaryLabel>
           <SummaryValue>$ {formatNumberWithCommas(Math.round(stats.monthlyAverage))}</SummaryValue>
         </SummaryCard>
         <SummaryCard>
           <SummaryIcon style={{ background: '#e8eaf6', color: '#5856d6' }}>
             <CategoryIcon sx={{ fontSize: 24 }} />
           </SummaryIcon>
-          <SummaryLabel>Categoría más costosa</SummaryLabel>
+          <SummaryLabel>{t('mostExpensiveCategory')}</SummaryLabel>
           <SummaryValue>{stats.mostExpensiveCategory ? formatCategory(stats.mostExpensiveCategory[0]) : '-'}</SummaryValue>
         </SummaryCard>
         <SummaryCard>
           <SummaryIcon style={{ background: '#fff8e1', color: '#ff9500' }}>
             <EventRepeatIcon sx={{ fontSize: 24 }} />
           </SummaryIcon>
-          <SummaryLabel>Frecuencia de gastos</SummaryLabel>
-          <SummaryValue>Cada {Math.round(stats.frequency)} días</SummaryValue>
+          <SummaryLabel>{t('expenseFrequency')}</SummaryLabel>
+          <SummaryValue>{t('every')} {Math.round(stats.frequency)} {t('daysFrequency')}</SummaryValue>
         </SummaryCard>
         <SummaryCard>
           <SummaryIcon style={{ background: '#e0f7fa', color: '#00838f' }}>
-            <ShowChartIcon sx={{ fontSize: 24 }} />
+            <CalendarMonthIcon sx={{ fontSize: 24 }} />
           </SummaryIcon>
-          <SummaryLabel>Costo por kilómetro</SummaryLabel>
-          <SummaryValue>$ {formatNumberWithCommas(Math.round(stats.costPerKm * 100) / 100)}</SummaryValue>
+          <SummaryLabel>{t('monthlyAverageCost')}</SummaryLabel>
+          <SummaryValue>$ {formatNumberWithCommas(Math.round(stats.monthlyAverage))}</SummaryValue>
         </SummaryCard>
       </SummaryGrid>
 
-      {/* Gráficos principales */}
+      {/* Gráficos */}
       <ChartsGrid>
         {trendData && (
           <ChartCard>
-            <ChartTitle>Tendencia de gastos</ChartTitle>
+            <ChartTitle>{t('expenseTrend')}</ChartTitle>
             <ChartContainer>
               <Line data={trendData} options={chartOptions} />
             </ChartContainer>
@@ -549,24 +559,9 @@ const ExpenseStats: React.FC = () => {
         )}
         {categoryData && (
           <ChartCard>
-            <ChartTitle>Gastos por categoría</ChartTitle>
+            <ChartTitle>{t('expensesByCategory')}</ChartTitle>
             <ChartContainer>
               <Doughnut data={categoryData} options={doughnutOptions} />
-            </ChartContainer>
-          </ChartCard>
-        )}
-      </ChartsGrid>
-
-      {/* Gráficos adicionales */}
-      <ChartsGrid>
-        {yearComparisonData && (
-          <ChartCard>
-            <ChartTitle>
-              <CompareArrowsIcon sx={{ fontSize: 20, mr: 1, color: '#0071e3' }} />
-              Comparativa por año
-            </ChartTitle>
-            <ChartContainer>
-              <Bar data={yearComparisonData} options={chartOptions} />
             </ChartContainer>
           </ChartCard>
         )}
@@ -574,22 +569,18 @@ const ExpenseStats: React.FC = () => {
           <ChartCard>
             <ChartTitle>
               <CalendarTodayIcon sx={{ fontSize: 20, mr: 1, color: '#0071e3' }} />
-              Distribución mensual
+              {t('monthlyDistribution')}
             </ChartTitle>
             <ChartContainer>
               <Bar data={monthlyDistributionData} options={chartOptions} />
             </ChartContainer>
           </ChartCard>
         )}
-      </ChartsGrid>
-
-      {/* Gráfico semanal */}
-      <ChartsGrid>
         {weeklyComparisonData && (
           <ChartCard>
             <ChartTitle>
               <DateRangeIcon sx={{ fontSize: 20, mr: 1, color: '#0071e3' }} />
-              Comparativo por semana
+              {t('weeklyComparison')}
             </ChartTitle>
             <ChartContainer>
               <Bar data={weeklyComparisonData} options={chartOptions} />
@@ -603,7 +594,7 @@ const ExpenseStats: React.FC = () => {
         <ChartCard style={{ marginBottom: '2rem' }}>
           <ChartTitle>
             <TrendingUpIcon sx={{ fontSize: 20, mr: 1, color: '#0071e3' }} />
-            Top 5 gastos más altos
+            {t('topExpenses')}
           </ChartTitle>
           <ChartContainer style={{ height: '200px' }}>
             <Bar data={topExpenses} options={horizontalBarOptions} />
@@ -616,17 +607,17 @@ const ExpenseStats: React.FC = () => {
         <StatCard onClick={() => { setSelectedExpense(stats.highest); setPopupType('highest'); }} style={{ cursor: 'pointer' }}>
           <TrendingUpIcon sx={{ fontSize: 32, color: '#34c759', mb: 1 }} />
           <StatValue>$ {formatNumberWithCommas(stats.highest.price)}</StatValue>
-          <StatLabel>Gasto más alto</StatLabel>
+          <StatLabel>{t('highestExpense')}</StatLabel>
         </StatCard>
         <StatCard onClick={() => { setSelectedExpense(stats.lowest); setPopupType('lowest'); }} style={{ cursor: 'pointer' }}>
           <TrendingDownIcon sx={{ fontSize: 32, color: '#ff3b30', mb: 1 }} />
           <StatValue>$ {formatNumberWithCommas(stats.lowest.price)}</StatValue>
-          <StatLabel>Gasto más bajo</StatLabel>
+          <StatLabel>{t('lowestExpense')}</StatLabel>
         </StatCard>
         <StatCard>
           <SpeedIcon sx={{ fontSize: 32, color: '#0071e3', mb: 1 }} />
           <StatValue>$ {formatNumberWithCommas(Math.round(stats.costPerKm * 100) / 100)}</StatValue>
-          <StatLabel>Costo por km</StatLabel>
+          <StatLabel>{t('costPerKm')}</StatLabel>
         </StatCard>
       </StatsGrid>
 
@@ -665,7 +656,7 @@ const ExpenseStats: React.FC = () => {
                     <TrendingDownIcon sx={{ fontSize: 48, color: 'white', mb: 1 }} />
                   )}
                   <Typography sx={{ color: 'white', fontSize: '1.25rem', fontWeight: 600 }}>
-                    {popupType === 'highest' ? 'Gasto más alto' : 'Gasto más bajo'}
+                    {popupType === 'highest' ? t('highestExpense') : t('lowestExpense')}
                   </Typography>
                 </Box>
               </Box>
@@ -711,7 +702,7 @@ const ExpenseStats: React.FC = () => {
                     </Box>
                     <Box>
                       <Typography sx={{ fontSize: '0.75rem', color: '#86868b', fontWeight: 500, textTransform: 'uppercase', letterSpacing: 0.5 }}>
-                        Categoría
+                        {t('category')}
                       </Typography>
                       <Typography sx={{ fontSize: '1rem', fontWeight: 500, color: '#1d1d1f', mt: 0.5 }}>
                         {formatCategory(selectedExpense.category)}

@@ -6,5 +6,6 @@ export interface EditExpenseDialogPropsInterface {
     error: string;
     onClose: () => void;
     onSave: () => void;
-    onChange: (field: keyof ExpenseInterface, value: string | number) => void;
+    onChange: (field: keyof ExpenseInterface, value: string | number | string[]) => void;
+    onPhotosChange?: (photos: string[]) => void;
 }

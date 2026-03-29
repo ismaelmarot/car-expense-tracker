@@ -3,6 +3,7 @@ import { useParams, useNavigate } from 'react-router-dom';
 import { getCarById, updateCar, deleteCar, getCarExpenses } from '../../api/api';
 import { Typography, Box, Dialog, DialogTitle, DialogContent, DialogContentText, DialogActions, Button } from '@mui/material';
 import { CarInterface } from '../../interfaces/CarInterface';
+import { useLanguage } from '../../contexts/LanguageContext';
 import { 
   Container, 
   Header, 
@@ -12,6 +13,8 @@ import {
   BackButton,
   CarInfoCard,
   CardHeader,
+  CardHeaderCollapsed,
+  CardHeaderInfo,
   PhotoWrapper,
   PhotoImage,
   PhotoPlaceholder,
@@ -23,6 +26,8 @@ import {
   ExpandIcon,
   CardExpandedContent,
   DetailGrid,
+  DetailGridSecondRow,
+  DetailGridThreeColumns,
   DetailItem,
   DetailLabel,
   DetailValue,
@@ -53,10 +58,12 @@ import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
 import CarExpenses from '../CarExpenses/CarExpenses';
 import AddExpense from '../AddExpense/AddExpense';
 import ExpenseStats from '../ExpenseStats/ExpenseStats';
+import Settings from '../Settings/Settings';
 
 const CarDetails: React.FC = () => {
     const { id } = useParams();
     const navigate = useNavigate();
+    const { t } = useLanguage();
     const fileInputRef = useRef<HTMLInputElement>(null);
     const [car, setCar] = useState<CarInterface | null>(null);
     const [loading, setLoading] = useState<boolean>(true);
@@ -70,7 +77,11 @@ const CarDetails: React.FC = () => {
         year: '',
         vin: '',
         version: '',
-        photo: ''
+        photo: '',
+        last_service_km: '',
+        service_interval_km: '',
+        vtv_date: '',
+        extintor_date: ''
     });
     const [windowSize, setWindowSize] = useState<number>(window.innerWidth);
     const [lastKilometers, setLastKilometers] = useState<number | null>(null);
@@ -158,6 +169,77 @@ const CarDetails: React.FC = () => {
         setDeleteDialogOpen(false);
     };
 
+    const formatKm = (value: string): string => {
+        const cleanValue = value.replace(/[^\d]/g, '');
+        return cleanValue.replace(/\B(?=(\d{3})+(?!\d))/g, '.');
+    };
+
+    const getRawKm = (value: string): string => {
+        return value.replace(/\./g, '');
+    };
+
+    const formatDate = (dateStr: string | undefined): string => {
+        if (!dateStr) return '';
+        const date = new Date(dateStr);
+        return date.toLocaleDateString('es-AR');
+    };
+
+    const isDateExpired = (dateStr: string | undefined): boolean => {
+        if (!dateStr) return false;
+        const date = getNextDueDate(dateStr);
+        return date < new Date();
+    };
+
+    const getNextDueDate = (dateStr: string | undefined): Date => {
+        if (!dateStr) return new Date();
+        const lastDate = new Date(dateStr);
+        const nextDate = new Date(lastDate);
+        nextDate.setFullYear(nextDate.getFullYear() + 1);
+        return nextDate;
+    };
+
+    const formatNextDueDate = (dateStr: string | undefined): string => {
+        if (!dateStr) return '-';
+        const nextDate = getNextDueDate(dateStr);
+        return nextDate.toLocaleDateString('es-AR');
+    };
+
+    const getTimeRemaining = (dateStr: string | undefined): string => {
+        if (!dateStr) return '';
+        const targetDate = getNextDueDate(dateStr);
+        const today = new Date();
+        const diffTime = targetDate.getTime() - today.getTime();
+        const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+        
+        if (diffDays < 0) {
+            return `Vencido hace ${Math.abs(diffDays)} días`;
+        } else if (diffDays === 0) {
+            return 'Vence hoy';
+        } else if (diffDays === 1) {
+            return 'Vence mañana';
+        } else if (diffDays < 30) {
+            return `${diffDays} días restantes`;
+        } else if (diffDays < 365) {
+            const months = Math.floor(diffDays / 30);
+            return `${months} mes${months > 1 ? 'es' : ''} restantes`;
+        } else {
+            const years = Math.floor(diffDays / 365);
+            return `${years} año${years > 1 ? 's' : ''} restantes`;
+        }
+    };
+
+    const getNextServiceKm = (): number | null => {
+        if (!car || !car.last_service_km || !car.service_interval_km) return null;
+        return car.last_service_km + car.service_interval_km;
+    };
+
+    const getRemainingServiceKm = (): number | null => {
+        if (!car || !lastKilometers || !car.last_service_km || !car.service_interval_km) return null;
+        const nextService = getNextServiceKm();
+        if (!nextService) return null;
+        return nextService - lastKilometers;
+    };
+
     const handleEditClick = () => {
         if (car) {
             setEditData({
@@ -166,7 +248,11 @@ const CarDetails: React.FC = () => {
                 year: car.year.toString(),
                 vin: car.vin,
                 version: car.version || '',
-                photo: car.photo || ''
+                photo: car.photo || '',
+                last_service_km: car.last_service_km ? formatKm(car.last_service_km.toString()) : '',
+                service_interval_km: car.service_interval_km ? formatKm(car.service_interval_km.toString()) : '',
+                vtv_date: car.vtv_date || '',
+                extintor_date: car.extintor_date || ''
             });
             setEditDialogOpen(true);
         }
@@ -174,10 +260,19 @@ const CarDetails: React.FC = () => {
 
     const handleEditInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         const { name, value } = e.target;
-        setEditData({
-            ...editData,
-            [name]: name === 'vin' ? value.toUpperCase() : value
-        });
+        
+        if (name === 'last_service_km' || name === 'service_interval_km') {
+            const formatted = formatKm(value);
+            setEditData({
+                ...editData,
+                [name]: formatted
+            });
+        } else {
+            setEditData({
+                ...editData,
+                [name]: name === 'vin' ? value.toUpperCase() : value
+            });
+        }
     };
 
     const handleEditSave = async () => {
@@ -190,8 +285,17 @@ const CarDetails: React.FC = () => {
                     year: Number(editData.year),
                     vin: editData.vin,
                     version: editData.version || undefined,
-                    photo: editData.photo || undefined
+                    photo: editData.photo || undefined,
+                    last_service_km: editData.last_service_km ? Number(getRawKm(editData.last_service_km)) : undefined,
+                    service_interval_km: editData.service_interval_km ? Number(getRawKm(editData.service_interval_km)) : undefined,
+                    vtv_date: editData.vtv_date || undefined,
+                    extintor_date: editData.extintor_date || undefined
                 };
+                console.log('=== EDIT CAR DATA ===');
+                console.log('last_service_km:', updatedCar.last_service_km);
+                console.log('service_interval_km:', updatedCar.service_interval_km);
+                console.log('vtv_date:', updatedCar.vtv_date);
+                console.log('extintor_date:', updatedCar.extintor_date);
                 await updateCar(Number(id), updatedCar);
                 setCar(updatedCar);
                 setEditDialogOpen(false);
@@ -248,7 +352,7 @@ const CarDetails: React.FC = () => {
                 </HeaderLeft>
                 <HeaderRight>
                     <BackButton onClick={() => navigate('/')}>
-                        ← Volver
+                        {t('back')}
                     </BackButton>
                 </HeaderRight>
             </Header>
@@ -258,26 +362,61 @@ const CarDetails: React.FC = () => {
                     onClick={handleCardClick}
                     sx={{ background: expanded ? 'rgba(0, 113, 227, 0.03)' : 'transparent' }}
                 >
-                    <PhotoWrapper>
-                        {car.photo ? (
-                            <PhotoImage sx={{ backgroundImage: `url(${car.photo})` }} />
-                        ) : (
-                            <PhotoPlaceholder>
-                                <PhotoCameraIcon sx={{ fontSize: 28, color: '#aeaeb2' }} />
-                            </PhotoPlaceholder>
+                    <Box sx={{ display: 'flex', width: '100%', alignItems: 'center', justifyContent: 'space-between' }}>
+                        {!expanded && (
+                            <CardHeaderCollapsed>
+                                <PhotoWrapper>
+                                    {car.photo ? (
+                                        <PhotoImage sx={{ backgroundImage: `url(${car.photo})` }} />
+                                    ) : (
+                                        <PhotoPlaceholder>
+                                            <PhotoCameraIcon sx={{ fontSize: 28, color: '#aeaeb2' }} />
+                                        </PhotoPlaceholder>
+                                    )}
+                                </PhotoWrapper>
+                                
+                                <CardHeaderInfo>
+                                    <Box sx={{ display: 'flex', flexDirection: 'column' }}>
+                                        <Typography variant="body1" sx={{ fontWeight: 600, mb: 0.5 }}>
+                                            {car.brand || ''} {car.model || ''}{car.version ? ` - ${car.version}` : ''}
+                                        </Typography>
+                                        <Typography variant="body2" sx={{ color: '#86868b' }}>
+                                            {car.year ? `${car.year}` : ''}{car.year && car.vin ? ' • ' : ''}{car.vin || ''}
+                                        </Typography>
+                                    </Box>
+                                </CardHeaderInfo>
+                            </CardHeaderCollapsed>
                         )}
-                    </PhotoWrapper>
-                    
-                    <CardInfo>
-                        <CardTitle>{car.model}</CardTitle>
-                        {car.version && <CardSubtitle>{car.version}</CardSubtitle>}
-                    </CardInfo>
-                    
-                    <ExpandIcon sx={{ 
-                        transform: expanded ? 'rotate(180deg)' : 'rotate(0deg)'
-                    }}>
-                        <KeyboardArrowDownIcon sx={{ fontSize: 20 }} />
-                    </ExpandIcon>
+                        
+                        {expanded && (
+                            <Box sx={{ display: 'flex', alignItems: 'center' }}>
+                                <PhotoWrapper sx={{ width: 80, height: 80, marginRight: 1 }}>
+                                    {car.photo ? (
+                                        <PhotoImage sx={{ backgroundImage: `url(${car.photo})` }} />
+                                    ) : (
+                                        <PhotoPlaceholder>
+                                            <PhotoCameraIcon sx={{ fontSize: 28, color: '#aeaeb2' }} />
+                                        </PhotoPlaceholder>
+                                    )}
+                                </PhotoWrapper>
+                            </Box>
+                        )}
+                        
+                        <ExpandIcon sx={{ 
+                            position: 'relative',
+                            marginLeft: 'auto',
+                            transform: expanded ? 'rotate(180deg)' : 'rotate(0deg)',
+                            width: 32,
+                            height: 32,
+                            display: 'flex',
+                            alignItems: 'center',
+                            justifyContent: 'center',
+                            background: expanded ? 'rgba(0, 113, 227, 0.05)' : 'rgba(0, 0, 0, 0.02)',
+                            borderRadius: '50%'
+                        }}>
+                            <KeyboardArrowDownIcon sx={{ fontSize: 20, color: expanded ? '#0071e3' : '#86868b' }} />
+                        </ExpandIcon>
+                    </Box>
                 </CardHeader>
                 
                 <HiddenInput
@@ -294,35 +433,104 @@ const CarDetails: React.FC = () => {
                         from: { opacity: 0, transform: 'translateY(-10px)' },
                         to: { opacity: 1, transform: 'translateY(0)' }
                     }
-                }}>
+                }} expanded={expanded}>
                     <Box sx={{ p: '1.5rem' }}>
                         <DetailGrid>
                             <DetailItem>
-                                <DetailLabel>Marca</DetailLabel>
-                                <DetailValue>{car.brand}</DetailValue>
+                                <DetailLabel>{t('brand')}</DetailLabel>
+                                <DetailValue>{car.brand || '-'}</DetailValue>
                             </DetailItem>
                             <DetailItem>
-                                <DetailLabel>Año</DetailLabel>
-                                <DetailValue>{car.year}</DetailValue>
+                                <DetailLabel>{t('year')}</DetailLabel>
+                                <DetailValue>{car.year || '-'}</DetailValue>
                             </DetailItem>
                             <DetailItem>
-                                <DetailLabel>Patente</DetailLabel>
-                                <DetailValue>{car.vin}</DetailValue>
-                            </DetailItem>
-                            <DetailItem>
-                                <DetailLabel>Último kilometraje</DetailLabel>
-                                <DetailValue>{lastKilometers ? `${lastKilometers.toLocaleString()} km` : 'Sin registro'}</DetailValue>
+                                <DetailLabel>{t('licensePlate')}</DetailLabel>
+                                <DetailValue>{car.vin || '-'}</DetailValue>
                             </DetailItem>
                         </DetailGrid>
+                        
+                        <DetailGridSecondRow>
+                            <DetailItem>
+                                <DetailLabel>{t('kilometers')}</DetailLabel>
+                                <DetailValue>{lastKilometers ? `${lastKilometers.toLocaleString('es-AR')} km` : '-'}</DetailValue>
+                            </DetailItem>
+                        </DetailGridSecondRow>
+                        
+                        <DetailGridThreeColumns>
+                            <DetailItem>
+                                <DetailLabel>{t('serviceEvery')}</DetailLabel>
+                                <DetailValue>{car.service_interval_km != null ? `${car.service_interval_km.toLocaleString('es-AR')} km` : '-'}</DetailValue>
+                            </DetailItem>
+                            <DetailItem>
+                                <DetailLabel>{t('lastService')}</DetailLabel>
+                                <DetailValue>{car.last_service_km != null ? `${car.last_service_km.toLocaleString('es-AR')} km` : '-'}</DetailValue>
+                            </DetailItem>
+                            <DetailItem>
+                                <DetailLabel>{t('nextService')}</DetailLabel>
+                                {getNextServiceKm() !== null ? (
+                                    <DetailValue>
+                                        {getNextServiceKm()!.toLocaleString('es-AR')} km
+                                    </DetailValue>
+                                ) : (
+                                    <DetailValue style={{ color: '#aeaeb2' }}>-</DetailValue>
+                                )}
+                            </DetailItem>
+                        </DetailGridThreeColumns>
+                        
+                        {getRemainingServiceKm() !== null && (
+                            <DetailGridSecondRow>
+                                <DetailItem>
+                                    <DetailLabel>{t('remainingForService')}</DetailLabel>
+                                    <DetailValue style={getRemainingServiceKm()! <= 0 ? { color: '#ff3b30' } : {}}>
+                                        {getRemainingServiceKm()! <= 0 
+                                            ? `Vencido (${getRemainingServiceKm()!.toLocaleString('es-AR')} km)`
+                                            : `${getRemainingServiceKm()!.toLocaleString('es-AR')} km`
+                                        }
+                                    </DetailValue>
+                                </DetailItem>
+                                <Box />
+                            </DetailGridSecondRow>
+                        )}
+                        
+                        <DetailGridSecondRow>
+                            <DetailItem>
+                                <DetailLabel>{t('nextVTV')}</DetailLabel>
+                                <DetailValue style={isDateExpired(car.vtv_date) ? { color: '#ff3b30' } : {}}>
+                                    {car.vtv_date != null && car.vtv_date !== '' ? formatNextDueDate(car.vtv_date) : '-'}
+                                </DetailValue>
+                            </DetailItem>
+                            <DetailItem>
+                                <DetailLabel>{t('timeRemaining')}</DetailLabel>
+                                <DetailValue style={isDateExpired(car.vtv_date) ? { color: '#ff3b30' } : {}}>
+                                    {car.vtv_date != null && car.vtv_date !== '' ? getTimeRemaining(car.vtv_date) : '-'}
+                                </DetailValue>
+                            </DetailItem>
+                        </DetailGridSecondRow>
+                        
+                        <DetailGridSecondRow>
+                            <DetailItem>
+                                <DetailLabel>{t('nextExtinguisher')}</DetailLabel>
+                                <DetailValue style={isDateExpired(car.extintor_date) ? { color: '#ff3b30' } : {}}>
+                                    {car.extintor_date != null && car.extintor_date !== '' ? formatNextDueDate(car.extintor_date) : '-'}
+                                </DetailValue>
+                            </DetailItem>
+                            <DetailItem>
+                                <DetailLabel>{t('timeRemaining')}</DetailLabel>
+                                <DetailValue style={isDateExpired(car.extintor_date) ? { color: '#ff3b30' } : {}}>
+                                    {car.extintor_date != null && car.extintor_date !== '' ? getTimeRemaining(car.extintor_date) : '-'}
+                                </DetailValue>
+                            </DetailItem>
+                        </DetailGridSecondRow>
                         
                         <ActionButtons>
                             <EditButton onClick={handleEditClick}>
                                 <EditIconMui sx={{ fontSize: 18 }} />
-                                Editar
+                                {t('edit')}
                             </EditButton>
                             <DeleteButton onClick={handleDeleteClick}>
                                 <DeleteIcon sx={{ fontSize: 16 }} />
-                                Eliminar
+                                {t('delete')}
                             </DeleteButton>
                         </ActionButtons>
                     </Box>
@@ -339,7 +547,7 @@ const CarDetails: React.FC = () => {
                     }}
                 >
                     <AddIcon sx={{ fontSize: 18 }} />
-                    <TabLabel>Agregar gasto</TabLabel>
+                    <TabLabel>{t('addExpense')}</TabLabel>
                 </TabButton>
                 <TabButton 
                     onClick={() => handleTabClick('historial')}
@@ -350,7 +558,7 @@ const CarDetails: React.FC = () => {
                     }}
                 >
                     <HistoryIcon sx={{ fontSize: 18 }} />
-                    <TabLabel>Historial</TabLabel>
+                    <TabLabel>{t('history')}</TabLabel>
                 </TabButton>
                 <TabButton 
                     onClick={() => handleTabClick('grafica')}
@@ -361,7 +569,7 @@ const CarDetails: React.FC = () => {
                     }}
                 >
                     <BarChartIcon sx={{ fontSize: 18 }} />
-                    <TabLabel>Gráfica</TabLabel>
+                    <TabLabel>{t('statistics')}</TabLabel>
                 </TabButton>
                 <TabButton 
                     onClick={() => handleTabClick('ajustes')}
@@ -372,7 +580,7 @@ const CarDetails: React.FC = () => {
                     }}
                 >
                     <SettingsIcon sx={{ fontSize: 18 }} />
-                    <TabLabel>Ajustes</TabLabel>
+                    <TabLabel>{t('settingsTab')}</TabLabel>
                 </TabButton>
             </TabsContainer>
 
@@ -380,24 +588,7 @@ const CarDetails: React.FC = () => {
                 {activeTab === 'gasto' && <AddExpense />}
                 {activeTab === 'historial' && <CarExpenses />}
                 {activeTab === 'grafica' && <ExpenseStats key={`stats-${windowSize}`} />}
-                {activeTab === 'ajustes' && (
-                    <Box sx={{ 
-                        p: 3, 
-                        mt: 2, 
-                        backgroundColor: '#f5f5f7', 
-                        borderRadius: '12px',
-                        textAlign: 'center',
-                        color: '#86868b'
-                    }}>
-                        <BuildIcon sx={{ fontSize: 48, color: '#86868b', mb: 1 }} />
-                        <Typography variant="h6" sx={{ color: '#1d1d1f', mb: 1 }}>
-                            Ajustes
-                        </Typography>
-                        <Typography sx={{ color: '#86868b' }}>
-                            Configuración próximamente
-                        </Typography>
-                    </Box>
-                )}
+                {activeTab === 'ajustes' && <Settings />}
             </TabContent>
 
             <Dialog
@@ -418,7 +609,7 @@ const CarDetails: React.FC = () => {
                     fontSize: '1.25rem',
                     pb: 1
                 }}>
-                    Editar vehículo
+                    {t('edit')} {t('brand')}
                 </DialogTitle>
                 <DialogContent>
                     <Box sx={{ pt: 1, display: 'flex', flexDirection: 'column', alignItems: 'center', mb: 2 }}>
@@ -474,7 +665,7 @@ const CarDetails: React.FC = () => {
                     <Form onSubmit={(e) => { e.preventDefault(); handleEditSave(); }}>
                         <FormRow>
                             <InputGroup>
-                                <InputLabel>Marca</InputLabel>
+                                <InputLabel>{t('brand')}</InputLabel>
                                     <Input
                                         placeholder="Ej: Toyota"
                                         name='brand'
@@ -484,7 +675,7 @@ const CarDetails: React.FC = () => {
                                     />
                                 </InputGroup>
                                 <InputGroup>
-                                    <InputLabel>Modelo</InputLabel>
+                                    <InputLabel>{t('model')}</InputLabel>
                                     <Input
                                         placeholder="Ej: Corolla"
                                         name='model'
@@ -496,7 +687,7 @@ const CarDetails: React.FC = () => {
                             </FormRow>
                             <FormRow>
                                 <InputGroup>
-                                    <InputLabel>Versión (opcional)</InputLabel>
+                                    <InputLabel>{t('version')} ({t('optional')})</InputLabel>
                                     <Input
                                         placeholder="Ej: SE-G"
                                         name='version'
@@ -505,7 +696,7 @@ const CarDetails: React.FC = () => {
                                     />
                                 </InputGroup>
                                 <InputGroup>
-                                    <InputLabel>Año</InputLabel>
+                                    <InputLabel>{t('year')}</InputLabel>
                                     <Input
                                         placeholder="Ej: 2023"
                                         name='year'
@@ -519,7 +710,7 @@ const CarDetails: React.FC = () => {
                                 </InputGroup>
                             </FormRow>
                             <InputGroup>
-                                <InputLabel>Patente</InputLabel>
+                                <InputLabel>{t('licensePlate')}</InputLabel>
                                 <Input
                                     placeholder="Ej: ABC123"
                                     name='vin'
@@ -528,6 +719,50 @@ const CarDetails: React.FC = () => {
                                     required
                                 />
                             </InputGroup>
+                            <FormRow>
+                                <InputGroup>
+                                    <InputLabel>{t('lastServiceKm')}</InputLabel>
+                                    <Input
+                                        placeholder="Ej: 50000"
+                                        name='last_service_km'
+                                        value={editData.last_service_km}
+                                        onChange={handleEditInputChange}
+                                        type="text"
+                                        inputMode="numeric"
+                                    />
+                                </InputGroup>
+                                <InputGroup>
+                                    <InputLabel>{t('serviceEveryKm')}</InputLabel>
+                                    <Input
+                                        placeholder="Ej: 10000"
+                                        name='service_interval_km'
+                                        value={editData.service_interval_km}
+                                        onChange={handleEditInputChange}
+                                        type="text"
+                                        inputMode="numeric"
+                                    />
+                                </InputGroup>
+                            </FormRow>
+                            <FormRow>
+                                <InputGroup>
+                                    <InputLabel>{t('vtvDate')}</InputLabel>
+                                    <Input
+                                        type="date"
+                                        name='vtv_date'
+                                        value={editData.vtv_date}
+                                        onChange={handleEditInputChange}
+                                    />
+                                </InputGroup>
+                                <InputGroup>
+                                    <InputLabel>{t('extinguisherDate')}</InputLabel>
+                                    <Input
+                                        type="date"
+                                        name='extintor_date'
+                                        value={editData.extintor_date}
+                                        onChange={handleEditInputChange}
+                                    />
+                                </InputGroup>
+                            </FormRow>
                         </Form>
                 </DialogContent>
                 <DialogActions sx={{ padding: '0 1.5rem 1.5rem' }}>
@@ -540,7 +775,7 @@ const CarDetails: React.FC = () => {
                             padding: '0.625rem 1.25rem'
                         }}
                     >
-                        Cancelar
+                        {t('cancel')}
                     </Button>
                     <Button 
                         onClick={handleEditSave}
@@ -577,14 +812,14 @@ const CarDetails: React.FC = () => {
                     color: '#1d1d1f',
                     fontSize: '1.125rem'
                 }}>
-                    Eliminar vehículo
+                    {t('delete')} {t('brand')}
                 </DialogTitle>
                 <DialogContent>
                     <DialogContentText id="delete-dialog-description" sx={{ 
                         color: '#86868b',
                         fontSize: '0.9375rem'
                     }}>
-                        ¿Estás seguro de que deseas eliminar {car.brand} {car.model}? Esta acción eliminará todos los gastos asociados y no se puede deshacer.
+                        {t('deleteConfirm')} {car.brand} {car.model}? {t('deleteWarning')}
                     </DialogContentText>
                 </DialogContent>
                 <DialogActions sx={{ padding: '0 1.5rem 1rem' }}>
@@ -597,7 +832,7 @@ const CarDetails: React.FC = () => {
                             padding: '0.625rem 1.25rem'
                         }}
                     >
-                        Cancelar
+                        {t('cancel')}
                     </Button>
                     <Button 
                         onClick={handleDeleteConfirm}

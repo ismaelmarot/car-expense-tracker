@@ -5,4 +5,8 @@ export type Car = {
     vin: string;
     version?: string;
     photo?: string;
+    last_service_km?: number;
+    service_interval_km?: number;
+    vtv_date?: string;
+    extintor_date?: string;
 };

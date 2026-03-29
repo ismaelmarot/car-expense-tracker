@@ -7,6 +7,7 @@ import DirectionsCarIcon from '@mui/icons-material/DirectionsCar'
 import FormatListBulletedIcon from '@mui/icons-material/FormatListBulleted'
 import GridViewIcon from '@mui/icons-material/GridView'
 import { HeaderLeft } from '@/styles/pageStyles'
+import { useLanguage } from '../../contexts/LanguageContext'
 import {
   AddCard,
   CarDetail,
@@ -39,6 +40,7 @@ const CarsPage: React.FC = () => {
     const [loading, setLoading] = useState<boolean>(true)
     const [viewMode, setViewMode] = useState<'list' | 'grid'>('grid')
     const navigate = useNavigate()
+    const { t } = useLanguage()
 
     const fetchCars = async () => {
         try {
@@ -60,7 +62,7 @@ const CarsPage: React.FC = () => {
         return (
             <Container>
                 <Title sx={{ textAlign: 'center', color: '#86868b' }}>
-                    Cargando vehículos...
+                    {t('loadingVehicles')}
                 </Title>
             </Container>
         );
@@ -70,9 +72,9 @@ const CarsPage: React.FC = () => {
         <Container>
             <Header>
                 <HeaderLeft>
-                    <Title>Mis Vehículos</Title>
+                    <Title>{t('myVehicles')}</Title>
                     <Subtitle>
-                        {cars.length} {cars.length === 1 ? 'vehículo' : 'vehículos'} registrado{cars.length !== 1 ? 's' : ''}
+                        {cars.length} {cars.length === 1 ? t('vehicle') : t('vehicles')}
                     </Subtitle>
                 </HeaderLeft>
                 <HeaderRight>
@@ -81,7 +83,7 @@ const CarsPage: React.FC = () => {
                     </IconBtn>
                     <PrimaryBtn onClick={() => navigate('/add')}>
                         <AddIcon sx={{ fontSize: 20 }} />
-                        Agregar
+                        {t('add')}
                     </PrimaryBtn>
                 </HeaderRight>
             </Header>
@@ -90,17 +92,17 @@ const CarsPage: React.FC = () => {
                 <EmptyState>
                     <DirectionsCarIcon sx={{ fontSize: 64, color: '#d1d1d6', mb: 2 }} />
                     <Title style={{ fontSize: '1.25rem', fontWeight: 500, marginBottom: '0.5rem' }}>
-                        No hay vehículos registrados
+                        {t('noVehicles')}
                     </Title>
                     <Subtitle>
-                        Agregá tu primer vehículo para comenzar a rastrear tus gastos
+                        {t('addFirstVehicle')}
                     </Subtitle>
                     <PrimaryBtn 
                         onClick={() => navigate('/add')}
                         style={{ marginTop: '1.5rem', width: 'auto', padding: '0 1.5rem' }}
                     >
                         <AddIcon sx={{ fontSize: 20 }} />
-                        Agregar Vehículo
+                        {t('addVehicle')}
                     </PrimaryBtn>
                 </EmptyState>
             ) : (
@@ -118,7 +120,7 @@ const CarsPage: React.FC = () => {
                                     )}
                                     <CarInfo>
                                         <CarName>{car.brand} {car.model}</CarName>
-                                        <CarDetail> · {car.year} · {car.vin}</CarDetail>
+                                        <CarDetail>{car.year} • {car.vin}</CarDetail>
                                     </CarInfo>
                                     <ChevronIcon>
                                         →
@@ -127,7 +129,7 @@ const CarsPage: React.FC = () => {
                             ))}
                             <ListAddItem onClick={() => navigate('/add')}>
                                 <AddIcon sx={{ fontSize: 20 }} />
-                                Agregar nuevo vehículo
+                                {t('addNewVehicle')}
                             </ListAddItem>
                         </ListContainer>
                     ) : (
@@ -147,7 +149,7 @@ const CarsPage: React.FC = () => {
                             ))}
                             <AddCard onClick={() => navigate('/add')}>
                               <AddIcon sx={{ fontSize: 32 }} />
-                              <CardSubtitle>Agregar vehículo</CardSubtitle>
+                              <CardSubtitle>{t('addVehicle')}</CardSubtitle>
                             </AddCard>
                         </CardsGrid>
                     )}

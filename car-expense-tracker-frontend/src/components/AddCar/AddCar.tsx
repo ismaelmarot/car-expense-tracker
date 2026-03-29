@@ -1,6 +1,7 @@
 import React, { useState, useRef } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { addCar } from '@/api'
+import { Box } from '@mui/material'
 import { 
   Container, 
   Header, 
@@ -25,9 +26,13 @@ import {
   HiddenInput,
   AddCarForm
 } from './AddCarStyles'
+import ExpandMoreIcon from '@mui/icons-material/ExpandMore'
+import BuildIcon from '@mui/icons-material/Build'
+import { useLanguage } from '../../contexts/LanguageContext'
 
 export const AddCar: React.FC = () => {
     const navigate = useNavigate()
+    const { t } = useLanguage()
     const fileInputRef = useRef<HTMLInputElement>(null)
     
     const [carData, setCarData] = useState({
@@ -35,17 +40,34 @@ export const AddCar: React.FC = () => {
         model: '',
         year: '',
         vin: '',
-        version: ''
+        version: '',
+        last_service_km: '',
+        service_interval_km: '',
+        vtv_date: '',
+        extintor_date: ''
     })
     
     const [photo, setPhoto] = useState<string | null>(null)
+    const [showAdditionalInfo, setShowAdditionalInfo] = useState(false)
+
+    const formatKm = (value: string): string => {
+        const cleanValue = value.replace(/[^\d]/g, '')
+        return cleanValue.replace(/\B(?=(\d{3})+(?!\d))/g, '.')
+    }
 
     const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         const { name, value } = e.target
-        setCarData({
-            ...carData,
-            [name]: name === 'vin' ? value.toUpperCase() : value
-        })
+        if (name === 'last_service_km' || name === 'service_interval_km') {
+            setCarData({
+                ...carData,
+                [name]: formatKm(value)
+            })
+        } else {
+            setCarData({
+                ...carData,
+                [name]: name === 'vin' ? value.toUpperCase() : value
+            })
+        }
     }
 
     const handlePhotoClick = () => {
@@ -68,10 +90,23 @@ export const AddCar: React.FC = () => {
         e.preventDefault()
 
         const car = {
-            ...carData,
+            brand: carData.brand,
+            model: carData.model,
             year: Number(carData.year),
-            photo: photo || undefined
+            vin: carData.vin,
+            version: carData.version || undefined,
+            photo: photo || undefined,
+            last_service_km: carData.last_service_km ? Number(carData.last_service_km.replace(/\./g, '').replace(/,/g, '')) : undefined,
+            service_interval_km: carData.service_interval_km ? Number(carData.service_interval_km.replace(/\./g, '').replace(/,/g, '')) : undefined,
+            vtv_date: carData.vtv_date || undefined,
+            extintor_date: carData.extintor_date || undefined
         }
+
+        console.log('=== SENDING CAR DATA ===');
+        console.log('last_service_km:', car.last_service_km);
+        console.log('service_interval_km:', car.service_interval_km);
+        console.log('vtv_date:', car.vtv_date);
+        console.log('extintor_date:', car.extintor_date);
 
         try {
             const response = await addCar(car)
@@ -86,12 +121,12 @@ export const AddCar: React.FC = () => {
         <Container>
             <Header>
                 <HeaderLeft>
-                    <PageTitle>Agregar Vehículo</PageTitle>
-                    <PageSubtitle>Ingresá los datos de tu nuevo vehículo</PageSubtitle>
+                    <PageTitle>{t('addVehicle')}</PageTitle>
+                    <PageSubtitle>{t('enterVehicleData')}</PageSubtitle>
                 </HeaderLeft>
                 <HeaderRight>
                     <BackButton onClick={() => navigate('/')}>
-                        ← Volver
+                        {t('back')}
                     </BackButton>
                 </HeaderRight>
             </Header>
@@ -111,12 +146,12 @@ export const AddCar: React.FC = () => {
                         <PhotoContainer onClick={handlePhotoClick}>
                             <PhotoIcon>
                                 <span style={{ fontSize: '1.5rem' }}>+</span>
-                                <span style={{ fontSize: '0.75rem' }}>Agregar foto</span>
+                                <span style={{ fontSize: '0.75rem' }}>{t('addPhoto')}</span>
                             </PhotoIcon>
                         </PhotoContainer>
                     )}
                     <PhotoLabel>
-                        {photo ? 'Toca para cambiar la foto' : 'Opcional: agrega una foto de tu vehículo'}
+                        {photo ? t('tapToChangePhoto') : t('optionalPhoto')}
                     </PhotoLabel>
                     <HiddenInput
                         ref={fileInputRef}
@@ -129,7 +164,7 @@ export const AddCar: React.FC = () => {
                 <Form onSubmit={handleSubmit}>
                     <FormRow>
                         <InputGroup>
-                            <InputLabel>Marca</InputLabel>
+                            <InputLabel>{t('brand')}</InputLabel>
                             <Input
                                 placeholder="Ej: Toyota"
                                 name='brand'
@@ -140,7 +175,7 @@ export const AddCar: React.FC = () => {
                         </InputGroup>
 
                         <InputGroup>
-                            <InputLabel>Modelo</InputLabel>
+                            <InputLabel>{t('model')}</InputLabel>
                             <Input
                                 placeholder="Ej: Corolla"
                                 name='model'
@@ -154,7 +189,7 @@ export const AddCar: React.FC = () => {
                     <FormRow>
                         <InputGroup>
                             <InputLabel>
-                                Versión<OptionalLabel>(opcional)</OptionalLabel>
+                                {t('version')}<OptionalLabel>{t('optional')}</OptionalLabel>
                             </InputLabel>
                             <Input
                                 placeholder="Ej: SE-G"
@@ -165,7 +200,7 @@ export const AddCar: React.FC = () => {
                         </InputGroup>
 
                         <InputGroup>
-                            <InputLabel>Año</InputLabel>
+                            <InputLabel>{t('year')}</InputLabel>
                             <Input
                                 placeholder="Ej: 2023"
                                 name='year'
@@ -179,19 +214,110 @@ export const AddCar: React.FC = () => {
                         </InputGroup>
                     </FormRow>
 
-                    <InputGroup>
-                        <InputLabel>Patente</InputLabel>
-                        <Input
-                            placeholder="Ej: ABC123"
-                            name='vin'
-                            value={carData.vin}
-                            onChange={handleInputChange}
-                            required
+                    <FormRow>
+                        <InputGroup>
+                            <InputLabel>{t('licensePlate')}</InputLabel>
+                            <Input
+                                placeholder="Ej: ABC123"
+                                name='vin'
+                                value={carData.vin}
+                                onChange={handleInputChange}
+                                required
+                            />
+                        </InputGroup>
+                        <Box />
+                    </FormRow>
+
+                    <Box sx={{ borderTop: '1px solid #e5e5ea', mt: 1 }} />
+
+                    <Box 
+                        onClick={() => setShowAdditionalInfo(!showAdditionalInfo)}
+                        sx={{
+                            display: 'flex',
+                            alignItems: 'center',
+                            justifyContent: 'space-between',
+                            cursor: 'pointer',
+                            py: 1
+                        }}
+                    >
+                        <Box sx={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+                            <BuildIcon sx={{ fontSize: 18, color: '#86868b' }} />
+                            <span style={{ fontSize: '0.8125rem', fontWeight: 500, color: '#86868b' }}>
+                                {t('additionalInfo')}
+                            </span>
+                        </Box>
+                        <ExpandMoreIcon 
+                            sx={{ 
+                                fontSize: 20, 
+                                color: '#86868b',
+                                transform: showAdditionalInfo ? 'rotate(180deg)' : 'rotate(0deg)',
+                                transition: 'transform 0.2s ease'
+                            }} 
                         />
-                    </InputGroup>
+                    </Box>
+
+                    {showAdditionalInfo && (
+                        <>
+                            <FormRow>
+                                <InputGroup>
+                                    <InputLabel>
+                                        {t('lastServiceKm')}<OptionalLabel>({t('optional')})</OptionalLabel>
+                                    </InputLabel>
+                                    <Input
+                                        placeholder="Ej: 50.000"
+                                        name='last_service_km'
+                                        value={carData.last_service_km}
+                                        onChange={handleInputChange}
+                                        type="text"
+                                        inputMode="numeric"
+                                    />
+                                </InputGroup>
+
+                                <InputGroup>
+                                    <InputLabel>
+                                        {t('serviceEveryKm')}<OptionalLabel>({t('optional')})</OptionalLabel>
+                                    </InputLabel>
+                                    <Input
+                                        placeholder="Ej: 10.000"
+                                        name='service_interval_km'
+                                        value={carData.service_interval_km}
+                                        onChange={handleInputChange}
+                                        type="text"
+                                        inputMode="numeric"
+                                    />
+                                </InputGroup>
+                            </FormRow>
+
+                            <FormRow>
+                                <InputGroup>
+                                    <InputLabel>
+                                        {t('vtvDate')}<OptionalLabel>({t('optional')})</OptionalLabel>
+                                    </InputLabel>
+                                    <Input
+                                        type="date"
+                                        name='vtv_date'
+                                        value={carData.vtv_date}
+                                        onChange={handleInputChange}
+                                    />
+                                </InputGroup>
+
+                                <InputGroup>
+                                    <InputLabel>
+                                        {t('extinguisherDate')}<OptionalLabel>({t('optional')})</OptionalLabel>
+                                    </InputLabel>
+                                    <Input
+                                        type="date"
+                                        name='extintor_date'
+                                        value={carData.extintor_date}
+                                        onChange={handleInputChange}
+                                    />
+                                </InputGroup>
+                            </FormRow>
+                        </>
+                    )}
 
                     <SubmitButton type='submit'>
-                        Agregar Vehículo
+                        {t('addVehicle')}
                     </SubmitButton>
                 </Form>
             </AddCarForm>

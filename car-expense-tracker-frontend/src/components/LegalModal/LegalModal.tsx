@@ -1,6 +1,9 @@
 import React from 'react';
-import { Dialog, DialogTitle, DialogContent, DialogActions } from '@mui/material';
+import { Dialog, DialogTitle, DialogContent, DialogActions, Typography } from '@mui/material';
 import { ButtonStyled, TextStyled } from './LegalModalStyles';
+import { useLanguage } from '../../contexts/LanguageContext';
+
+const APP_VERSION = '2.0.0';
 
 interface LegalModalProps {
     open: boolean;
@@ -8,26 +11,25 @@ interface LegalModalProps {
 }
 
 const LegalModal: React.FC<LegalModalProps> = ({ open, onClose }) => {
+  const { t } = useLanguage();
+  
   return (
     <Dialog open={open} onClose={onClose} maxWidth='sm' fullWidth>
-      <DialogTitle>Términos Legales</DialogTitle>
+      <DialogTitle>{t('legalTerms')}</DialogTitle>
       <DialogContent>
+        <Typography variant="body2" color="text.secondary" sx={{ mb: 2 }}>
+          {t('version')}: {APP_VERSION}
+        </Typography>
         <TextStyled>
-          Este software est&aacute; licenciado bajo la Licencia MIT. Esto significa que puede usar, copiar, modificar, 
-          fusionar, publicar, distribuir, sublicenciar y/o vender copias del software, siempre que se incluya el 
-          aviso de derechos de autor original.
+          {t('legalText1')}
         </TextStyled>
         <TextStyled>
-          **Exenci&oacute;n de responsabilidad:** El software se proporciona "tal cual", sin garant&iacute;a de ning&uacute;n tipo, 
-          expresa o impl&iacute;cita, incluyendo pero no limit&aacute;ndose a garant&iacute;as de comerciabilidad, idoneidad para un 
-          prop&oacute;sito particular o no infracci&oacute;n. En ning&uacute;n caso los autores o titulares del copyright ser&aacute;n 
-          responsables de ning&uacute;n reclamo, daño u otra responsabilidad, ya sea en una acci&oacute;n de contrato, agravio 
-          o de otro tipo, que surja del uso del software o su distribuci&oacute;n.
+          {t('legalText2')}
         </TextStyled>
       </DialogContent>
       <DialogActions>
         <ButtonStyled onClick={onClose} color='primary' variant='contained'>
-          Cerrar
+          {t('close')}
         </ButtonStyled>
       </DialogActions>
     </Dialog>

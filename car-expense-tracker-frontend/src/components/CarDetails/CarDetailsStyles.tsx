@@ -90,7 +90,7 @@ export const CarInfoCard = styled(Box)`
 
 export const CardHeader = styled(Box)`
   display: flex;
-  align-items: center;
+  flex-direction: column;
   padding: 1.25rem;
   cursor: pointer;
   transition: background 0.3s ease;
@@ -98,6 +98,17 @@ export const CardHeader = styled(Box)`
   &:hover {
     background: rgba(0, 113, 227, 0.03);
   }
+`;
+
+export const CardHeaderCollapsed = styled(Box)`
+  display: flex;
+  align-items: center;
+`;
+
+export const CardHeaderInfo = styled(Box)`
+  flex: 1;
+  margin-left: 1rem;
+  min-width: 0;
 `;
 
 export const PhotoWrapper = styled(Box)`
@@ -208,15 +219,48 @@ export const ExpandIcon = styled(Box)`
   flex-shrink: 0;
 `;
 
-export const CardExpandedContent = styled(Box)`
-  border-top: 1px solid rgba(0, 0, 0, 0.04);
-  overflow: hidden;
+export const CardExpandedContent = styled(Box)<{ expanded: boolean }>`
+  display: ${props => props.expanded ? 'block' : 'none'};
+  animation: ${props => props.expanded ? 'slideDown 0.3s ease' : 'none'};
+  '@keyframes slideDown': {
+    from: { opacity: 0, transform: 'translateY(-10px)' },
+    to: { opacity: 1, transform: 'translateY(0)' }
+  }
+  height: calc(100vh - 240px);
+  max-height: 400px;
+  overflow-y: auto;
+  padding: 1.5rem;
+  margin-top: 0.5rem;
+  
+  @media (max-height: 600px) {
+    height: calc(100vh - 180px);
+    max-height: 300px;
+  }
+  
+  @media (max-width: 480px) {
+    height: calc(100vh - 200px);
+    max-height: 350px;
+  }
 `;
 
 export const DetailGrid = styled(Box)`
   display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1rem;
+  
+  @media (max-width: 480px) {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 0.75rem;
+  }
+`;
+
+export const DetailGridSecondRow = styled(Box)`
+  display: grid;
   grid-template-columns: repeat(2, 1fr);
   gap: 1rem;
+  margin-top: 1rem;
+  padding-top: 1rem;
+  border-top: 1px solid rgba(0, 0, 0, 0.06);
   
   @media (max-width: 480px) {
     grid-template-columns: 1fr;
@@ -224,7 +268,25 @@ export const DetailGrid = styled(Box)`
   }
 `;
 
-export const DetailItem = styled(Box)``;
+export const DetailGridThreeColumns = styled(Box)`
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1rem;
+  margin-top: 1rem;
+  padding-top: 1rem;
+  border-top: 1px solid rgba(0, 0, 0, 0.06);
+  
+  @media (max-width: 480px) {
+    grid-template-columns: 1fr;
+    gap: 0.75rem;
+  }
+`;
+
+export const DetailItem = styled(Box)`
+  display: flex;
+  flex-direction: column;
+  gap: 0.125rem;
+`;
 
 export const DetailLabel = styled(Typography)`
   font-size: 0.6875rem;
@@ -232,13 +294,13 @@ export const DetailLabel = styled(Typography)`
   color: #86868b;
   text-transform: uppercase;
   letter-spacing: 0.5px;
-  margin-bottom: 0.25rem;
 `;
 
 export const DetailValue = styled(Typography)`
   font-size: 0.9375rem;
   font-weight: 500;
   color: #1d1d1f;
+  line-height: 1.2;
 `;
 
 export const ActionButtons = styled(Box)`
@@ -517,7 +579,7 @@ export const FormRow = styled(Box)`
 export const InputGroup = styled(Box)`
   display: flex;
   flex-direction: column;
-  gap: 0.375rem;
+  gap: 0.25rem;
 `;
 
 export const InputLabel = styled.label`

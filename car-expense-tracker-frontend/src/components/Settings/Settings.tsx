@@ -1,16 +1,19 @@
 import React from 'react';
-import { SettingsContainer, GridAcordeons, TitleStyled } from './SettingsStyles';
-import DownloadPDFComponent from '../DownloadPDFComponent/DownloadPDFComponent';
-import DownloadDBComponent from '../DownloadDBComponent/DownloadDBComponent';
+import { SettingsContainer, TitleStyled } from './SettingsStyles';
+import LanguageSelector from '../LanguageSelector/LanguageSelector';
+import Reports from '../Reports/Reports';
+import { useLanguage } from '../../contexts/LanguageContext';
 
 const Settings: React.FC = () => {
+    const { t } = useLanguage();
+    
     return (
         <SettingsContainer>
-            <TitleStyled>Ajustes</TitleStyled>
-            <GridAcordeons container xs={12} lg={4}>
-                <DownloadPDFComponent />
-                <DownloadDBComponent />
-            </GridAcordeons>   
+            <TitleStyled>{t('settings')}</TitleStyled>
+            
+            <Reports />
+            
+            <LanguageSelector />
         </SettingsContainer>
     )
 }

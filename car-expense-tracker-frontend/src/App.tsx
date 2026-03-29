@@ -7,6 +7,7 @@ import CarsPage from './pages/CarPages/CarsPage'
 import { AddCar } from './components/AddCar/AddCar'
 import CarDetails from './components/CarDetails/CarDetails'
 import Footer from './components/Footer/Footer'
+import { LanguageProvider } from './contexts/LanguageContext'
 
 const AppContainer = styled(Box)`
   display: flex;
@@ -27,18 +28,20 @@ const MainContent = styled(Box)`
 
 const App: React.FC = () => {
   return (
-    <Router>
-      <AppContainer>
-        <MainContent>
-          <Routes>
-            <Route path='/' element={<CarsPage />} />
-            <Route path='/add' element={<AddCar />} />
-            <Route path='/cars/:id' element={<CarDetails />} />
-          </Routes>
-        </MainContent>
-        <Footer />
-      </AppContainer>
-    </Router>
+    <LanguageProvider>
+      <Router>
+        <AppContainer>
+          <MainContent>
+            <Routes>
+              <Route path='/' element={<CarsPage />} />
+              <Route path='/add' element={<AddCar />} />
+              <Route path='/cars/:id' element={<CarDetails />} />
+            </Routes>
+          </MainContent>
+          <Footer />
+        </AppContainer>
+      </Router>
+    </LanguageProvider>
   );
 };
 

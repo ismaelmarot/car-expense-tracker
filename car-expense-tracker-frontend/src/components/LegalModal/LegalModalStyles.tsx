@@ -10,4 +10,5 @@ export const TextStyled = styled(Typography)`
 
 export const ButtonStyled = styled(Button)`
     margin: 0 2rem 1rem;
+    border-radius: 34px;
 `;

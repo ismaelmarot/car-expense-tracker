@@ -1,6 +1,6 @@
 {
   "name": "car-expense-tracker",
-  "version": "1.0.0",
+  "version": "2.0.0",
   "author": "Ismael Marot <ismaelmarot@hotmail.com>",
   "description": "Car Expense Tracker App",
   "main": "electron.js",
@@ -13,11 +13,16 @@
     "start": "concurrently \"npm run start:react\" \"npm run start:electron\"",
     "start:react": "cd car-expense-tracker-frontend && npm start",
     "start:electron": "wait-on http://localhost:3000 && electron .",
-    "electron-build": "npm run build-frontend && npx electron-builder --publish never && node scripts/copy-backend.js",
+    "electron-build": "npm run build-frontend && npx electron-builder --publish never",
     "electron-publish": "npm run build-frontend && npx electron-builder --publish always"
   },
   "dependencies": {
-    "concurrently": "^9.1.0"
+    "concurrently": "^9.1.0",
+    "express": "^4.18.2",
+    "sqlite3": "^5.1.7",
+    "cors": "^2.8.5",
+    "pdfkit": "^0.14.0",
+    "json2csv": "^6.0.0-alpha.2"
   },
   "devDependencies": {
     "electron": "33.2.1",
@@ -26,12 +31,14 @@
   },
   "build": {
     "appId": "com.car-expense-tracker",
-    "productName": "Car_Expense_Tracker",
+    "productName": "CarET",
     "files": [
       "car-expense-tracker-frontend/build/**/*",
       "electron.js",
-      "package.json"
+      "package.json",
+      "node_modules/**/*"
     ],
+    "asar": false,
     "directories": {
       "output": "dist"
     },

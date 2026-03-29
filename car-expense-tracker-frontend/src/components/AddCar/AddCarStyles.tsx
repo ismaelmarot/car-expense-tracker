@@ -171,17 +171,17 @@ export const PhotoLabel = styled(Typography)`
 export const Form = styled.form`
   display: flex;
   flex-direction: column;
-  gap: 1.25rem;
+  gap: 1rem;
 `
 
 export const InputGroup = styled(Box)`
   display: flex;
   flex-direction: column;
-  gap: 0.5rem;
+  gap: 0.375rem;
 `
 
 export const InputLabel = styled(Typography)`
-  font-size: 0.875rem;
+  font-size: 0.8125rem;
   font-weight: 500;
   color: #1d1d1f;
 `
@@ -192,7 +192,7 @@ export const Input = styled.input`
   padding: 0 1rem;
   font-size: 1rem;
   border: 1px solid #d1d1d6;
-  border-radius: 12px;
+  border-radius: 35px;
   outline: none;
   color: #1d1d1f;
   background: #ffffff;
@@ -262,6 +262,7 @@ export const FormRow = styled(Box)`
   display: grid;
   grid-template-columns: 1fr 1fr;
   gap: 1rem;
+  row-gap: 1rem;
   
   @media (max-width: 500px) {
     grid-template-columns: 1fr;

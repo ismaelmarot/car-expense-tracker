@@ -5,4 +5,5 @@ export type Expense = {
     kilometers?: number;
     category: string;
     date: string;
+    photos?: string[];
 };

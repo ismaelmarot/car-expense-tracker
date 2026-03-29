@@ -6,4 +6,5 @@ export interface ExpenseInterface {
     category: string;
     date: string;
     car_id: number;
+    photos?: string[];
 }

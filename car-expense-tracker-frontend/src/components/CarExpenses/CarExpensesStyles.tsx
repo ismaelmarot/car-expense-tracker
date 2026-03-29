@@ -382,3 +382,115 @@ export const PriceLabel = styled(Typography)`
   color: #86868b;
   margin-bottom: 0.25rem;
 `;
+
+export const PhotosSection = styled(Box)`
+  display: flex;
+  gap: 0.625rem;
+  margin-top: 1rem;
+  flex-wrap: wrap;
+`;
+
+export const PhotoThumb = styled(Box)<{ src: string }>`
+  width: 80px;
+  height: 80px;
+  border-radius: 14px;
+  background-image: url(${props => props.src});
+  background-size: cover;
+  background-position: center;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+  
+  &:hover {
+    transform: scale(1.04);
+    box-shadow: 0 4px 16px rgba(0,0,0,0.12);
+  }
+  
+  &:active {
+    transform: scale(0.98);
+  }
+`;
+
+export const PhotosLabel = styled(Typography)`
+  font-size: 0.8125rem;
+  color: #86868b;
+  font-weight: 500;
+  margin-bottom: 0.5rem;
+`;
+
+export const PhotoViewerOverlay = styled(Box)`
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.95);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 2000;
+`;
+
+export const PhotoViewerImage = styled('img')<{ zoomed?: boolean }>`
+  max-width: 90vw;
+  max-height: 85vh;
+  object-fit: contain;
+  border-radius: 8px;
+  cursor: ${props => props.zoomed ? 'zoom-out' : 'zoom-in'};
+  transition: transform 0.3s ease;
+  transform: ${props => props.zoomed ? 'scale(2)' : 'scale(1)'};
+  
+  &:hover {
+    transform: ${props => props.zoomed ? 'scale(2)' : 'scale(1.05)'};
+  }
+`;
+
+export const PhotoViewerClose = styled(Box)`
+  position: absolute;
+  top: 1rem;
+  right: 1rem;
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.1);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  
+  &:hover {
+    background: rgba(255, 255, 255, 0.2);
+    transform: scale(1.1);
+  }
+`;
+
+export const PhotoViewerNav = styled(Box)<{ side: 'left' | 'right' }>`
+  position: absolute;
+  top: 50%;
+  ${props => props.side === 'left' ? 'left: 1rem;' : 'right: 1rem;'}
+  transform: translateY(-50%);
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.1);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  
+  &:hover {
+    background: rgba(255, 255, 255, 0.2);
+    transform: translateY(-50%) scale(1.1);
+  }
+`;
+
+export const PhotoViewerCounter = styled(Box)`
+  position: absolute;
+  bottom: 2rem;
+  left: 50%;
+  transform: translateX(-50%);
+  background: rgba(0, 0, 0, 0.6);
+  padding: 0.5rem 1rem;
+  border-radius: 20px;
+  color: white;
+  font-size: 0.875rem;
+`;
