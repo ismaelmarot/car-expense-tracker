@@ -216,8 +216,8 @@ if (!gotLock) {
         });
       });
       
-      backendApp.get('/expenses/car/:carId', (req, res) => {
-        db.all("SELECT * FROM expenses WHERE car_id = ? ORDER BY date DESC", req.params.carId, (err, rows) => {
+      backendApp.get('/cars/:id/expenses', (req, res) => {
+        db.all("SELECT * FROM expenses WHERE car_id = ? ORDER BY date DESC", req.params.id, (err, rows) => {
           if (err) return res.status(500).json({ error: err.message });
           rows.forEach(row => {
             if (row.photos) {
@@ -228,8 +228,8 @@ if (!gotLock) {
         });
       });
       
-      backendApp.get('/cars/:id/expenses', (req, res) => {
-        db.all("SELECT * FROM expenses WHERE car_id = ? ORDER BY date DESC", req.params.id, (err, rows) => {
+      backendApp.get('/expenses/car/:carId', (req, res) => {
+        db.all("SELECT * FROM expenses WHERE car_id = ? ORDER BY date DESC", req.params.carId, (err, rows) => {
           if (err) return res.status(500).json({ error: err.message });
           rows.forEach(row => {
             if (row.photos) {
@@ -399,6 +399,13 @@ if (!gotLock) {
           res.setHeader('Content-Disposition', 'attachment; filename=reporte.csv');
           res.send(csv);
         });
+      });
+      
+      backendApp.get('/api/download-backup', (req, res) => {
+        res.setHeader('Content-Type', 'application/octet-stream');
+        res.setHeader('Content-Disposition', 'attachment; filename=car-expenses.db');
+        const readStream = fs.createReadStream(dbPath);
+        readStream.pipe(res);
       });
       
       backendApp.listen(5001, () => {
