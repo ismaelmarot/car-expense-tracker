@@ -78,6 +78,7 @@ const CarDetails: React.FC = () => {
         vin: '',
         version: '',
         photo: '',
+        kilometers: '',
         last_service_km: '',
         service_interval_km: '',
         vtv_date: '',
@@ -249,6 +250,7 @@ const CarDetails: React.FC = () => {
                 vin: car.vin,
                 version: car.version || '',
                 photo: car.photo || '',
+                kilometers: car.kilometers ? formatKm(car.kilometers.toString()) : '',
                 last_service_km: car.last_service_km ? formatKm(car.last_service_km.toString()) : '',
                 service_interval_km: car.service_interval_km ? formatKm(car.service_interval_km.toString()) : '',
                 vtv_date: car.vtv_date || '',
@@ -261,7 +263,7 @@ const CarDetails: React.FC = () => {
     const handleEditInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         const { name, value } = e.target;
         
-        if (name === 'last_service_km' || name === 'service_interval_km') {
+        if (name === 'kilometers' || name === 'last_service_km' || name === 'service_interval_km') {
             const formatted = formatKm(value);
             setEditData({
                 ...editData,
@@ -286,6 +288,7 @@ const CarDetails: React.FC = () => {
                     vin: editData.vin,
                     version: editData.version || undefined,
                     photo: editData.photo || undefined,
+                    kilometers: editData.kilometers ? Number(getRawKm(editData.kilometers)) : undefined,
                     last_service_km: editData.last_service_km ? Number(getRawKm(editData.last_service_km)) : undefined,
                     service_interval_km: editData.service_interval_km ? Number(getRawKm(editData.service_interval_km)) : undefined,
                     vtv_date: editData.vtv_date || undefined,
@@ -717,6 +720,17 @@ const CarDetails: React.FC = () => {
                                     value={editData.vin}
                                     onChange={handleEditInputChange}
                                     required
+                                />
+                            </InputGroup>
+                            <InputGroup>
+                                <InputLabel>{t('kilometers')}</InputLabel>
+                                <Input
+                                    placeholder="Ej: 50000"
+                                    name='kilometers'
+                                    value={editData.kilometers}
+                                    onChange={handleEditInputChange}
+                                    type="text"
+                                    inputMode="numeric"
                                 />
                             </InputGroup>
                             <FormRow>

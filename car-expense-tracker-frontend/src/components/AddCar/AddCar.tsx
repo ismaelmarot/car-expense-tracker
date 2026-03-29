@@ -153,7 +153,15 @@ export const AddCar: React.FC = () => {
                                 required
                             />
                         </InputGroup>
-                        <Box />
+
+                        <InputGroup>
+                            <InputLabel>{t('kilometers')}</InputLabel>
+                            <Input
+                                name='kilometers'
+                                value={carData.kilometers}
+                                onChange={handleInputChange}
+                            />
+                        </InputGroup>
                     </FormRow>
 
                     <Box sx={{ borderTop: '1px solid #e5e5ea', mt: 1 }} />

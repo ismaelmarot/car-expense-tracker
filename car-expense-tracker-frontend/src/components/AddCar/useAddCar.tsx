@@ -12,6 +12,7 @@ export const useAddCar = () => {
         year: '',
         vin: '',
         version: '',
+        kilometers: '',
         last_service_km: '',
         service_interval_km: '',
         vtv_date: '',
@@ -29,7 +30,7 @@ export const useAddCar = () => {
     const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         const { name, value } = e.target
 
-        if (name === 'last_service_km' || name === 'service_interval_km') {
+        if (name === 'kilometers' || name === 'last_service_km' || name === 'service_interval_km') {
             setCarData(prev => ({
                 ...prev,
                 [name]: formatKm(value)
@@ -67,6 +68,9 @@ export const useAddCar = () => {
             vin: carData.vin,
             version: carData.version || undefined,
             photo: photo || undefined,
+            kilometers: carData.kilometers
+                ? Number(carData.kilometers.replace(/\./g, '').replace(/,/g, ''))
+                : undefined,
             last_service_km: carData.last_service_km
                 ? Number(carData.last_service_km.replace(/\./g, '').replace(/,/g, ''))
                 : undefined,

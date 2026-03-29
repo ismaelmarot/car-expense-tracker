@@ -147,6 +147,7 @@ if (!gotLock) {
           engine TEXT,
           fuel_type TEXT,
           photo TEXT,
+          kilometers INTEGER,
           last_service_km INTEGER,
           service_interval_km INTEGER,
           vtv_date TEXT,
@@ -187,9 +188,9 @@ if (!gotLock) {
       });
       
       backendApp.post('/cars', (req, res) => {
-        const { brand, model, year, version, vehicle_type, color, vin, engine, fuel_type, photo, last_service_km, service_interval_km, vtv_date, extintor_date } = req.body;
-        const stmt = db.prepare(`INSERT INTO cars (brand, model, year, version, vehicle_type, color, vin, engine, fuel_type, photo, last_service_km, service_interval_km, vtv_date, extintor_date) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`);
-        stmt.run(brand, model, year, version, vehicle_type, color, vin, engine, fuel_type, photo, last_service_km, service_interval_km, vtv_date, extintor_date, function(err) {
+        const { brand, model, year, version, vehicle_type, color, vin, engine, fuel_type, photo, kilometers, last_service_km, service_interval_km, vtv_date, extintor_date } = req.body;
+        const stmt = db.prepare(`INSERT INTO cars (brand, model, year, version, vehicle_type, color, vin, engine, fuel_type, photo, kilometers, last_service_km, service_interval_km, vtv_date, extintor_date) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`);
+        stmt.run(brand, model, year, version, vehicle_type, color, vin, engine, fuel_type, photo, kilometers, last_service_km, service_interval_km, vtv_date, extintor_date, function(err) {
           if (err) return res.status(500).json({ error: err.message });
           res.json({ id: this.lastID });
         });
@@ -197,9 +198,9 @@ if (!gotLock) {
       });
       
       backendApp.put('/cars/:id', (req, res) => {
-        const { brand, model, year, version, vehicle_type, color, vin, engine, fuel_type, photo, last_service_km, service_interval_km, vtv_date, extintor_date } = req.body;
-        const stmt = db.prepare(`UPDATE cars SET brand=?, model=?, year=?, version=?, vehicle_type=?, color=?, vin=?, engine=?, fuel_type=?, photo=?, last_service_km=?, service_interval_km=?, vtv_date=?, extintor_date=? WHERE id=?`);
-        stmt.run(brand, model, year, version, vehicle_type, color, vin, engine, fuel_type, photo, last_service_km, service_interval_km, vtv_date, extintor_date, req.params.id, function(err) {
+        const { brand, model, year, version, vehicle_type, color, vin, engine, fuel_type, photo, kilometers, last_service_km, service_interval_km, vtv_date, extintor_date } = req.body;
+        const stmt = db.prepare(`UPDATE cars SET brand=?, model=?, year=?, version=?, vehicle_type=?, color=?, vin=?, engine=?, fuel_type=?, photo=?, kilometers=?, last_service_km=?, service_interval_km=?, vtv_date=?, extintor_date=? WHERE id=?`);
+        stmt.run(brand, model, year, version, vehicle_type, color, vin, engine, fuel_type, photo, kilometers, last_service_km, service_interval_km, vtv_date, extintor_date, req.params.id, function(err) {
           if (err) return res.status(500).json({ error: err.message });
           res.json({ changes: this.changes });
         });

@@ -84,7 +84,7 @@ export const CarInfoCard = styled(Box)`
   box-shadow: 0 2px 12px rgba(0, 0, 0, 0.06);
   border: 1px solid rgba(0, 0, 0, 0.04);
   margin-bottom: 1.5rem;
-  overflow: hidden;
+  overflow: visible;
   transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
 `;
 
@@ -227,19 +227,22 @@ export const CardExpandedContent = styled(Box)<{ expanded: boolean }>`
     to: { opacity: 1, transform: 'translateY(0)' }
   }
   height: calc(100vh - 240px);
-  max-height: 400px;
+  max-height: 500px;
   overflow-y: auto;
+  overflow-x: hidden;
   padding: 1.5rem;
+  padding-bottom: 2rem;
   margin-top: 0.5rem;
+  box-sizing: border-box;
   
   @media (max-height: 600px) {
     height: calc(100vh - 180px);
-    max-height: 300px;
+    max-height: 350px;
   }
   
   @media (max-width: 480px) {
     height: calc(100vh - 200px);
-    max-height: 350px;
+    max-height: 400px;
   }
 `;
 
