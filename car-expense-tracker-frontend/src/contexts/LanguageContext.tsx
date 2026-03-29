@@ -22,6 +22,7 @@ const translations: Translations = {
   dataExport: { es: 'Exportar datos', en: 'Data export' },
   backup: { es: 'Respaldo', en: 'Backup' },
   generateReport: { es: 'Generar Informe', en: 'Generate Report' },
+  reports: { es: 'Reportes', en: 'Reports' },
   from: { es: 'Desde', en: 'From' },
   to: { es: 'Hasta', en: 'To' },
   selectAll: { es: 'Seleccionar todas', en: 'Select all' },
@@ -66,7 +67,7 @@ const translations: Translations = {
   expenseTab: { es: 'Gasto', en: 'Expense' },
   history: { es: 'Historial', en: 'History' },
   statistics: { es: 'Gráfica', en: 'Statistics' },
-  settingsTab: { es: 'Ajustes', en: 'Settings' },
+  settingsTab: { es: 'Reportes', en: 'Reports' },
   
   // Add car
   addVehicle: { es: 'Agregar Vehículo', en: 'Add Vehicle' },

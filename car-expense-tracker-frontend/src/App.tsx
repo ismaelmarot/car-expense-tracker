@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState } from 'react'
 import './App.css'
 import { HashRouter as Router, Route, Routes } from 'react-router-dom'
 import { Box } from '@mui/material'
@@ -8,6 +8,7 @@ import { AddCar } from './components/AddCar/AddCar'
 import CarDetails from './components/CarDetails/CarDetails'
 import Footer from './components/Footer/Footer'
 import { LanguageProvider } from './contexts/LanguageContext'
+import LoadingScreen from './components/LoadingScreen/LoadingScreen'
 
 const AppContainer = styled(Box)`
   display: flex;
@@ -27,6 +28,12 @@ const MainContent = styled(Box)`
 `;
 
 const App: React.FC = () => {
+  const [loading, setLoading] = useState(true)
+
+  if (loading) {
+    return <LoadingScreen onEnter={() => setLoading(false)} />
+  }
+
   return (
     <LanguageProvider>
       <Router>

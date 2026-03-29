@@ -1,6 +1,5 @@
 import React from 'react';
 import { SettingsContainer, TitleStyled } from './SettingsStyles';
-import LanguageSelector from '../LanguageSelector/LanguageSelector';
 import Reports from '../Reports/Reports';
 import { useLanguage } from '../../contexts/LanguageContext';
 
@@ -9,11 +8,9 @@ const Settings: React.FC = () => {
     
     return (
         <SettingsContainer>
-            <TitleStyled>{t('settings')}</TitleStyled>
+            <TitleStyled>{t('reports')}</TitleStyled>
             
             <Reports />
-            
-            <LanguageSelector />
         </SettingsContainer>
     )
 }

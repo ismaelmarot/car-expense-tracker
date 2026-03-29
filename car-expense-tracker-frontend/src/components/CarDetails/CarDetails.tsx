@@ -49,14 +49,14 @@ import {
 import AddIcon from '@mui/icons-material/Add';
 import HistoryIcon from '@mui/icons-material/History';
 import BarChartIcon from '@mui/icons-material/BarChart';
-import SettingsIcon from '@mui/icons-material/Settings';
+import DescriptionIcon from '@mui/icons-material/Description';
 import EditIconMui from '@mui/icons-material/Edit';
 import DeleteIcon from '@mui/icons-material/Delete';
 import BuildIcon from '@mui/icons-material/Build';
 import PhotoCameraIcon from '@mui/icons-material/PhotoCamera';
 import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
 import CarExpenses from '../CarExpenses/CarExpenses';
-import AddExpense from '../AddExpense/AddExpense';
+import { AddExpense } from '../AddExpense/AddExpense';
 import ExpenseStats from '../ExpenseStats/ExpenseStats';
 import Settings from '../Settings/Settings';
 
@@ -572,14 +572,14 @@ const CarDetails: React.FC = () => {
                     <TabLabel>{t('statistics')}</TabLabel>
                 </TabButton>
                 <TabButton 
-                    onClick={() => handleTabClick('ajustes')}
+                    onClick={() => handleTabClick('reportes')}
                     sx={{ 
-                        background: activeTab === 'ajustes' ? '#0071e3' : '#f5f5f7',
-                        color: activeTab === 'ajustes' ? 'white' : '#1d1d1f',
-                        '&:hover': { background: activeTab === 'ajustes' ? '#0077ed' : '#e8e8ed' }
+                        background: activeTab === 'reportes' ? '#0071e3' : '#f5f5f7',
+                        color: activeTab === 'reportes' ? 'white' : '#1d1d1f',
+                        '&:hover': { background: activeTab === 'reportes' ? '#0077ed' : '#e8e8ed' }
                     }}
                 >
-                    <SettingsIcon sx={{ fontSize: 18 }} />
+                    <DescriptionIcon sx={{ fontSize: 18 }} />
                     <TabLabel>{t('settingsTab')}</TabLabel>
                 </TabButton>
             </TabsContainer>
@@ -588,7 +588,7 @@ const CarDetails: React.FC = () => {
                 {activeTab === 'gasto' && <AddExpense />}
                 {activeTab === 'historial' && <CarExpenses />}
                 {activeTab === 'grafica' && <ExpenseStats key={`stats-${windowSize}`} />}
-                {activeTab === 'ajustes' && <Settings />}
+                {activeTab === 'reportes' && <Settings />}
             </TabContent>
 
             <Dialog

@@ -13,8 +13,8 @@
     "start": "concurrently \"npm run start:react\" \"npm run start:electron\"",
     "start:react": "cd car-expense-tracker-frontend && npm start",
     "start:electron": "wait-on http://localhost:3000 && electron .",
-    "electron-build": "npm run build-frontend && npx electron-builder --publish never",
-    "electron-publish": "npm run build-frontend && npx electron-builder --publish always"
+    "electron-build": "npm run build-frontend && npx electron-builder --mac --win --publish never",
+    "electron-publish": "npm run build-frontend && npx electron-builder --mac --win --publish always"
   },
   "dependencies": {
     "concurrently": "^9.1.0",

@@ -6,8 +6,10 @@ import AddIcon from '@mui/icons-material/Add'
 import DirectionsCarIcon from '@mui/icons-material/DirectionsCar'
 import FormatListBulletedIcon from '@mui/icons-material/FormatListBulleted'
 import GridViewIcon from '@mui/icons-material/GridView'
+import SettingsIcon from '@mui/icons-material/Settings'
 import { HeaderLeft } from '@/styles/pageStyles'
 import { useLanguage } from '../../contexts/LanguageContext'
+import SettingsModal from '../../components/SettingsModal/SettingsModal'
 import {
   AddCard,
   CarDetail,
@@ -39,6 +41,7 @@ const CarsPage: React.FC = () => {
     const [cars, setCars] = useState<CarInterface[]>([])
     const [loading, setLoading] = useState<boolean>(true)
     const [viewMode, setViewMode] = useState<'list' | 'grid'>('grid')
+    const [settingsOpen, setSettingsOpen] = useState<boolean>(false)
     const navigate = useNavigate()
     const { t } = useLanguage()
 
@@ -80,6 +83,9 @@ const CarsPage: React.FC = () => {
                 <HeaderRight>
                     <IconBtn onClick={() => setViewMode(viewMode === 'list' ? 'grid' : 'list')}>
                         {viewMode === 'list' ? <GridViewIcon sx={{ fontSize: 20 }} /> : <FormatListBulletedIcon sx={{ fontSize: 20 }} />}
+                    </IconBtn>
+                    <IconBtn onClick={() => setSettingsOpen(true)}>
+                        <SettingsIcon sx={{ fontSize: 20 }} />
                     </IconBtn>
                     <PrimaryBtn onClick={() => navigate('/add')}>
                         <AddIcon sx={{ fontSize: 20 }} />
@@ -155,6 +161,7 @@ const CarsPage: React.FC = () => {
                     )}
                 </>
             )}
+            <SettingsModal open={settingsOpen} onClose={() => setSettingsOpen(false)} />
         </Container>
     )
 }
