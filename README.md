@@ -1,7 +1,17 @@
 
 # **Car Expense Tracker**
 
-**Version:** 1.0.0
+**Version:** 2.0.0
+
+---
+
+## **Download**
+
+[![Download for macOS](https://img.shields.io/badge/Download-macOS-000000?style=for-the-badge&logo=apple)](https://github.com/ismaelmarot/car-expense-tracker/releases/download/v2.0.0/CarET-2.0.0-arm64.dmg)
+
+[![Download for Windows](https://img.shields.io/badge/Download-Windows-0078D4?style=for-the-badge&logo=windows)](https://github.com/ismaelmarot/car-expense-tracker/releases/download/v2.0.0/CarET-Setup-2.0.0.exe)
+
+---
 
 An application to track car expenses, designed to simplify the management of multiple vehicles' expenses and categorize them. It also includes advanced features like generating PDF reports and displaying statistics through interactive charts.
 
@@ -22,8 +32,11 @@ An application to track car expenses, designed to simplify the management of mul
 - Record and edit expenses associated with vehicles.
 - Support for multiple vehicles.
 - Categorize expenses (fuel, maintenance, insurance, etc.).
-- Generate PDF reports with selectable filters.
+- Generate PDF and CSV reports with selectable filters.
 - Display statistics with interactive charts.
+- Track service intervals (km and dates).
+- VTV and extinguisher date tracking.
+- Spanish and English language support.
 
 ---
 
@@ -40,16 +53,24 @@ An application to track car expenses, designed to simplify the management of mul
 - **SQLite**: Lightweight and efficient local database.
 
 ### **Other Tools**
+- **Electron**: Desktop application framework.
 - **Yarn**: Dependency manager.
 
 ---
 
 ## **Installation**
+
+### **Desktop App (Recommended)**
+Simply download the installer for your platform:
+- **macOS:** [CarET-2.0.0-arm64.dmg](https://github.com/ismaelmarot/car-expense-tracker/releases/download/v2.0.0/CarET-2.0.0-arm64.dmg)
+- **Windows:** [CarET-Setup-2.0.0.exe](https://github.com/ismaelmarot/car-expense-tracker/releases/download/v2.0.0/CarET-Setup-2.0.0.exe)
+
+### **Development**
 Follow these steps to clone and install the project:
 
 1. **Clone the repository**:
    ```bash
-   git clone https://github.com/your_username/car-expense-tracker.git
+   git clone https://github.com/ismaelmarot/car-expense-tracker.git
    cd car-expense-tracker
    ```
 
