@@ -1,6 +1,10 @@
 
 # **Car Expense Tracker**
 
+<p align="center">
+  <img src="https://raw.githubusercontent.com/ismaelmarot/car-expense-tracker/main/app-icon.png" alt="CarET Icon" width="150">
+</p>
+
 **Version:** 2.0.0
 
 ---
