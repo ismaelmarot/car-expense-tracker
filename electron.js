@@ -154,6 +154,8 @@ if (!gotLock) {
           extintor_date TEXT
         )`);
         
+        db.run(`ALTER TABLE cars ADD COLUMN kilometers INTEGER`, (err) => {});
+        
         db.run(`CREATE TABLE IF NOT EXISTS expenses (
           id INTEGER PRIMARY KEY AUTOINCREMENT,
           car_id INTEGER,
