@@ -1,9 +1,9 @@
-import React from 'react';
-import { SettingsContainer, TitleStyled } from './SettingsStyles';
-import Reports from '../Reports/Reports';
-import { useLanguage } from '../../contexts/LanguageContext';
+import React from 'react'
+import { SettingsContainer, TitleStyled } from './SettingsStyles'
+import { Reports } from '../Reports'
+import { useLanguage } from '../../contexts/LanguageContext'
 
-const Settings: React.FC = () => {
+export const Settings: React.FC = () => {
     const { t } = useLanguage();
     
     return (
@@ -14,5 +14,3 @@ const Settings: React.FC = () => {
         </SettingsContainer>
     )
 }
-
-export default Settings;

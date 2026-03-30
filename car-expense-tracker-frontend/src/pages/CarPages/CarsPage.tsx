@@ -8,8 +8,8 @@ import FormatListBulletedIcon from '@mui/icons-material/FormatListBulleted'
 import GridViewIcon from '@mui/icons-material/GridView'
 import SettingsIcon from '@mui/icons-material/Settings'
 import { HeaderLeft } from '@/styles/pageStyles'
-import { useLanguage } from '../../contexts/LanguageContext'
-import SettingsModal from '../../components/SettingsModal/SettingsModal'
+import { useLanguage } from '@/contexts/LanguageContext'
+import { SettingsModal } from '@/components/SettingsModal/SettingsModal'
 import {
   AddCard,
   CarDetail,
@@ -37,7 +37,7 @@ import {
   StyledCard
 } from './CarsPageStyles'
 
-const CarsPage: React.FC = () => {
+export const CarsPage: React.FC = () => {
     const [cars, setCars] = useState<CarInterface[]>([])
     const [loading, setLoading] = useState<boolean>(true)
     const [viewMode, setViewMode] = useState<'list' | 'grid'>('grid')
@@ -165,5 +165,3 @@ const CarsPage: React.FC = () => {
         </Container>
     )
 }
-
-export default CarsPage

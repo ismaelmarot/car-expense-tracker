@@ -1,25 +1,25 @@
-import React, { useState } from 'react';
-import { ExpenseActionButtonInterface } from '../../interfaces/ExpenseActionButtonInterface';
-import { Container, EditButton, DeleteButton } from './ExpenseActionButtonStyles';
-import DeleteIcon from '@mui/icons-material/Delete';
-import EditIcon from '@mui/icons-material/Edit';
-import DeleteExpenseConfirmationDialog from '../DeleteExpenseConfirmationDialog/DeleteExpenseConfirmationDialog';
+import React, { useState } from 'react'
+import { ExpenseActionButtonInterface } from '@/interfaces'
+import { Container, EditButton, DeleteButton } from './ExpenseActionButtonsStyles'
+import DeleteIcon from '@mui/icons-material/Delete'
+import EditIcon from '@mui/icons-material/Edit'
+import { DeleteExpenseConfirmationDialog } from '../DeleteExpenseConfirmationDialog/DeleteExpenseConfirmationDialog'
 
-const ExpenseActionButtons: React.FC<ExpenseActionButtonInterface> = ({ onEdit, onDelete }) => {
-    const [open, setOpen] = useState(false);
+export const ExpenseActionButtons: React.FC<ExpenseActionButtonInterface> = ({ onEdit, onDelete }) => {
+    const [open, setOpen] = useState(false)
 
     const handleClickOpen = () => {
-        setOpen(true);
-    };
+        setOpen(true)
+    }
 
     const handleClose = () => {
-        setOpen(false);
-    };
+        setOpen(false)
+    }
 
     const handleConfirmDelete = () => {
-        onDelete();
-        setOpen(false);
-    };
+        onDelete()
+        setOpen(false)
+    }
 
     return (
         <Container>
@@ -38,6 +38,4 @@ const ExpenseActionButtons: React.FC<ExpenseActionButtonInterface> = ({ onEdit, 
             />
         </Container>
     )
-};
-
-export default ExpenseActionButtons;
+}

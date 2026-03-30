@@ -1,20 +1,20 @@
-import React, { useState } from 'react';
-import LegalModal from '../LegalModal/LegalModal';
-import { getCurrentYear } from '../../functions/getCurrentYear';
-import { Container, FooterText, FooterLink, Divider } from './FooterStyles';
-import { useLanguage } from '../../contexts/LanguageContext';
+import React, { useState } from 'react'
+import { LegalModal } from '../LegalModal/LegalModal'
+import { getCurrentYear } from '../../functions/getCurrentYear'
+import { Container, FooterText, FooterLink, Divider } from './FooterStyles'
+import { useLanguage } from '../../contexts/LanguageContext'
 
-const Footer: React.FC = () => {
-    const [openLegal, setOpenLegal] = useState(false);
-    const { t } = useLanguage();
+export const Footer: React.FC = () => {
+    const [openLegal, setOpenLegal] = useState(false)
+    const { t } = useLanguage()
 
     const handleOpenLegal = () => {
-        setOpenLegal(true);
-    };
+        setOpenLegal(true)
+    }
 
     const handleCloseLegal = () => {
-        setOpenLegal(false);
-    };
+        setOpenLegal(false)
+    }
 
     return (
         <>
@@ -34,7 +34,5 @@ const Footer: React.FC = () => {
 
             <LegalModal open={openLegal} onClose={handleCloseLegal} />
         </>
-    );
-};
-
-export default Footer;
+    )
+}

@@ -1,13 +1,13 @@
-import React, { useEffect, useState } from 'react';
-import { Typography, Box } from '@mui/material';
-import { getCarExpenses, deleteExpense, updateExpense } from '../../api/api';
-import { useParams } from 'react-router-dom';
-import { formatDate } from '../../functions/formatDate';
-import { formatNumberWithCommas } from '../../functions/formatNumberWithCommas';
-import { formatNumberByThousands } from '../../functions/formatNumbersByThousands';
-import { ExpenseInterface } from '../../interfaces/ExpenseInterface';
-import { EditExpenseDialog } from '../EditExpenseDialog/EditExpenseDialog';
-import { useLanguage } from '../../contexts/LanguageContext';
+import React, { useEffect, useState } from 'react'
+import { Typography, Box } from '@mui/material'
+import { getCarExpenses, deleteExpense, updateExpense } from '../../api/api'
+import { useParams } from 'react-router-dom'
+import { formatDate } from '../../functions/formatDate'
+import { formatNumberWithCommas } from '../../functions/formatNumberWithCommas'
+import { formatNumberByThousands } from '../../functions/formatNumbersByThousands'
+import { ExpenseInterface } from '@/interfaces'
+import { EditExpenseDialog } from '../EditExpenseDialog/EditExpenseDialog'
+import { useLanguage } from '../../contexts/LanguageContext'
 import { 
   Container, 
   TotalCard, 
@@ -49,31 +49,31 @@ import {
   PhotoViewerClose,
   PhotoViewerNav,
   PhotoViewerCounter
-} from './CarExpensesStyles';
-import { formatCategory } from '../../functions/FormatCategory';
-import EditIcon from '@mui/icons-material/Edit';
-import DeleteIcon from '@mui/icons-material/Delete';
-import CloseIcon from '@mui/icons-material/Close';
-import ReceiptLongIcon from '@mui/icons-material/ReceiptLong';
-import ChevronLeftIcon from '@mui/icons-material/ChevronLeft';
-import ChevronRightIcon from '@mui/icons-material/ChevronRight';
-import DeleteCarConfirmationDialog from '../DeletCarConfirmationDialog/DeletCarConfirmationDialog';
+} from './CarExpensesStyles'
+import { formatCategory } from '../../functions/FormatCategory'
+import EditIcon from '@mui/icons-material/Edit'
+import DeleteIcon from '@mui/icons-material/Delete'
+import CloseIcon from '@mui/icons-material/Close'
+import ReceiptLongIcon from '@mui/icons-material/ReceiptLong'
+import ChevronLeftIcon from '@mui/icons-material/ChevronLeft'
+import ChevronRightIcon from '@mui/icons-material/ChevronRight'
+import { DeleteCarConfirmationDialog } from '../DeletCarConfirmationDialog/DeletCarConfirmationDialog'
 
-const CarExpenses: React.FC = () => {
-    const { id } = useParams();
-    const { t } = useLanguage();
-    const [expenses, setExpenses] = useState<ExpenseInterface[]>([]);
-    const [loading, setLoading] = useState<boolean>(true);
-    const [error, setError] = useState<string>('');
-    const [editExpense, setEditExpense] = useState<ExpenseInterface | null>(null);
-    const [openEditDialog, setOpenEditDialog] = useState<boolean>(false);
-    const [selectedExpense, setSelectedExpense] = useState<ExpenseInterface | null>(null);
-    const [showPopup, setShowPopup] = useState<boolean>(false);
-    const [showDeleteConfirm, setShowDeleteConfirm] = useState<boolean>(false);
-    const [photoViewerOpen, setPhotoViewerOpen] = useState<boolean>(false);
-    const [currentPhotoIndex, setCurrentPhotoIndex] = useState<number>(0);
-    const [viewerPhotos, setViewerPhotos] = useState<string[]>([]);
-    const [photoZoom, setPhotoZoom] = useState<boolean>(false);
+export const CarExpenses: React.FC = () => {
+    const { id } = useParams()
+    const { t } = useLanguage()
+    const [expenses, setExpenses] = useState<ExpenseInterface[]>([])
+    const [loading, setLoading] = useState<boolean>(true)
+    const [error, setError] = useState<string>('')
+    const [editExpense, setEditExpense] = useState<ExpenseInterface | null>(null)
+    const [openEditDialog, setOpenEditDialog] = useState<boolean>(false)
+    const [selectedExpense, setSelectedExpense] = useState<ExpenseInterface | null>(null)
+    const [showPopup, setShowPopup] = useState<boolean>(false)
+    const [showDeleteConfirm, setShowDeleteConfirm] = useState<boolean>(false)
+    const [photoViewerOpen, setPhotoViewerOpen] = useState<boolean>(false)
+    const [currentPhotoIndex, setCurrentPhotoIndex] = useState<number>(0)
+    const [viewerPhotos, setViewerPhotos] = useState<string[]>([])
+    const [photoZoom, setPhotoZoom] = useState<boolean>(false)
 
     useEffect(() => {
         const fetchExpenses = async () => {
@@ -86,29 +86,29 @@ const CarExpenses: React.FC = () => {
                         : (expense.photos || [])
                 }));
                 const sortedData = expensesWithPhotos.sort((a: any, b: any) => {
-                    return new Date(b.date).getTime() - new Date(a.date).getTime();
+                    return new Date(b.date).getTime() - new Date(a.date).getTime()
                 });
-                setExpenses(sortedData);
-                setLoading(false);
+                setExpenses(sortedData)
+                setLoading(false)
             } catch (err) {
-                setError("Hubo un error al cargar los gastos.");
-                setLoading(false);
+                setError("Hubo un error al cargar los gastos.")
+                setLoading(false)
             }
         }
-        fetchExpenses();
-    }, [id]);
+        fetchExpenses()
+    }, [id])
 
     const handleDelete = async (expenseId: number) => {
         try {
-            deleteExpense(expenseId);
-            setExpenses(expenses.filter(expense => expense.id !== expenseId));
+            deleteExpense(expenseId)
+            setExpenses(expenses.filter(expense => expense.id !== expenseId))
             setShowPopup(false);
-            setSelectedExpense(null);
-            setShowDeleteConfirm(false);
+            setSelectedExpense(null)
+            setShowDeleteConfirm(false)
         } catch (err) {
-            setError("Hubo un error al eliminar el gasto.");
+            setError("Hubo un error al eliminar el gasto.")
         }
-    };
+    }
 
     const handleEdit = (expense: ExpenseInterface) => {
         const expenseWithPhotos = {
@@ -116,45 +116,45 @@ const CarExpenses: React.FC = () => {
             photos: typeof expense.photos === 'string' 
                 ? JSON.parse(expense.photos || '[]') 
                 : (expense.photos || [])
-        };
+        }
         setEditExpense(expenseWithPhotos);
         setOpenEditDialog(true);
         setShowPopup(false);
-    };
+    }
 
     const handleCloseEdit = () => {
         setEditExpense(null);
-        setOpenEditDialog(false);
+        setOpenEditDialog(false)
     }
 
     const handleSave = async () => {
-        if (!editExpense) return;
+        if (!editExpense) return
         try {
-            await updateExpense(editExpense.id, editExpense);
+            await updateExpense(editExpense.id, editExpense)
             setExpenses(prevExpenses => {
                 const updatedExpenses = prevExpenses.map(exp =>
                     exp.id === editExpense.id ? editExpense : exp
-                );
-                return updatedExpenses.sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime());
-            });
+                )
+                return updatedExpenses.sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime())
+            })
             if (selectedExpense && selectedExpense.id === editExpense.id) {
                 setSelectedExpense(editExpense);
             }
             handleCloseEdit();
         } catch (err) {
-            setError("Hubo un error al guardar los cambios.");
+            setError("Hubo un error al guardar los cambios.")
         }
-    };
+    }
     
     const handleChange = (field: keyof ExpenseInterface, value: string | number | string[]) => {
-        if (!editExpense) return;
-        setEditExpense({ ...editExpense, [field]: value });
-    };
+        if (!editExpense) return
+        setEditExpense({ ...editExpense, [field]: value })
+    }
 
     const handlePhotoChange = (newPhotos: string[]) => {
         if (!editExpense) return;
-        setEditExpense({ ...editExpense, photos: newPhotos });
-    };
+        setEditExpense({ ...editExpense, photos: newPhotos })
+    }
 
     const handleItemClick = (expense: ExpenseInterface) => {
         const expenseWithPhotos = {
@@ -162,54 +162,54 @@ const CarExpenses: React.FC = () => {
             photos: typeof expense.photos === 'string' 
                 ? JSON.parse(expense.photos || '[]') 
                 : (expense.photos || [])
-        };
-        setSelectedExpense(expenseWithPhotos);
-        setShowPopup(true);
-    };
+        }
+        setSelectedExpense(expenseWithPhotos)
+        setShowPopup(true)
+    }
 
     const handleClosePopup = () => {
-        setShowPopup(false);
-        setSelectedExpense(null);
-    };
+        setShowPopup(false)
+        setSelectedExpense(null)
+    }
 
     const openPhotoViewer = (photos: string[], index: number) => {
-        setViewerPhotos(photos);
-        setCurrentPhotoIndex(index);
-        setPhotoViewerOpen(true);
-    };
+        setViewerPhotos(photos)
+        setCurrentPhotoIndex(index)
+        setPhotoViewerOpen(true)
+    }
 
     const closePhotoViewer = () => {
-        setPhotoViewerOpen(false);
-        setViewerPhotos([]);
-        setCurrentPhotoIndex(0);
-        setPhotoZoom(false);
-    };
+        setPhotoViewerOpen(false)
+        setViewerPhotos([])
+        setCurrentPhotoIndex(0)
+        setPhotoZoom(false)
+    }
 
     const toggleZoom = () => {
-        setPhotoZoom(!photoZoom);
-    };
+        setPhotoZoom(!photoZoom)
+    }
 
     const goToPrevPhoto = () => {
-        setCurrentPhotoIndex(prev => (prev > 0 ? prev - 1 : viewerPhotos.length - 1));
-    };
+        setCurrentPhotoIndex(prev => (prev > 0 ? prev - 1 : viewerPhotos.length - 1))
+    }
 
     const goToNextPhoto = () => {
-        setCurrentPhotoIndex(prev => (prev < viewerPhotos.length - 1 ? prev + 1 : 0));
-    };
+        setCurrentPhotoIndex(prev => (prev < viewerPhotos.length - 1 ? prev + 1 : 0))
+    }
 
-    const totalSpent = expenses.reduce((total, expense) => total + (expense.amount || 0), 0);
+    const totalSpent = expenses.reduce((total, expense) => total + (expense.amount || 0), 0)
 
     if (loading) return (
         <Container>
             <Typography variant='h6' sx={{ textAlign: 'center', color: '#86868b' }}>{t('loadingExpenses')}</Typography>
         </Container>
-    );
+    )
 
     if (error) return (
         <Container>
             <Typography variant='h6' color='error' sx={{ textAlign: 'center' }}>{error}</Typography>
         </Container>
-    );
+    )
 
     return (
         <Container>
@@ -360,5 +360,3 @@ const CarExpenses: React.FC = () => {
         </Container>
     )
 }
-
-export default CarExpenses;

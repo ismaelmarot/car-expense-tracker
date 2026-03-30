@@ -1,0 +1,1 @@
+export { DownloadPDFComponent } from './DownloadPDFComponent'

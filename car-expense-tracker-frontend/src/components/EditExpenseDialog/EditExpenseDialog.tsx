@@ -1,5 +1,5 @@
 import React, { useRef, useState, useEffect } from 'react'
-import { EditExpenseDialogPropsInterface  } from '../../interfaces/EditExpenseDialogPropsInterface'
+import { EditExpenseDialogPropsInterface  } from '@/interfaces'
 import { Dialog, DialogTitle, MenuItem, Select, Button, Box, Typography } from '@mui/material'
 import {
     ButtonSave,
@@ -10,84 +10,84 @@ import {
     TextFieldStyled,
     TypographyError
 } from './EditExpenseDialogStyled'
-import PhotoCameraIcon from '@mui/icons-material/PhotoCamera';
-import CloseIcon from '@mui/icons-material/Close';
-import { useLanguage } from '../../contexts/LanguageContext';
+import PhotoCameraIcon from '@mui/icons-material/PhotoCamera'
+import CloseIcon from '@mui/icons-material/Close'
+import { useLanguage } from '../../contexts/LanguageContext'
 
 const formatPrice = (value: string): string => {
-    const cleanValue = value.replace(/[^\d,]/g, '');
-    const parts = cleanValue.split(',');
-    const integerPart = parts[0].replace(/\B(?=(\d{3})+(?!\d))/g, '.');
+    const cleanValue = value.replace(/[^\d,]/g, '')
+    const parts = cleanValue.split(',')
+    const integerPart = parts[0].replace(/\B(?=(\d{3})+(?!\d))/g, '.')
     if (parts.length > 1) {
-        return `${integerPart},${parts[1].slice(0, 2)}`;
+        return `${integerPart},${parts[1].slice(0, 2)}`
     }
-    return integerPart;
-};
+    return integerPart
+}
 
 const formatKilometers = (value: string): string => {
     const cleanValue = value.replace(/[^\d]/g, '');
-    return cleanValue.replace(/\B(?=(\d{3})+(?!\d))/g, '.');
-};
+    return cleanValue.replace(/\B(?=(\d{3})+(?!\d))/g, '.')
+}
 
 export const EditExpenseDialog: React.FC<EditExpenseDialogPropsInterface> = ({ open, expense, error, onClose, onSave, onChange, onPhotosChange }) => {
-    const { t } = useLanguage();
-    const fileInputRef = useRef<HTMLInputElement>(null);
-    const [priceDisplay, setPriceDisplay] = useState('');
-    const [kmDisplay, setKmDisplay] = useState('');
+    const { t } = useLanguage()
+    const fileInputRef = useRef<HTMLInputElement>(null)
+    const [priceDisplay, setPriceDisplay] = useState('')
+    const [kmDisplay, setKmDisplay] = useState('')
 
-    const photos = (expense as any)?.photos || [];
+    const photos = (expense as any)?.photos || []
 
     useEffect(() => {
         if (expense) {
-            setPriceDisplay(formatPrice(String(expense.amount).replace('.', ',')));
-            setKmDisplay(formatKilometers(String(expense.kilometers)));
+            setPriceDisplay(formatPrice(String(expense.amount).replace('.', ',')))
+            setKmDisplay(formatKilometers(String(expense.kilometers)))
         }
-    }, [expense]);
+    }, [expense])
 
     const handlePriceChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-        const value = e.target.value;
-        const cleanValue = value.replace(/[^\d,]/g, '');
+        const value = e.target.value
+        const cleanValue = value.replace(/[^\d,]/g, '')
         const formatted = formatPrice(cleanValue);
-        setPriceDisplay(formatted);
-        const rawValue = parseFloat(cleanValue.replace(/\./g, '').replace(',', '.')) || 0;
-        onChange('amount', rawValue);
+        setPriceDisplay(formatted)
+        const rawValue = parseFloat(cleanValue.replace(/\./g, '').replace(',', '.')) || 0
+        onChange('amount', rawValue)
     };
 
     const handleKmChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-        const value = e.target.value;
-        const cleanValue = value.replace(/[^\d]/g, '');
-        const formatted = formatKilometers(cleanValue);
+        const value = e.target.value
+        const cleanValue = value.replace(/[^\d]/g, '')
+        const formatted = formatKilometers(cleanValue)
         setKmDisplay(formatted);
-        const rawValue = parseInt(cleanValue, 10) || 0;
-        onChange('kilometers', rawValue);
+        const rawValue = parseInt(cleanValue, 10) || 0
+        onChange('kilometers', rawValue)
     };
 
     const handlePhotoClick = () => {
-        fileInputRef.current?.click();
-    };
+        fileInputRef.current?.click()
+    }
 
     const handlePhotoChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-        const files = e.target.files;
-        if (!files || !onPhotosChange) return;
+        const files = e.target.files
+        if (!files || !onPhotosChange) return
 
-        const remainingSlots = 3 - photos.length;
-        if (remainingSlots <= 0) return;
+        const remainingSlots = 3 - photos.length
+        if (remainingSlots <= 0) return
 
-        const filesToProcess = Array.from(files).slice(0, remainingSlots);
+        const filesToProcess = Array.from(files).slice(0, remainingSlots)
         
         filesToProcess.forEach(file => {
-            const reader = new FileReader();
+            const reader = new FileReader()
             reader.onloadend = () => {
-                onPhotosChange([...photos, reader.result as string]);
-            };
-            reader.readAsDataURL(file);
-        });
-    };
+                onPhotosChange([...photos, reader.result as string])
+            }
+            reader.readAsDataURL(file)
+        })
+    }
 
     const removePhoto = (index: number) => {
-        if (!onPhotosChange) return;
-        onPhotosChange(photos.filter((_: any, i: number) => i !== index));
-    };
+        if (!onPhotosChange) return
+        onPhotosChange(photos.filter((_: any, i: number) => i !== index))
+    }
 
     return (
         <Dialog

@@ -1,9 +1,9 @@
-import React from 'react';
-import { TableRow, TableCell } from '@mui/material';
-import { ExpenseTableHeaderInterface } from '../../interfaces/ExpenseTableHeaderInterface';
-import { TableHeadStyled } from './ExpenseTableHeadStyles';
+import { TableRow, TableCell } from '@mui/material'
+import { TableHeadStyled } from './ExpenseTableHeadStyles'
+import { ExpenseTableHeaderInterface } from '@/interfaces'
 
-const ExpenseTableHeader = ({ headers }: { headers: ExpenseTableHeaderInterface[] }) => {
+
+export const ExpenseTableHeader = ({ headers }: { headers: ExpenseTableHeaderInterface[] }) => {
     return(
         <TableHeadStyled>
                 <TableRow>
@@ -15,6 +15,4 @@ const ExpenseTableHeader = ({ headers }: { headers: ExpenseTableHeaderInterface[
                 </TableRow>
         </TableHeadStyled>
     )
-};
-
-export default ExpenseTableHeader;
+}

@@ -1,15 +1,11 @@
-import React, { useState } from 'react'
-import './App.css'
-import { HashRouter as Router, Route, Routes } from 'react-router-dom'
-import { Box } from '@mui/material'
+import { useState } from 'react'
 import styled from '@emotion/styled'
-import CarsPage from './pages/CarPages/CarsPage'
-import { AddCar } from './components/AddCar/AddCar'
-
-import Footer from './components/Footer/Footer'
+import { HashRouter as Router, Route, Routes } from 'react-router-dom'
+import './App.css'
+import { AddCar , Footer, LoadingScreen, CarDetails} from './components'
+import { Box } from '@mui/material'
 import { LanguageProvider } from './contexts/LanguageContext'
-import LoadingScreen from './components/LoadingScreen/LoadingScreen'
-import { CarDetails } from './components/CarDetails'
+import { CarsPage } from './pages'
 
 const AppContainer = styled(Box)`
   display: flex;
@@ -28,7 +24,7 @@ const MainContent = styled(Box)`
   overflow-x: hidden;
 `;
 
-const App: React.FC = () => {
+export const App: React.FC = () => {
   const [loading, setLoading] = useState(true)
 
   if (loading) {
@@ -50,7 +46,5 @@ const App: React.FC = () => {
         </AppContainer>
       </Router>
     </LanguageProvider>
-  );
-};
-
-export default App;
+  )
+}

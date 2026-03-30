@@ -1,4 +1,4 @@
-import { CarInterface } from './CarInterface'
+import { CarInterface } from '@/interfaces'
 
 export interface CarAvatarProps {
     car: CarInterface;

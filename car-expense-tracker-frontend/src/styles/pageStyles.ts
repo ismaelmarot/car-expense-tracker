@@ -1,7 +1,7 @@
-import styled from '@emotion/styled';
-import { Box, Typography } from '@mui/material';
+import styled from '@emotion/styled'
+import { Box, Typography } from '@mui/material'
 
-export const pageMaxWidth = '1200px';
+export const pageMaxWidth = '1200px'
 
 export const PageContainer = styled(Box)`
   padding: 2rem 1.5rem;
@@ -12,7 +12,7 @@ export const PageContainer = styled(Box)`
   @media (max-width: 600px) {
     padding: 1.5rem 1rem;
   }
-`;
+`
 
 export const PageHeader = styled(Box)`
   display: flex;
@@ -20,14 +20,14 @@ export const PageHeader = styled(Box)`
   justify-content: space-between;
   margin-bottom: 1.5rem;
   gap: 1rem;
-`;
+`
 
 export const HeaderLeft = styled(Box)`
   display: flex;
   flex-direction: column;
   justify-content: center;
   min-width: 0;
-`;
+`
 
 export const HeaderRight = styled(Box)`
   display: flex;
@@ -35,7 +35,7 @@ export const HeaderRight = styled(Box)`
   justify-content: flex-end;
   gap: 0.625rem;
   flex-shrink: 0;
-`;
+`
 
 export const PageTitle = styled(Typography)`
   font-size: 2.25rem;
@@ -48,7 +48,7 @@ export const PageTitle = styled(Typography)`
   @media (max-width: 600px) {
     font-size: 1.625rem;
   }
-`;
+`
 
 export const PageSubtitle = styled(Typography)`
   font-size: 0.9375rem;
@@ -58,7 +58,7 @@ export const PageSubtitle = styled(Typography)`
   margin-top: 0.25rem;
   font-family: -apple-system, BlinkMacSystemFont, 'Inter', sans-serif;
   min-height: 1.2em;
-`;
+`
 
 export const PrimaryButton = styled(Box)`
   display: flex;
@@ -91,7 +91,7 @@ export const PrimaryButton = styled(Box)`
   &:active {
     transform: scale(0.97);
   }
-`;
+`
 
 export const IconButton = styled(Box)`
   display: flex;
@@ -121,20 +121,20 @@ export const IconButton = styled(Box)`
   &:active {
     transform: scale(0.97);
   }
-`;
+`
 
 export const FormContainer = styled(Box)`
   max-width: 400px;
   margin: 0 auto;
   padding: 0 1rem;
-`;
+`
 
 export const FormCard = styled(Box)`
   background: transparent;
   padding: 0;
   border: none;
   box-shadow: none;
-`;
+`
 
 export const FormTitle = styled(Typography)`
   font-size: 1.25rem;
@@ -143,37 +143,37 @@ export const FormTitle = styled(Typography)`
   text-align: center;
   margin-bottom: 2rem;
   letter-spacing: -0.01em;
-`;
+`
 
 export const Form = styled.form`
   display: flex;
   flex-direction: column;
   gap: 1.25rem;
-`;
+`
 
 export const InputWrapper = styled(Box)`
   display: flex;
   flex-direction: column;
   gap: 0.5rem;
-`;
+`
 
 export const OptionalLabel = styled(Typography)`
   font-size: 0.8125rem;
   color: #86868b;
   font-weight: 400;
   margin-left: 0.25rem;
-`;
+`
 
 export const InputHint = styled(Typography)`
   font-size: 0.75rem;
   color: #86868b;
-`;
+`
 
 export const Label = styled(Typography)`
   font-size: 0.875rem;
   font-weight: 500;
   color: #1d1d1f;
-`;
+`
 
 export const Input = styled.input`
   width: 100%;
@@ -201,7 +201,7 @@ export const Input = styled.input`
   &:hover:not(:focus) {
     border-color: #aeaeb2;
   }
-`;
+`
 
 export const ImageUpload = styled(Box)`
   position: relative;
@@ -221,7 +221,7 @@ export const ImageUpload = styled(Box)`
     border-color: #0071e3;
     background: linear-gradient(135deg, #f0f7ff 0%, #e8f4fd 100%);
   }
-`;
+`
 
 export const ImagePreview = styled(Box)`
   width: 100%;
@@ -235,7 +235,7 @@ export const ImagePreview = styled(Box)`
   &:hover .image-overlay {
     opacity: 1;
   }
-`;
+`
 
 export const ImageOverlay = styled(Box)`
   position: absolute;
@@ -247,7 +247,7 @@ export const ImageOverlay = styled(Box)`
   opacity: 0;
   transition: all 0.2s ease;
   border-radius: 20px;
-`;
+`
 
 export const ChangeImageButton = styled(Box)`
   display: flex;
@@ -259,7 +259,7 @@ export const ChangeImageButton = styled(Box)`
   color: #1d1d1f;
   font-size: 0.875rem;
   font-weight: 500;
-`;
+`
 
 export const UploadPlaceholder = styled(Box)`
   display: flex;
@@ -267,7 +267,7 @@ export const UploadPlaceholder = styled(Box)`
   align-items: center;
   text-align: center;
   padding: 1.5rem;
-`;
+`
 
 export const UploadIconCircle = styled(Box)`
   width: 64px;
@@ -279,19 +279,19 @@ export const UploadIconCircle = styled(Box)`
   justify-content: center;
   margin-bottom: 1rem;
   box-shadow: 0 4px 12px rgba(0, 113, 227, 0.3);
-`;
+`
 
 export const UploadTitle = styled(Typography)`
   font-size: 1rem;
   font-weight: 600;
   color: #1d1d1f;
   margin-bottom: 0.375rem;
-`;
+`
 
 export const UploadSubtitle = styled(Typography)`
   font-size: 0.8125rem;
   color: #86868b;
-`;
+`
 
 export const SubmitButton = styled.button`
   display: flex;
@@ -323,7 +323,7 @@ export const SubmitButton = styled.button`
     color: #ffffff;
     cursor: not-allowed;
   }
-`;
+`
 
 export const CancelButton = styled.button`
   display: flex;
@@ -344,7 +344,7 @@ export const CancelButton = styled.button`
     background: rgba(0, 113, 227, 0.08);
     border-radius: 22px;
   }
-`;
+`
 
 export const InputRow = styled(Box)`
   display: grid;
@@ -354,7 +354,7 @@ export const InputRow = styled(Box)`
   @media (max-width: 400px) {
     grid-template-columns: 1fr;
   }
-`;
+`
 
 export const CardsGrid = styled(Box)`
   display: grid;
@@ -368,7 +368,7 @@ export const CardsGrid = styled(Box)`
   @media (max-width: 600px) {
     grid-template-columns: 1fr;
   }
-`;
+`
 
 export const CardStyled = styled(Box)`
   background: #ffffff;
@@ -410,7 +410,7 @@ export const CardStyled = styled(Box)`
     transform: scale(0.99);
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.06);
   }
-`;
+`
 
 export const AddCardStyled = styled(Box)`
   background: #fafbfc;
@@ -437,7 +437,7 @@ export const AddCardStyled = styled(Box)`
   &:active {
     transform: scale(0.98);
   }
-`;
+`
 
 export const EmptyState = styled(Box)`
   display: flex;
@@ -447,13 +447,13 @@ export const EmptyState = styled(Box)`
   padding: 5rem 2rem;
   color: #86868b;
   text-align: center;
-`;
+`
 
 export const ListContainer = styled(Box)`
   display: flex;
   flex-direction: column;
   gap: 0.625rem;
-`;
+`
 
 export const ListAddItem = styled(Box)`
   background: #fafbfc;
@@ -479,4 +479,4 @@ export const ListAddItem = styled(Box)`
   &:active {
     transform: scale(0.99);
   }
-`;
+`

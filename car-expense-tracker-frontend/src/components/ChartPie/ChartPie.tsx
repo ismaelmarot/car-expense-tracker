@@ -1,9 +1,8 @@
-import React from 'react';
-import { Pie } from 'react-chartjs-2';
-import {Container, GridPieChart, TypographyStyled } from './ChartPieStyles';
-import { ChartPieInterface } from '../../interfaces/ChartPieInterface';
+import { Pie } from 'react-chartjs-2'
+import {Container, GridPieChart, TypographyStyled } from './ChartPieStyles'
+import { ChartPieInterface } from '@/interfaces'
 
-const ChartPie: React.FC<ChartPieInterface> = ({ title, data }) => {
+export const ChartPie: React.FC<ChartPieInterface> = ({ title, data }) => {
     return (
         <Container item xs={12}>
             <TypographyStyled>{title}</TypographyStyled>
@@ -11,7 +10,5 @@ const ChartPie: React.FC<ChartPieInterface> = ({ title, data }) => {
                 <Pie data={data} />
             </GridPieChart>
         </Container>
-    );
-};
-
-export default ChartPie;
+    )
+}

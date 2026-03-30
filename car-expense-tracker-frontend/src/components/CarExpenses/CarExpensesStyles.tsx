@@ -80,11 +80,11 @@ export const HeaderCell = styled(Typography)`
   text-transform: uppercase;
   letter-spacing: 0.5px;
   
-  &:nth-child(1) { text-align: left; }
-  &:nth-child(2) { text-align: center; }
-  &:nth-child(3) { text-align: center; }
-  &:nth-child(4) { text-align: right; }
-  &:nth-child(5) { text-align: right; }
+  &:nth-of-type(1) { text-align: left; }
+  &:nth-of-type(2) { text-align: center; }
+  &:nth-of-type(3) { text-align: center; }
+  &:nth-of-type(4) { text-align: right; }
+  &:nth-of-type(5) { text-align: right; }
 `;
 
 export const ExpenseItem = styled(Box)`

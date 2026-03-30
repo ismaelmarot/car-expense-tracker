@@ -1,10 +1,9 @@
-import React from 'react';
-import { formatNumberWithCommas } from '../../functions/formatNumberWithCommas';
-import { formatDate } from '../../functions/formatDate';
-import { ExpenseTableForPDFInterface } from '../../interfaces/ExpenseTableForPDFInterface';
-import { ThStyled, TdStyled, TdStyledRight, TableStyled } from './ExpenseTableForPDFStyles';
+import { formatNumberWithCommas } from '../../functions/formatNumberWithCommas'
+import { formatDate } from '../../functions/formatDate'
+import { ExpenseTableForPDFInterface } from '@/interfaces'
+import { ThStyled, TdStyled, TdStyledRight, TableStyled } from './ExpenseTableForPDFStyles'
 
-const ExpenseTableForPDF: React.FC<ExpenseTableForPDFInterface> = ({ expenses }) => {
+export const ExpenseTableForPDF: React.FC<ExpenseTableForPDFInterface> = ({ expenses }) => {
     return (
         <>
         {expenses.length > 0 ? (
@@ -34,7 +33,5 @@ const ExpenseTableForPDF: React.FC<ExpenseTableForPDFInterface> = ({ expenses })
             <p>No hay gastos para mostrar.</p>
         )}
         </>
-    );
-};
-  
-export default ExpenseTableForPDF;
+    )
+}

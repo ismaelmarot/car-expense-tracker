@@ -73,8 +73,9 @@ function startBackend() {
     backendApp.use(cors());
     backendApp.use(express.json({ limit: '10mb' }));
     
-    // Usamos DB_PATH si Electron lo pasó, sino la DB local del backend (igual que server.js)
-    const dbPath = process.env.DB_PATH || path.join(__dirname, "car-expense-tracker-backend", "database.db");
+    // Usamos la misma DB que Electron está usando
+    const userDataPath = app.getPath("userData");
+    const dbPath = path.join(userDataPath, "database.db");
     const db = new sqlite3.Database(dbPath, (err) => {
       if (err) {
         console.error('Error abriendo DB:', err);
@@ -249,73 +250,371 @@ function startBackend() {
     
     // Reports routes
     backendApp.get('/reports/pdf', (req, res) => {
+      console.log('PDF Report request received:', req.query);
       const { car_id, start_date, end_date, categories } = req.query;
-      let query = "SELECT e.*, c.brand, c.model FROM expenses e JOIN cars c ON e.car_id = c.id WHERE 1=1";
-      const params = [];
-      if (car_id) { query += " AND e.car_id = ?"; params.push(car_id); }
-      if (start_date) { query += " AND e.date >= ?"; params.push(start_date); }
-      if (end_date) { query += " AND e.date <= ?"; params.push(end_date); }
-      if (categories) {
-        const cats = categories.split(',');
-        query += ` AND e.category IN (${cats.map(() => '?').join(',')})`;
-        params.push(...cats);
-      }
-      query += " ORDER BY e.date DESC";
       
-      db.all(query, params, (err, expenses) => {
-        if (err) return res.status(500).json({ error: err.message });
-        
-        const PDFDocument = require('pdfkit');
-        const doc = new PDFDocument();
-        res.setHeader('Content-Type', 'application/pdf');
-        res.setHeader('Content-Disposition', 'attachment; filename=reporte.pdf');
-        doc.pipe(res);
-        
-        doc.fontSize(18).text('Reporte de Gastos', { align: 'center' });
-        doc.moveDown();
-        
-        if (expenses.length === 0) {
-          doc.fontSize(12).text('No hay gastos en el período seleccionado.');
-        } else {
-          expenses.forEach(exp => {
-            doc.fontSize(12).text(`${exp.date} - ${exp.brand} ${exp.model}`);
-            doc.fontSize(10).text(`Categoría: ${exp.category} - Amount: $${exp.amount}`);
-            if (exp.description) doc.text(`Descripción: ${exp.description}`);
-            doc.moveDown(0.5);
-          });
-          
-          const total = expenses.reduce((sum, e) => sum + (e.amount || 0), 0);
-          doc.fontSize(14).text(`Total: $${total}`, { bold: true });
+      // First get car info
+      let carQuery = "SELECT * FROM cars";
+      let carParams = [];
+      if (car_id) {
+        carQuery = "SELECT * FROM cars WHERE id = ?";
+        carParams = [car_id];
+      }
+      
+      db.all(carQuery, carParams, (carErr, cars) => {
+        if (carErr) {
+          console.error('Car query error:', carErr);
+          return res.status(500).json({ error: carErr.message });
         }
         
-        doc.end();
+        let query = "SELECT e.*, c.brand, c.model FROM expenses e JOIN cars c ON e.car_id = c.id WHERE 1=1";
+        const params = [];
+        if (car_id) { query += " AND e.car_id = ?"; params.push(car_id); }
+        if (start_date) { query += " AND e.date >= ?"; params.push(start_date); }
+        if (end_date) { query += " AND e.date <= ?"; params.push(end_date); }
+        if (categories && categories.trim()) {
+          const cats = categories.split(',').filter(c => c.trim());
+          if (cats.length > 0) {
+            query += ` AND e.category IN (${cats.map(() => '?').join(',')})`;
+            params.push(...cats);
+          }
+        }
+        query += " ORDER BY e.date DESC";
+        
+        console.log('PDF Query:', query);
+        console.log('PDF Params:', params);
+        
+        db.all(query, params, (err, expenses) => {
+          if (err) {
+            console.error('PDF Report error:', err);
+            return res.status(500).json({ error: err.message });
+          }
+          
+          console.log('Found expenses:', expenses.length);
+          
+          try {
+            const PDFDocument = require('pdfkit');
+            const doc = new PDFDocument({ 
+              size: 'A4', 
+              margin: 40,
+              autoFirstPage: true,
+              bufferPages: true,
+              info: {
+                Title: 'Reporte de Gastos del Vehículo',
+                Author: 'Car Expenses Tracker'
+              }
+            });
+            
+            // Create a buffer to collect PDF data
+            const chunks = [];
+            doc.on('data', chunk => chunks.push(chunk));
+            doc.on('end', () => {
+              if (!res.headersSent) {
+                const pdfBuffer = Buffer.concat(chunks);
+                res.setHeader('Content-Type', 'application/pdf');
+                res.setHeader('Content-Disposition', 'attachment; filename=reporte-gastos.pdf');
+                res.setHeader('Content-Length', pdfBuffer.length);
+                res.send(pdfBuffer);
+              }
+            });
+            doc.on('error', (pdfErr) => {
+              console.error('PDF document error:', pdfErr);
+              if (!res.headersSent) {
+                res.status(500).json({ error: 'Error generating PDF document' });
+              }
+            });
+            
+            // Colors
+            const primaryBlue = '#0071e3';
+            const darkText = '#1d1d1f';
+            const grayText = '#86868b';
+            const lightGray = '#f5f5f7';
+            const white = '#ffffff';
+            
+            // Page dimensions
+            const pageWidth = doc.page.width - 80; // margins
+            let y = 40;
+            
+            // Header background
+            doc.rect(40, y, pageWidth, 80).fill(primaryBlue);
+            
+            // App title
+            doc.fontSize(24).fillColor(white).font('Helvetica-Bold')
+              .text('CarET', 50, y + 15);
+            
+            // Report title
+            doc.fontSize(16).font('Helvetica')
+              .text('Reporte de Gastos', 50, y + 45);
+            
+            // Date on right side of header
+            const today = new Date().toLocaleDateString('es-ES', { 
+              year: 'numeric', 
+              month: 'long', 
+              day: 'numeric' 
+            });
+            doc.fontSize(10).text(today, pageWidth - 60, y + 25, { align: 'right' });
+            
+            y += 100;
+            
+            // Vehicle info card
+            if (cars && cars.length > 0) {
+              doc.roundedRect(40, y, pageWidth, 60, 5).fill(lightGray);
+              doc.fontSize(10).fillColor(grayText).font('Helvetica')
+                .text('Vehículo', 55, y + 10);
+              doc.fontSize(14).fillColor(darkText).font('Helvetica-Bold')
+                .text(`${cars[0].brand} ${cars[0].model} (${cars[0].year || 'N/A'})`, 55, y + 25);
+              if (cars[0].vin) {
+                doc.fontSize(10).fillColor(grayText).font('Helvetica')
+                  .text(`VIN: ${cars[0].vin}`, 55, y + 45);
+              }
+              y += 80;
+            }
+            
+            // Period info
+            if (start_date || end_date) {
+              doc.roundedRect(40, y, pageWidth, 40, 5).fill(lightGray);
+              doc.fontSize(10).fillColor(grayText).font('Helvetica')
+                .text('Período del reporte', 55, y + 8);
+              const formatDate = (d) => d ? new Date(d).toLocaleDateString('es-ES') : 'Inicio';
+              doc.fontSize(11).fillColor(darkText).font('Helvetica-Bold')
+                .text(`${formatDate(start_date)} - ${formatDate(end_date)}`, 55, y + 22);
+              y += 60;
+            }
+            
+            // Summary cards
+            if (expenses && expenses.length > 0) {
+              const total = expenses.reduce((sum, e) => sum + (parseFloat(e.amount) || 0), 0);
+              const avgPerExpense = total / expenses.length;
+              
+              // Total card
+              doc.roundedRect(40, y, pageWidth / 2 - 10, 50, 5).fill(primaryBlue);
+              doc.fontSize(9).fillColor('rgba(255,255,255,0.8)').font('Helvetica')
+                .text('TOTAL GASTOS', 55, y + 10);
+              doc.fontSize(18).fillColor(white).font('Helvetica-Bold')
+                .text(`$${total.toLocaleString('es-AR')}`, 55, y + 25);
+              
+              // Count card
+              doc.roundedRect(pageWidth / 2 + 50, y, pageWidth / 2 - 10, 50, 5).fill(lightGray);
+              doc.fontSize(9).fillColor(grayText).font('Helvetica')
+                .text('CANTIDAD DE GASTOS', pageWidth / 2 + 65, y + 10);
+              doc.fontSize(18).fillColor(darkText).font('Helvetica-Bold')
+                .text(expenses.length.toString(), pageWidth / 2 + 65, y + 25);
+              
+              y += 70;
+              
+              // Table
+              y += 10;
+              
+              // Table with proper grid
+              const col1X = 45;    // Descripción
+              const col2X = 280;   // KM
+              const col3X = 370;   // Fecha
+              const col4X = 460;   // Monto
+              const col1Width = 230;
+              const col2Width = 85;
+              const col3Width = 85;
+              const col4Width = 75;
+              const rowHeight = 24;
+              const headerHeight = 28;
+              
+              // Table header background
+              doc.rect(40, y, pageWidth, headerHeight).fill(primaryBlue);
+              
+              // Header text
+              doc.fontSize(10).fillColor(white).font('Helvetica-Bold');
+              doc.text('DESCRIPCIÓN', col1X, y + 8, { width: col1Width });
+              doc.text('KM', col2X, y + 8, { width: col2Width, align: 'center' });
+              doc.text('FECHA', col3X, y + 8, { width: col3Width, align: 'center' });
+              doc.text('MONTO', col4X, y + 8, { width: col4Width, align: 'right' });
+              
+              y += headerHeight;
+              
+              // Table rows
+              expenses.forEach((exp, index) => {
+                // Check if we need a new page
+                if (y > doc.page.height - 100) {
+                  doc.addPage();
+                  y = 40;
+                  
+                  // Redraw header on new page
+                  doc.rect(40, y, pageWidth, headerHeight).fill(primaryBlue);
+                  doc.fontSize(10).fillColor(white).font('Helvetica-Bold');
+                  doc.text('DESCRIPCIÓN', col1X, y + 8, { width: col1Width });
+                  doc.text('KM', col2X, y + 8, { width: col2Width, align: 'center' });
+                  doc.text('FECHA', col3X, y + 8, { width: col3Width, align: 'center' });
+                  doc.text('MONTO', col4X, y + 8, { width: col4Width, align: 'right' });
+                  y += headerHeight;
+                }
+                
+                // Alternating row colors
+                const bgColor = index % 2 === 0 ? white : lightGray;
+                doc.rect(40, y, pageWidth, rowHeight).fill(bgColor);
+                
+                // Row border (light line at bottom)
+                doc.moveTo(40, y + rowHeight).lineTo(40 + pageWidth, y + rowHeight)
+                  .strokeColor('#e5e5ea').stroke();
+                
+                // Format date
+                const expDate = new Date(exp.date);
+                const formattedDate = expDate.toLocaleDateString('es-AR', { 
+                  day: '2-digit', 
+                  month: '2-digit',
+                  year: 'numeric'
+                });
+                
+                // Format kilometers
+                const km = exp.kilometers ? exp.kilometers.toLocaleString('es-AR') : '-';
+                
+                // Description (truncated if too long)
+                const desc = exp.description || 'Sin descripción';
+                const truncatedDesc = desc.length > 35 ? desc.substring(0, 35) + '...' : desc;
+                
+                // Format amount
+                const amount = parseFloat(exp.amount) || 0;
+                const formattedAmount = `$${amount.toLocaleString('es-AR')}`;
+                
+                // Cell content
+                doc.fontSize(9).fillColor(darkText).font('Helvetica');
+                doc.text(truncatedDesc, col1X, y + 7, { width: col1Width });
+                doc.text(km, col2X, y + 7, { width: col2Width, align: 'center' });
+                doc.text(formattedDate, col3X, y + 7, { width: col3Width, align: 'center' });
+                doc.font('Helvetica-Bold').fillColor(primaryBlue)
+                  .text(formattedAmount, col4X, y + 7, { width: col4Width, align: 'right' });
+                
+                y += rowHeight;
+              });
+              
+              // Table border (outer)
+              doc.rect(40, y - (expenses.length * rowHeight) - headerHeight, pageWidth, (expenses.length * rowHeight) + headerHeight)
+                .lineWidth(1).strokeColor('#e5e5ea').stroke();
+              
+              // Total section
+              y += 10;
+              doc.rect(40, y, pageWidth, 40).fill(primaryBlue);
+              doc.fontSize(12).fillColor(white).font('Helvetica-Bold');
+              doc.text('TOTAL GASTOS', col1X, y + 12, { width: 300 });
+              doc.fontSize(16)
+                .text(`$${total.toLocaleString('es-AR')}`, col4X - 50, y + 10, { width: 130, align: 'right' });
+              
+              y += 60;
+              
+              // Category breakdown
+              if (y < doc.page.height - 150) {
+                const categoryTotals = {};
+                expenses.forEach(exp => {
+                  const cat = exp.category || 'otros';
+                  categoryTotals[cat] = (categoryTotals[cat] || 0) + (parseFloat(exp.amount) || 0);
+                });
+                
+                doc.roundedRect(40, y, pageWidth, 15, 3).fill(lightGray);
+                doc.fontSize(10).fillColor(darkText).font('Helvetica-Bold')
+                  .text('Desglose por Categoría', 55, y + 3);
+                y += 20;
+                
+                Object.entries(categoryTotals)
+                  .sort((a, b) => b[1] - a[1])
+                  .slice(0, 5)
+                  .forEach(([cat, amount]) => {
+                    const percentage = (amount / total * 100).toFixed(1);
+                    doc.fontSize(9).fillColor(darkText).font('Helvetica')
+                      .text(cat, 55, y, { width: 150 });
+                    doc.text(`$${amount.toLocaleString('es-AR')}`, 210, y, { width: 80 });
+                    doc.fillColor(grayText).text(`${percentage}%`, 295, y, { width: 50 });
+                    y += 15;
+                  });
+              }
+              
+            } else {
+              // No expenses message
+              doc.roundedRect(40, y, pageWidth, 60, 5).fill(lightGray);
+              doc.fontSize(12).fillColor(grayText).font('Helvetica')
+                .text('No hay gastos en el período seleccionado.', 55, y + 20, { 
+                  width: pageWidth - 30, 
+                  align: 'center' 
+                });
+            }
+            
+            // Footer
+            const footerY = doc.page.height - 50;
+            doc.fontSize(8).fillColor(grayText).font('Helvetica')
+              .text('Generado por CarET - Vehicle Expenses Tracker', 40, footerY, { 
+                width: pageWidth, 
+                align: 'center' 
+              });
+            doc.text(`Página 1`, 40, footerY + 12, { 
+              width: pageWidth, 
+              align: 'center' 
+            });
+            
+            doc.end();
+            console.log('PDF generated successfully');
+          } catch (pdfError) {
+            console.error('PDF generation error:', pdfError);
+            if (!res.headersSent) {
+              res.status(500).json({ error: 'Error generating PDF: ' + pdfError.message });
+            }
+          }
+        });
       });
     });
     
     backendApp.get('/reports/csv', (req, res) => {
+      console.log('CSV Report request received:', req.query);
       const { car_id, start_date, end_date, categories } = req.query;
+      
       let query = "SELECT e.*, c.brand, c.model, c.year as car_year FROM expenses e JOIN cars c ON e.car_id = c.id WHERE 1=1";
       const params = [];
       if (car_id) { query += " AND e.car_id = ?"; params.push(car_id); }
       if (start_date) { query += " AND e.date >= ?"; params.push(start_date); }
       if (end_date) { query += " AND e.date <= ?"; params.push(end_date); }
-      if (categories) {
-        const cats = categories.split(',');
-        query += ` AND e.category IN (${cats.map(() => '?').join(',')})`;
-        params.push(...cats);
+      if (categories && categories.trim()) {
+        const cats = categories.split(',').filter(c => c.trim());
+        if (cats.length > 0) {
+          query += ` AND e.category IN (${cats.map(() => '?').join(',')})`;
+          params.push(...cats);
+        }
       }
       query += " ORDER BY e.date DESC";
       
+      console.log('CSV Query:', query);
+      console.log('CSV Params:', params);
+      
       db.all(query, params, (err, expenses) => {
-        if (err) return res.status(500).json({ error: err.message });
+        if (err) {
+          console.error('CSV Report error:', err);
+          return res.status(500).json({ error: err.message });
+        }
         
-        const json2csv = require('json2csv').parse;
-        const fields = ['date', 'brand', 'model', 'car_year', 'category', 'amount', 'description', 'kilometers'];
-        const csv = json2csv(expenses, { fields });
+        console.log('Found expenses for CSV:', expenses.length);
         
-        res.setHeader('Content-Type', 'text/csv');
-        res.setHeader('Content-Disposition', 'attachment; filename=reporte.csv');
-        res.send(csv);
+        try {
+          const { Parser } = require('json2csv');
+          
+          // Transform data with Spanish headers
+          const transformedData = (expenses || []).map(exp => ({
+            'Fecha': exp.date,
+            'Vehículo': `${exp.brand || ''} ${exp.model || ''} (${exp.car_year || 'N/A'})`,
+            'Categoría': exp.category,
+            'Descripción': exp.description || 'Sin descripción',
+            'Kilómetros': exp.kilometers || 0,
+            'Monto ($)': exp.amount || 0
+          }));
+          
+          const fields = ['Fecha', 'Vehículo', 'Categoría', 'Descripción', 'Kilómetros', 'Monto ($)'];
+          const opts = { fields };
+          const parser = new Parser(opts);
+          const csv = parser.parse(transformedData);
+          
+          res.setHeader('Content-Type', 'text/csv; charset=utf-8');
+          res.setHeader('Content-Disposition', 'attachment; filename=reporte-gastos.csv');
+          res.send('\ufeff' + csv);
+          console.log('CSV generated successfully');
+        } catch (csvError) {
+          console.error('CSV generation error:', csvError);
+          if (!res.headersSent) {
+            res.status(500).json({ error: 'Error generating CSV: ' + csvError.message });
+          }
+        }
       });
     });
     

@@ -1,10 +1,10 @@
-import React, { useEffect, useState, useMemo } from 'react';
-import { useParams } from 'react-router-dom';
-import { getCarExpenses } from '../../api/api';
-import { ExpenseInterface } from '../../interfaces/ExpenseInterface';
-import { formatNumberWithCommas } from '../../functions/formatNumberWithCommas';
-import { formatCategory } from '../../functions/FormatCategory';
-import { useLanguage } from '../../contexts/LanguageContext';
+import React, { useEffect, useState, useMemo } from 'react'
+import { useParams } from 'react-router-dom'
+import { getCarExpenses } from '../../api/api'
+import { ExpenseInterface } from '@/interfaces'
+import { formatNumberWithCommas } from '../../functions/formatNumberWithCommas'
+import { formatCategory } from '../../functions/FormatCategory'
+import { useLanguage } from '../../contexts/LanguageContext'
 import {
   Chart as ChartJS,
   CategoryScale,
@@ -17,31 +17,23 @@ import {
   Tooltip,
   Legend,
   Filler
-} from 'chart.js';
-import { Line, Doughnut, Bar } from 'react-chartjs-2';
-import { Dialog, DialogContent, IconButton as MuiIconButton, Box, Typography } from '@mui/material';
-import AttachMoneyIcon from '@mui/icons-material/AttachMoney';
-import BarChartIcon from '@mui/icons-material/BarChart';
-import ListAltIcon from '@mui/icons-material/ListAlt';
-import DirectionsCarIcon from '@mui/icons-material/DirectionsCar';
-import TrendingUpIcon from '@mui/icons-material/TrendingUp';
-import TrendingDownIcon from '@mui/icons-material/TrendingDown';
-import SpeedIcon from '@mui/icons-material/Speed';
-import CalendarMonthIcon from '@mui/icons-material/CalendarMonth';
-import CategoryIcon from '@mui/icons-material/Category';
-import EventRepeatIcon from '@mui/icons-material/EventRepeat';
-import ShowChartIcon from '@mui/icons-material/ShowChart';
-import CalendarTodayIcon from '@mui/icons-material/CalendarToday';
-import CompareArrowsIcon from '@mui/icons-material/CompareArrows';
-import GridOnIcon from '@mui/icons-material/GridOn';
-import AutorenewIcon from '@mui/icons-material/Autorenew';
-import TimelineIcon from '@mui/icons-material/Timeline';
-import InsertChartIcon from '@mui/icons-material/InsertChart';
-import DateRangeIcon from '@mui/icons-material/DateRange';
-import CloseIcon from '@mui/icons-material/Close';
-import EditIcon from '@mui/icons-material/Edit';
-import CalendarMonth from '@mui/icons-material/CalendarMonth';
-import Speed from '@mui/icons-material/Speed';
+} from 'chart.js'
+import { Line, Doughnut, Bar } from 'react-chartjs-2'
+import { Dialog, DialogContent, IconButton as MuiIconButton, Box, Typography } from '@mui/material'
+import AttachMoneyIcon from '@mui/icons-material/AttachMoney'
+import BarChartIcon from '@mui/icons-material/BarChart'
+import ListAltIcon from '@mui/icons-material/ListAlt'
+import DirectionsCarIcon from '@mui/icons-material/DirectionsCar'
+import TrendingUpIcon from '@mui/icons-material/TrendingUp'
+import TrendingDownIcon from '@mui/icons-material/TrendingDown'
+import SpeedIcon from '@mui/icons-material/Speed'
+import CalendarMonthIcon from '@mui/icons-material/CalendarMonth'
+import CategoryIcon from '@mui/icons-material/Category'
+import EventRepeatIcon from '@mui/icons-material/EventRepeat'
+import CalendarTodayIcon from '@mui/icons-material/CalendarToday'
+import InsertChartIcon from '@mui/icons-material/InsertChart'
+import DateRangeIcon from '@mui/icons-material/DateRange'
+import CloseIcon from '@mui/icons-material/Close'
 import { 
   Container, 
   Header, 
@@ -62,10 +54,9 @@ import {
   StatLabel,
   LoadingContainer,
   EmptyState,
-  EmptyIcon,
   EmptyTitle,
   EmptyText
-} from './ExpenseStatsStyles';
+} from './ExpenseStatsStyles'
 
 ChartJS.register(
   CategoryScale,
@@ -78,84 +69,84 @@ ChartJS.register(
   Tooltip,
   Legend,
   Filler
-);
+)
 
 const formatMonth = (date: Date): string => {
-  return date.toLocaleDateString('es-ES', { month: 'short', year: '2-digit' });
-};
+  return date.toLocaleDateString('es-ES', { month: 'short', year: '2-digit' })
+}
 
-const ExpenseStats: React.FC = () => {
-  const { id } = useParams();
-  const { t } = useLanguage();
-  const [expenses, setExpenses] = useState<ExpenseInterface[]>([]);
-  const [loading, setLoading] = useState<boolean>(true);
-  const [selectedExpense, setSelectedExpense] = useState<ExpenseInterface | null>(null);
-  const [popupType, setPopupType] = useState<'highest' | 'lowest' | null>(null);
+export const ExpenseStats: React.FC = () => {
+  const { id } = useParams()
+  const { t } = useLanguage()
+  const [expenses, setExpenses] = useState<ExpenseInterface[]>([])
+  const [loading, setLoading] = useState<boolean>(true)
+  const [selectedExpense, setSelectedExpense] = useState<ExpenseInterface | null>(null)
+  const [popupType, setPopupType] = useState<'highest' | 'lowest' | null>(null)
 
   useEffect(() => {
     const fetchExpenses = async () => {
       try {
-        const data = await getCarExpenses(Number(id));
-        setExpenses(data);
+        const data = await getCarExpenses(Number(id))
+        setExpenses(data)
       } catch (error) {
-        console.error('Error fetching expenses:', error);
+        console.error('Error fetching expenses:', error)
       } finally {
-        setLoading(false);
+        setLoading(false)
       }
-    };
-    fetchExpenses();
-  }, [id]);
+    }
+    fetchExpenses()
+  }, [id])
 
   const stats = useMemo(() => {
-    if (expenses.length === 0) return null;
+    if (expenses.length === 0) return null
 
-    const total = expenses.reduce((sum, exp) => sum + exp.amount, 0);
-    const sortedByPrice = [...expenses].sort((a, b) => b.amount - a.amount);
-    const highest = sortedByPrice[0];
-    const lowest = sortedByPrice[sortedByPrice.length - 1];
-    const average = total / expenses.length;
+    const total = expenses.reduce((sum, exp) => sum + exp.amount, 0)
+    const sortedByPrice = [...expenses].sort((a, b) => b.amount - a.amount)
+    const highest = sortedByPrice[0]
+    const lowest = sortedByPrice[sortedByPrice.length - 1]
+    const average = total / expenses.length
 
-    const totalKm = expenses.reduce((sum, exp) => sum + (exp.kilometers || 0), 0);
-    const costPerKm = totalKm > 0 ? total / totalKm : 0;
+    const totalKm = expenses.reduce((sum, exp) => sum + (exp.kilometers || 0), 0)
+    const costPerKm = totalKm > 0 ? total / totalKm : 0
 
     // Gasto mensual promedio
-    const dates = expenses.map(exp => new Date(exp.date));
-    const minDate = new Date(Math.min(...dates.map(d => d.getTime())));
-    const maxDate = new Date(Math.max(...dates.map(d => d.getTime())));
-    const monthsDiff = (maxDate.getFullYear() - minDate.getFullYear()) * 12 + (maxDate.getMonth() - minDate.getMonth()) + 1;
-    const monthlyAverage = monthsDiff > 0 ? total / monthsDiff : total;
+    const dates = expenses.map(exp => new Date(exp.date))
+    const minDate = new Date(Math.min(...dates.map(d => d.getTime())))
+    const maxDate = new Date(Math.max(...dates.map(d => d.getTime())))
+    const monthsDiff = (maxDate.getFullYear() - minDate.getFullYear()) * 12 + (maxDate.getMonth() - minDate.getMonth()) + 1
+    const monthlyAverage = monthsDiff > 0 ? total / monthsDiff : total
 
     // Gasto anual
-    const yearlyTotals: { [key: string]: number } = {};
+    const yearlyTotals: { [key: string]: number } = {}
     expenses.forEach(exp => {
-      const year = new Date(exp.date).getFullYear().toString();
-      yearlyTotals[year] = (yearlyTotals[year] || 0) + exp.amount;
-    });
+      const year = new Date(exp.date).getFullYear().toString()
+      yearlyTotals[year] = (yearlyTotals[year] || 0) + exp.amount
+    })
 
     // Categoría más costosa
-    const categoryTotals: { [key: string]: number } = {};
+    const categoryTotals: { [key: string]: number } = {}
     expenses.forEach(exp => {
-      const cat = formatCategory(exp.category);
-      categoryTotals[cat] = (categoryTotals[cat] || 0) + exp.amount;
-    });
-    const mostExpensiveCategory = Object.entries(categoryTotals).sort((a, b) => b[1] - a[1])[0];
+      const cat = formatCategory(exp.category)
+      categoryTotals[cat] = (categoryTotals[cat] || 0) + exp.amount
+    })
+    const mostExpensiveCategory = Object.entries(categoryTotals).sort((a, b) => b[1] - a[1])[0]
 
     // Mes con más gastos
-    const monthlyTotals: { [key: string]: number } = {};
+    const monthlyTotals: { [key: string]: number } = {}
     expenses.forEach(exp => {
-      const date = new Date(exp.date);
-      const monthKey = `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, '0')}`;
-      monthlyTotals[monthKey] = (monthlyTotals[monthKey] || 0) + exp.amount;
+      const date = new Date(exp.date)
+      const monthKey = `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, '0')}`
+      monthlyTotals[monthKey] = (monthlyTotals[monthKey] || 0) + exp.amount
     });
-    const highestMonth = Object.entries(monthlyTotals).sort((a, b) => b[1] - a[1])[0];
+    const highestMonth = Object.entries(monthlyTotals).sort((a, b) => b[1] - a[1])[0]
 
     // Frecuencia de gastos
-    const sortedDates = [...dates].sort((a, b) => a.getTime() - b.getTime());
-    let totalDays = 0;
+    const sortedDates = [...dates].sort((a, b) => a.getTime() - b.getTime())
+    let totalDays = 0
     for (let i = 1; i < sortedDates.length; i++) {
-      totalDays += Math.abs(sortedDates[i].getTime() - sortedDates[i - 1].getTime()) / (1000 * 60 * 60 * 24);
+      totalDays += Math.abs(sortedDates[i].getTime() - sortedDates[i - 1].getTime()) / (1000 * 60 * 60 * 24)
     }
-    const frequency = sortedDates.length > 1 ? totalDays / (sortedDates.length - 1) : 0;
+    const frequency = sortedDates.length > 1 ? totalDays / (sortedDates.length - 1) : 0
 
     return {
       total,
@@ -170,29 +161,29 @@ const ExpenseStats: React.FC = () => {
       mostExpensiveCategory,
       highestMonth,
       frequency
-    };
-  }, [expenses]);
+    }
+  }, [expenses])
 
   const trendData = useMemo(() => {
-    if (expenses.length === 0) return null;
+    if (expenses.length === 0) return null
 
-    const monthlyTotals: { [key: string]: number } = {};
+    const monthlyTotals: { [key: string]: number } = {}
     expenses.forEach(exp => {
-      const date = new Date(exp.date);
-      const monthKey = `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, '0')}`;
-      monthlyTotals[monthKey] = (monthlyTotals[monthKey] || 0) + exp.amount;
-    });
+      const date = new Date(exp.date)
+      const monthKey = `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, '0')}`
+      monthlyTotals[monthKey] = (monthlyTotals[monthKey] || 0) + exp.amount
+    })
 
-    const sortedMonths = Object.keys(monthlyTotals).sort();
+    const sortedMonths = Object.keys(monthlyTotals).sort()
     const labels = sortedMonths.map(key => {
-      const [year, month] = key.split('-');
-      const date = new Date(parseInt(year), parseInt(month) - 1);
-      return formatMonth(date);
-    });
+      const [year, month] = key.split('-')
+      const date = new Date(parseInt(year), parseInt(month) - 1)
+      return formatMonth(date)
+    })
 
-    const data = sortedMonths.map(key => monthlyTotals[key]);
-    console.log('Trend data - labels:', labels);
-    console.log('Trend data - values:', data);
+    const data = sortedMonths.map(key => monthlyTotals[key])
+    console.log('Trend data - labels:', labels)
+    console.log('Trend data - values:', data)
 
     return {
       labels,
@@ -208,23 +199,23 @@ const ExpenseStats: React.FC = () => {
         pointBorderWidth: 2,
         pointRadius: 4
       }]
-    };
-  }, [expenses]);
+    }
+  }, [expenses])
 
   const categoryData = useMemo(() => {
-    if (expenses.length === 0) return null;
+    if (expenses.length === 0) return null
 
-    const categoryTotals: { [key: string]: number } = {};
+    const categoryTotals: { [key: string]: number } = {}
     expenses.forEach(exp => {
-      const cat = formatCategory(exp.category);
-      categoryTotals[cat] = (categoryTotals[cat] || 0) + exp.amount;
-    });
+      const cat = formatCategory(exp.category)
+      categoryTotals[cat] = (categoryTotals[cat] || 0) + exp.amount
+    })
 
-    const categories = Object.keys(categoryTotals).sort((a, b) => categoryTotals[b] - categoryTotals[a]);
+    const categories = Object.keys(categoryTotals).sort((a, b) => categoryTotals[b] - categoryTotals[a])
     const colors = [
       '#0071e3', '#34c759', '#ff9500', '#ff3b30', '#af52de',
       '#5856d6', '#5ac8fa', '#ff2d55', '#a2845e', '#8e8e93'
-    ];
+    ]
 
     return {
       labels: categories,
@@ -235,12 +226,12 @@ const ExpenseStats: React.FC = () => {
         borderWidth: 2
       }]
     };
-  }, [expenses]);
+  }, [expenses])
 
   const topExpenses = useMemo(() => {
-    if (expenses.length === 0) return null;
+    if (expenses.length === 0) return null
 
-    const sorted = [...expenses].sort((a, b) => b.amount - a.amount).slice(0, 5);
+    const sorted = [...expenses].sort((a, b) => b.amount - a.amount).slice(0, 5)
 
     return {
       labels: sorted.map(exp => exp.description.substring(0, 20) + (exp.description.length > 20 ? '...' : '')),
@@ -255,13 +246,13 @@ const ExpenseStats: React.FC = () => {
         borderSkipped: 'left' as const,
         barThickness: 16
       }]
-    };
-  }, [expenses]);
+    }
+  }, [expenses])
 
   const yearComparisonData = useMemo(() => {
-    if (!stats?.yearlyTotals || Object.keys(stats.yearlyTotals).length < 2) return null;
+    if (!stats?.yearlyTotals || Object.keys(stats.yearlyTotals).length < 2) return null
 
-    const years = Object.keys(stats.yearlyTotals).sort();
+    const years = Object.keys(stats.yearlyTotals).sort()
 
     return {
       labels: years,
@@ -273,19 +264,19 @@ const ExpenseStats: React.FC = () => {
         borderSkipped: 'bottom' as const,
         barThickness: 16
       }]
-    };
-  }, [stats]);
+    }
+  }, [stats])
 
   const monthlyDistributionData = useMemo(() => {
-    if (expenses.length === 0) return null;
+    if (expenses.length === 0) return null
 
-    const monthNames = ['Ene', 'Feb', 'Mar', 'Abr', 'May', 'Jun', 'Jul', 'Ago', 'Sep', 'Oct', 'Nov', 'Dic'];
-    const monthTotals = new Array(12).fill(0);
+    const monthNames = ['Ene', 'Feb', 'Mar', 'Abr', 'May', 'Jun', 'Jul', 'Ago', 'Sep', 'Oct', 'Nov', 'Dic']
+    const monthTotals = new Array(12).fill(0)
 
     expenses.forEach(exp => {
-      const month = new Date(exp.date).getMonth();
-      monthTotals[month] += exp.amount;
-    });
+      const month = new Date(exp.date).getMonth()
+      monthTotals[month] += exp.amount
+    })
 
     return {
       labels: monthNames,
@@ -297,32 +288,32 @@ const ExpenseStats: React.FC = () => {
         borderSkipped: 'bottom' as const,
         barThickness: 16
       }]
-    };
-  }, [expenses]);
+    }
+  }, [expenses])
 
   const weeklyComparisonData = useMemo(() => {
-    if (expenses.length === 0) return null;
+    if (expenses.length === 0) return null
 
     // Agrupar gastos por semana del año
-    const weeklyTotals: { [key: string]: number } = {};
+    const weeklyTotals: { [key: string]: number } = {}
     
     expenses.forEach(exp => {
-      const date = new Date(exp.date);
-      const startOfYear = new Date(date.getFullYear(), 0, 1);
-      const weekNumber = Math.ceil(((date.getTime() - startOfYear.getTime()) / 86400000 + startOfYear.getDay() + 1) / 7);
-      const weekKey = `Sem ${weekNumber}`;
-      weeklyTotals[weekKey] = (weeklyTotals[weekKey] || 0) + exp.amount;
-    });
+      const date = new Date(exp.date)
+      const startOfYear = new Date(date.getFullYear(), 0, 1)
+      const weekNumber = Math.ceil(((date.getTime() - startOfYear.getTime()) / 86400000 + startOfYear.getDay() + 1) / 7)
+      const weekKey = `Sem ${weekNumber}`
+      weeklyTotals[weekKey] = (weeklyTotals[weekKey] || 0) + exp.amount
+    })
 
     // Ordenar por número de semana
     const sortedWeeks = Object.keys(weeklyTotals).sort((a, b) => {
-      const weekA = parseInt(a.replace('Sem ', ''));
-      const weekB = parseInt(b.replace('Sem ', ''));
-      return weekA - weekB;
-    });
+      const weekA = parseInt(a.replace('Sem ', ''))
+      const weekB = parseInt(b.replace('Sem ', ''))
+      return weekA - weekB
+    })
 
     // Tomar solo las últimas 8 semanas para mejor visualización
-    const last8Weeks = sortedWeeks.slice(-8);
+    const last8Weeks = sortedWeeks.slice(-8)
 
     return {
       labels: last8Weeks,
@@ -334,8 +325,8 @@ const ExpenseStats: React.FC = () => {
         borderSkipped: 'bottom' as const,
         barThickness: 16
       }]
-    };
-  }, [expenses]);
+    }
+  }, [expenses])
 
   const chartOptions = {
     responsive: true,
@@ -374,7 +365,7 @@ const ExpenseStats: React.FC = () => {
         }
       }
     }
-  };
+  }
 
   const doughnutOptions = {
     responsive: true,
@@ -397,15 +388,15 @@ const ExpenseStats: React.FC = () => {
         cornerRadius: 8,
         callbacks: {
           label: function(context: any) {
-            const total = context.dataset.data.reduce((a: number, b: number) => a + b, 0);
-            const percentage = ((context.raw / total) * 100).toFixed(1);
-            return `$${formatNumberWithCommas(context.raw)} (${percentage}%)`;
+            const total = context.dataset.data.reduce((a: number, b: number) => a + b, 0)
+            const percentage = ((context.raw / total) * 100).toFixed(1)
+            return `$${formatNumberWithCommas(context.raw)} (${percentage}%)`
           }
         }
       }
     },
     cutout: '65%'
-  };
+  }
 
   const horizontalBarOptions = {
     indexAxis: 'y' as const,
@@ -452,7 +443,7 @@ const ExpenseStats: React.FC = () => {
         }
       }
     }
-  };
+  }
 
   if (loading) {
     return (
@@ -473,7 +464,7 @@ const ExpenseStats: React.FC = () => {
           <EmptyText>Agrega algunos gastos para ver las estadísticas</EmptyText>
         </EmptyState>
       </Container>
-    );
+    )
   }
 
   return (
@@ -716,7 +707,5 @@ const ExpenseStats: React.FC = () => {
         </DialogContent>
       </Dialog>
     </Container>
-  );
-};
-
-export default ExpenseStats;
+  )
+}

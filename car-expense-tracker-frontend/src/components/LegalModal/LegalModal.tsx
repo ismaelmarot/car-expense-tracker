@@ -1,17 +1,11 @@
-import React from 'react';
-import { Dialog, DialogTitle, DialogContent, DialogActions, Typography } from '@mui/material';
-import { ButtonStyled, TextStyled } from './LegalModalStyles';
-import { useLanguage } from '../../contexts/LanguageContext';
+import { Dialog, DialogTitle, DialogContent, DialogActions, Typography } from '@mui/material'
+import { LegalModalProps } from '@/interfaces'
+import { useLanguage } from '../../contexts/LanguageContext'
+import { ButtonStyled, TextStyled } from './LegalModalStyles'
+import { APP_VERSION } from '@/constants'
 
-const APP_VERSION = '2.0.0';
-
-interface LegalModalProps {
-    open: boolean;
-    onClose: () => void;
-}
-
-const LegalModal: React.FC<LegalModalProps> = ({ open, onClose }) => {
-  const { t } = useLanguage();
+export const LegalModal: React.FC<LegalModalProps> = ({ open, onClose }) => {
+  const { t } = useLanguage()
   
   return (
     <Dialog open={open} onClose={onClose} maxWidth='sm' fullWidth>
@@ -33,7 +27,5 @@ const LegalModal: React.FC<LegalModalProps> = ({ open, onClose }) => {
         </ButtonStyled>
       </DialogActions>
     </Dialog>
-  );
-};
-
-export default LegalModal;
+  )
+}

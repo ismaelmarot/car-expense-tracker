@@ -1,0 +1,8 @@
+export const GridViewIcon = () => (
+    <svg width="18" height="18" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <rect x="2" y="2" width="6" height="6" rx="1.5" fill="currentColor"/>
+        <rect x="2" y="12" width="6" height="6" rx="1.5" fill="currentColor"/>
+        <rect x="12" y="2" width="6" height="6" rx="1.5" fill="currentColor"/>
+        <rect x="12" y="12" width="6" height="6" rx="1.5" fill="currentColor"/>
+    </svg>
+)

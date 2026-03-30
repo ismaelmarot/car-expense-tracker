@@ -2,7 +2,7 @@ import React, { useEffect, useState, useRef } from 'react'
 import { useParams, useNavigate } from 'react-router-dom'
 import { getCarById, updateCar, deleteCar, getCarExpenses } from '../../api/api'
 import { Typography, Box, Dialog, DialogTitle, DialogContent, DialogContentText, DialogActions, Button } from '@mui/material'
-import { CarInterface } from '../../interfaces/CarInterface'
+import { CarInterface } from '@/interfaces'
 import { useLanguage } from '../../contexts/LanguageContext'
 import { 
   Container, 
@@ -49,10 +49,10 @@ import EditIconMui from '@mui/icons-material/Edit'
 import DeleteIcon from '@mui/icons-material/Delete'
 import PhotoCameraIcon from '@mui/icons-material/PhotoCamera'
 import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown'
-import CarExpenses from '../CarExpenses/CarExpenses'
+import { CarExpenses } from '../CarExpenses/CarExpenses'
 import { AddExpense } from '../AddExpense/AddExpense'
-import ExpenseStats from '../ExpenseStats/ExpenseStats'
-import Settings from '../Settings/Settings'
+import { ExpenseStats } from '../ExpenseStats/ExpenseStats'
+import { Settings } from '../Settings/Settings'
 
 export const CarDetails: React.FC = () => {
     const { id } = useParams()
@@ -423,14 +423,14 @@ export const CarDetails: React.FC = () => {
                     onChange={handlePhotoChange}
                 />
 
-                <CardExpandedContent sx={{ 
-                    display: expanded ? 'block' : 'none',
-                    animation: expanded ? 'slideDown 0.3s ease' : 'none',
-                    '@keyframes slideDown': {
-                        from: { opacity: 0, transform: 'translateY(-10px)' },
-                        to: { opacity: 1, transform: 'translateY(0)' }
-                    }
-                }} expanded={expanded}>
+                  <CardExpandedContent expanded={expanded} sx={{ 
+                      display: expanded ? 'block' : 'none',
+                      animation: expanded ? 'slideDown 0.3s ease' : 'none',
+                      '@keyframes slideDown': {
+                          from: { opacity: 0, transform: 'translateY(-10px)' },
+                          to: { opacity: 1, transform: 'translateY(0)' }
+                      }
+                  }}>
                     <Box sx={{ p: '1.5rem' }}>
                         <DetailGrid>
                             <DetailItem>

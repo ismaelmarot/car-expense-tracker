@@ -1,0 +1,1 @@
+export { ExpenseTableForPDF } from './ExpenseTableForPDF'

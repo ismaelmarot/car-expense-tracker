@@ -1,9 +1,8 @@
-import React from 'react';
-import { Dialog, DialogActions, DialogContent, DialogTitle } from '@mui/material';
-import { ButtonCancel, ButtonDelete } from './DeleteExpenseConfirmationDialogStyles';
-import { DeleteExpenseConfirmationDialogInterface } from '../../interfaces/DeleteExpenseConfirmationDialogInterface';
+import { Dialog, DialogActions, DialogContent, DialogTitle } from '@mui/material'
+import { DeleteExpenseConfirmationDialogInterface } from '@/interfaces'
+import { ButtonCancel, ButtonDelete } from './DeleteExpenseConfirmationDialogStyles'
 
-const DeleteExpenseConfirmationDialog: React.FC<DeleteExpenseConfirmationDialogInterface> = ({
+export const DeleteExpenseConfirmationDialog: React.FC<DeleteExpenseConfirmationDialogInterface> = ({
     open,
     onClose,
     onConfirm,
@@ -24,6 +23,4 @@ const DeleteExpenseConfirmationDialog: React.FC<DeleteExpenseConfirmationDialogI
             </DialogActions>
         </Dialog>
     )
-};
-
-export default DeleteExpenseConfirmationDialog;
+}

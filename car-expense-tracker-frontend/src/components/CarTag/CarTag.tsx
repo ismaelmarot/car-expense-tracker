@@ -1,8 +1,7 @@
-import React from 'react';
-import { CarInterface } from '../../interfaces/CarInterface';
-import { GeneralContainer, Container, GridItem } from './CarTagStyles';
+import { CarInterface } from '@/interfaces'
+import { GeneralContainer, Container, GridItem } from './CarTagStyles'
 
-const CarTag: React.FC<CarInterface> = ({ brand, model, version, year, vin }) => {
+export const CarTag: React.FC<CarInterface> = ({ brand, model, version, year, vin }) => {
     return (
         <GeneralContainer>
             <Container container>
@@ -16,5 +15,3 @@ const CarTag: React.FC<CarInterface> = ({ brand, model, version, year, vin }) =>
         </GeneralContainer>
     )
 }
-
-export default CarTag;

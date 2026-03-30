@@ -1,13 +1,13 @@
-import React, { useEffect } from 'react';
-import { Box, CircularProgress, Typography } from '@mui/material';
+import React, { useEffect } from 'react'
+import { Box, CircularProgress, Typography } from '@mui/material'
 
-const SplashScreen: React.FC<{ onFinish: () => void }> = ({ onFinish }) => {
+export const SplashScreen: React.FC<{ onFinish: () => void }> = ({ onFinish }) => {
   useEffect(() => {
     const timer = setTimeout(() => {
-      onFinish();
-    }, 1500);
-    return () => clearTimeout(timer);
-  }, [onFinish]);
+      onFinish()
+    }, 1500)
+    return () => clearTimeout(timer)
+  }, [onFinish])
 
   return (
     <Box
@@ -35,7 +35,5 @@ const SplashScreen: React.FC<{ onFinish: () => void }> = ({ onFinish }) => {
       </Typography>
       <CircularProgress color="inherit" />
     </Box>
-  );
-};
-
-export default SplashScreen;
+  )
+}

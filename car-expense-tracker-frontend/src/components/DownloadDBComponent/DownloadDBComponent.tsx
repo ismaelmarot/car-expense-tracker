@@ -1,9 +1,8 @@
-import React from 'react';
-import { AccordionStyled, StorageStyled, TypographyStyled, ButtonStyled } from './DownloadDBComponentStyles';
-import { AccordionDetails, AccordionSummary } from '@mui/material';
-import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
+import { AccordionDetails, AccordionSummary } from '@mui/material'
+import ExpandMoreIcon from '@mui/icons-material/ExpandMore'
+import { AccordionStyled, StorageStyled, TypographyStyled, ButtonStyled } from './DownloadDBComponentStyles'
 
-const DownloadDBComponent: React.FC = () => {
+export const DownloadDBComponent: React.FC = () => {
     
     const downloadBackup = async () => {
         const response = await fetch('/api/download-backup');
@@ -12,7 +11,7 @@ const DownloadDBComponent: React.FC = () => {
         link.href = URL.createObjectURL(blob);
         link.download = 'backup.db';
         link.click();
-    };
+    }
 
     return (
         <AccordionStyled>
@@ -34,7 +33,5 @@ const DownloadDBComponent: React.FC = () => {
                 </ButtonStyled>
             </AccordionDetails>
         </AccordionStyled>
-    );
-};
-
-export default DownloadDBComponent;
+    )
+}

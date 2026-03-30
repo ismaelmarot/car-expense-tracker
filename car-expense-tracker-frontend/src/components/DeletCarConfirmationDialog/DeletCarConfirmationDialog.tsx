@@ -1,9 +1,8 @@
-import React from 'react';
-import { Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle } from '@mui/material';
-import { DeleteCarConfirmationDialogInterface } from '../../interfaces/DeleteCarConfirmationDialogInterface';
-import { ButtonCancel, ButtonConfirm } from './DeletCarConfirmationDialogStyles';
+import { Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle } from '@mui/material'
+import { DeleteCarConfirmationDialogInterface } from '@/interfaces'
+import { ButtonCancel, ButtonConfirm } from './DeletCarConfirmationDialogStyles'
 
-const DeleteCarConfirmationDialog: React.FC<DeleteCarConfirmationDialogInterface> = ({ open, title, description, onConfirm, onCancel }) => {
+export const DeleteCarConfirmationDialog: React.FC<DeleteCarConfirmationDialogInterface> = ({ open, title, description, onConfirm, onCancel }) => {
     return (
         <Dialog
             open={open}
@@ -26,7 +25,5 @@ const DeleteCarConfirmationDialog: React.FC<DeleteCarConfirmationDialogInterface
                 </ButtonConfirm>
             </DialogActions>
         </Dialog>
-    );
-};
-
-export default DeleteCarConfirmationDialog;
+    )
+}

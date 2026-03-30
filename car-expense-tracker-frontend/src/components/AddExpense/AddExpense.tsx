@@ -1,9 +1,9 @@
 import React from 'react'
-import { MenuItem, Box, Typography } from '@mui/material'
+import { MenuItem, Box } from '@mui/material'
 import AddCircleOutlineIcon from '@mui/icons-material/AddCircleOutline'
 import PhotoCameraIcon from '@mui/icons-material/PhotoCamera'
 import CloseIcon from '@mui/icons-material/Close'
-import SnackbarNotification from '../SnackbarNotification/SnackbarNotification'
+import { SnackbarNotification } from '@/components'
 import { useLanguage } from '../../contexts/LanguageContext'
 import { useAddExpense } from './useAddExpense'
 

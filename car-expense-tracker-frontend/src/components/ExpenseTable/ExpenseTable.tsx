@@ -1,12 +1,12 @@
-import React from 'react';
-import { ExpenseTableInterface } from '../../interfaces/ExpenseTableInterface';
-import { TableBody, TableCell, Typography } from '@mui/material';
-import { TableCellRight, TableContainerStyled, TableRowStyled, TableStyled } from './ExpenseTableStyles';
-import ExpenseTableHeader from '../ExpenseTableHeader/ExpenseTableHeader';
-import { headers } from '../../constants/ExpenseTableHeaders';
-import ExpenseActionButtons from '../ExpenseActionButtons/ExpenseActionButtons';
+import React from 'react'
+import { ExpenseTableInterface } from '@/interfaces'
+import { TableBody, TableCell, Typography } from '@mui/material'
+import { TableCellRight, TableContainerStyled, TableRowStyled, TableStyled } from './ExpenseTableStyles'
+import { ExpenseTableHeader } from '../ExpenseTableHeader/ExpenseTableHeader'
+import { headers } from '../../constants/ExpenseTableHeaders'
+import { ExpenseActionButtons } from '../ExpenseActionButtons/ExpenseActionButtons'
 
-const ExpenseTable: React.FC<ExpenseTableInterface> =({
+export const ExpenseTable: React.FC<ExpenseTableInterface> =({
     expenses,
     handleEdit,
     handleDelete,
@@ -50,6 +50,4 @@ const ExpenseTable: React.FC<ExpenseTableInterface> =({
             </TableStyled>
         </TableContainerStyled>
     )
-};
-
-export default ExpenseTable;
+}

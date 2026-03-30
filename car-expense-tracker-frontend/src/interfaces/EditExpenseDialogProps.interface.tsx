@@ -1,4 +1,4 @@
-import { ExpenseInterface } from "./ExpenseInterface";
+import { ExpenseInterface } from './Expense.interface'
 
 export interface EditExpenseDialogPropsInterface {
     open: boolean;

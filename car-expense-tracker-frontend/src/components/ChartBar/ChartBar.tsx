@@ -1,8 +1,12 @@
-import React from 'react';
-import { ChartBartInterfaces } from '../../interfaces/ChartBarInterface';
-import { Container, GridBar, BarStyled, TypographyStyled } from './ChartBarStyles';
+import { ChartBartInterfaces } from '@/interfaces'
+import {
+    Container,
+    GridBar,
+    BarStyled,
+    TypographyStyled
+} from './ChartBarStyles'
 
-const ChartBar: React.FC<ChartBartInterfaces> = ({ title, data }) => {
+export const ChartBar: React.FC<ChartBartInterfaces> = ({ title, data }) => {
     return (
         <Container>
             <TypographyStyled>{title}</TypographyStyled>
@@ -10,7 +14,5 @@ const ChartBar: React.FC<ChartBartInterfaces> = ({ title, data }) => {
                 <BarStyled data={data} />
             </GridBar>
         </Container>
-    );
-};
-
-export default ChartBar;
+    )
+}

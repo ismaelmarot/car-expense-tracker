@@ -1,4 +1,4 @@
-import { ExpenseTableHeaderInterface } from "../interfaces/ExpenseTableHeaderInterface";
+import { ExpenseTableHeaderInterface } from '@/interfaces'
 
 export const headers:ExpenseTableHeaderInterface[] = [
     { label: 'Descripción'},

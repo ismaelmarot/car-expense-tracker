@@ -1,4 +1,5 @@
 import styled from '@emotion/styled';
+import { css } from '@emotion/react';
 import { Box, Typography } from '@mui/material';
 
 export const Container = styled(Box)`
@@ -219,8 +220,12 @@ export const ExpandIcon = styled(Box)`
   flex-shrink: 0;
 `;
 
-export const CardExpandedContent = styled(Box)<{ expanded: boolean }>`
-  display: ${props => props.expanded ? 'block' : 'none'};
+export const CardExpandedContent = styled(Box, {
+  shouldForwardProp: (prop) => prop !== 'expanded'
+})<{ expanded: boolean }>`
+  ${({ expanded }) => !expanded && css`
+    display: none;
+  `}
   animation: ${props => props.expanded ? 'slideDown 0.3s ease' : 'none'};
   '@keyframes slideDown': {
     from: { opacity: 0, transform: 'translateY(-10px)' },
@@ -234,12 +239,12 @@ export const CardExpandedContent = styled(Box)<{ expanded: boolean }>`
   padding-bottom: 2rem;
   margin-top: 0.5rem;
   box-sizing: border-box;
-  
+   
   @media (max-height: 600px) {
     height: calc(100vh - 180px);
     max-height: 350px;
   }
-  
+   
   @media (max-width: 480px) {
     height: calc(100vh - 200px);
     max-height: 400px;
