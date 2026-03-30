@@ -1,8 +1,8 @@
-import React from 'react';
-import { CarInterface } from '../../interfaces/CarInterface';
-import { CardStyled, CarType, CarInfo } from './CarCardStyles';
+import React from 'react'
+import { CarInterface } from '@/interfaces'
+import { CardStyled, CarType, CarInfo } from './CarCardStyles'
 
-const CarCard: React.FC<{ car: CarInterface }> =({ car }) => {
+export const CarCard: React.FC<{ car: CarInterface }> =({ car }) => {
   return (
     <CardStyled>
       <CarType>{`${car.brand} ${car.model} ${car.version}`}</CarType>
@@ -11,5 +11,3 @@ const CarCard: React.FC<{ car: CarInterface }> =({ car }) => {
     </CardStyled>
   )
 }
-
-export default CarCard;

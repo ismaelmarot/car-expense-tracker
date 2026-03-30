@@ -1,20 +1,23 @@
-import React from 'react';
-import { Container, ArrowBackIconStyled, ButtonStyled, TypographyStyled } from './BackButtonStyles';
-import { useNavigate } from 'react-router-dom';
+import React from 'react'
+import { useBackButton } from './useBackButton'
+import {
+    Container,
+    ArrowBackIconStyled,
+    ButtonStyled,
+    TypographyStyled
+} from './BackButtonStyles'
 
-const BackButton: React.FC = () => {
-    const navigate = useNavigate();
-    const handleGoBack = () => {
-        navigate('/');
-    };
+export const BackButton: React.FC = () => {
+    const { goBack } = useBackButton();
+
     return (
         <Container>
-            <ButtonStyled onClick={handleGoBack}>
+            <ButtonStyled onClick={goBack}>
                 <ArrowBackIconStyled />
-                <TypographyStyled>Volver a los veh&iacute;culos</TypographyStyled>
+                <TypographyStyled>
+                    Volver a los vehículos
+                </TypographyStyled>
             </ButtonStyled>
         </Container>
     )
-};
-
-export default BackButton;
+}

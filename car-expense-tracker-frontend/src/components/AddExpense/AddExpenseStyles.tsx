@@ -1,5 +1,5 @@
-import styled from '@emotion/styled';
-import { Box, Typography, TextField, Select, FormControl } from '@mui/material';
+import styled from '@emotion/styled'
+import { Box, Typography, TextField, FormControl } from '@mui/material'
 
 export const Container = styled(Box)`
   padding: 1.5rem;
@@ -7,11 +7,11 @@ export const Container = styled(Box)`
   border-radius: 16px;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
   border: 1px solid rgba(0, 0, 0, 0.06);
-`;
+`
 
 export const FormHeader = styled(Box)`
   margin-bottom: 1.5rem;
-`;
+`
 
 export const FormTitle = styled(Typography)`
   font-size: 1.25rem;
@@ -19,18 +19,18 @@ export const FormTitle = styled(Typography)`
   color: #1d1d1f;
   letter-spacing: -0.02em;
   margin-bottom: 0.25rem;
-`;
+`
 
 export const FormSubtitle = styled(Typography)`
   font-size: 0.875rem;
   color: #86868b;
-`;
+`
 
 export const Form = styled.form`
   display: flex;
   flex-direction: column;
   gap: 1.25rem;
-`;
+`
 
 export const FormRow = styled(Box)`
   display: grid;
@@ -40,19 +40,19 @@ export const FormRow = styled(Box)`
   @media (max-width: 500px) {
     grid-template-columns: 1fr;
   }
-`;
+`
 
 export const InputGroup = styled(Box)`
   display: flex;
   flex-direction: column;
   gap: 0.5rem;
-`;
+`
 
 export const InputLabel = styled(Typography)`
   font-size: 0.875rem;
   font-weight: 500;
   color: #1d1d1f;
-`;
+`
 
 export const Input = styled(TextField)`
   .MuiOutlinedInput-root {
@@ -86,7 +86,7 @@ export const Input = styled(TextField)`
       color: #0071e3;
     }
   }
-`;
+`
 
 export const SelectInput = styled(FormControl)`
   .MuiOutlinedInput-root {
@@ -121,7 +121,7 @@ export const SelectInput = styled(FormControl)`
       color: #0071e3;
     }
   }
-`;
+`
 
 export const SubmitButton = styled.button`
   width: 100%;
@@ -152,17 +152,17 @@ export const SubmitButton = styled.button`
     background: #d1d1d6;
     cursor: not-allowed;
   }
-`;
+`
 
 export const ErrorMessage = styled(Typography)`
   font-size: 0.8125rem;
   color: #ff3b30;
   margin-top: -0.5rem;
-`;
+`
 
 export const OptionalLabel = styled.span`
   font-size: 0.8125rem;
   color: #86868b;
   font-weight: 400;
   margin-left: 0.25rem;
-`;
+`

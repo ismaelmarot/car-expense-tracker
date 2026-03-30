@@ -11,7 +11,10 @@ const api = axios.create({
 // Functions for Cars -----------------------------------------------------------------
 export const addCar = (car: Car) => api.post('/cars', car)
 
-export const getCars = () => api.get('/cars')
+export const getCars = () => {
+  console.log("Fetching cars from:", `${api.defaults.baseURL}/cars`);
+  return api.get('/cars');
+}
 
 export const getCarById = (id: number) => api.get(`/cars/${id}`)
 
@@ -49,7 +52,7 @@ export const addExpense = async (expense: Expense) => {
 
 export const getCarExpenses = async (carId: number) => {
     try {
-        const response = await api.get(`/expenses/car/${carId}`)
+        const response = await api.get(`/expenses`, { params: { car_id: carId } })
         return response.data
     } catch (error) {
         console.error(`Error fetching expenses for car ${carId}:`, error)

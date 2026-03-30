@@ -1,32 +1,35 @@
 import React from 'react'
-import { CarInterface } from '@/interfaces'
-import { ImageCarPhoto, ImageCarIcon, CardIcon, CarIconList } from './CarAvatar.styles'
+import { CarAvatarProps } from '@/interfaces'
+import {
+    ImageCarPhoto,
+    ImageCarIcon,
+    CardIcon,
+    CarIconList
+} from './CarAvatar.styles'
 
-type Props = {
-    car: CarInterface;
-    size?: number;
-    variant?: 'list' | 'grid';
-}
+export const CarAvatar: React.FC<CarAvatarProps> = ({
+    car,
+    size = 4,
+    variant = 'grid'
+}) => {
+    const photo = car.photo;
+    const iconSize = size - 1;
 
-const CarAvatar: React.FC<Props> = ({ car, size = 4, variant = 'grid' }) => {
-    if (car.photo) {
-        return <ImageCarPhoto image={car.photo} size={size} />;
+    if (photo) {
+        return <ImageCarPhoto image={photo} size={size} />
     }
 
-    // fallback sin imagen
     if (variant === 'list') {
         return (
-        <CarIconList>
-            <ImageCarIcon size={size - 1} />
-        </CarIconList>
+            <CarIconList>
+                <ImageCarIcon size={iconSize} />
+            </CarIconList>
         )
     }
 
     return (
         <CardIcon size={size}>
-        <ImageCarIcon size={size - 1} />
+            <ImageCarIcon size={iconSize} />
         </CardIcon>
     )
 }
-
-export default CarAvatar

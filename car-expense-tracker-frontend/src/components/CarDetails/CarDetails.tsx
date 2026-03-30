@@ -1,9 +1,9 @@
-import React, { useEffect, useState, useRef } from 'react';
-import { useParams, useNavigate } from 'react-router-dom';
-import { getCarById, updateCar, deleteCar, getCarExpenses } from '../../api/api';
-import { Typography, Box, Dialog, DialogTitle, DialogContent, DialogContentText, DialogActions, Button } from '@mui/material';
-import { CarInterface } from '../../interfaces/CarInterface';
-import { useLanguage } from '../../contexts/LanguageContext';
+import React, { useEffect, useState, useRef } from 'react'
+import { useParams, useNavigate } from 'react-router-dom'
+import { getCarById, updateCar, deleteCar, getCarExpenses } from '../../api/api'
+import { Typography, Box, Dialog, DialogTitle, DialogContent, DialogContentText, DialogActions, Button } from '@mui/material'
+import { CarInterface } from '../../interfaces/CarInterface'
+import { useLanguage } from '../../contexts/LanguageContext'
 import { 
   Container, 
   Header, 
@@ -18,11 +18,6 @@ import {
   PhotoWrapper,
   PhotoImage,
   PhotoPlaceholder,
-  PhotoEditOverlay,
-  CardInfo,
-  CardTitle,
-  CardSubtitle,
-  CardMeta,
   ExpandIcon,
   CardExpandedContent,
   DetailGrid,
@@ -45,32 +40,31 @@ import {
   InputGroup,
   InputLabel,
   Input
-} from './CarDetailsStyles';
-import AddIcon from '@mui/icons-material/Add';
-import HistoryIcon from '@mui/icons-material/History';
-import BarChartIcon from '@mui/icons-material/BarChart';
-import DescriptionIcon from '@mui/icons-material/Description';
-import EditIconMui from '@mui/icons-material/Edit';
-import DeleteIcon from '@mui/icons-material/Delete';
-import BuildIcon from '@mui/icons-material/Build';
-import PhotoCameraIcon from '@mui/icons-material/PhotoCamera';
-import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
-import CarExpenses from '../CarExpenses/CarExpenses';
-import { AddExpense } from '../AddExpense/AddExpense';
-import ExpenseStats from '../ExpenseStats/ExpenseStats';
-import Settings from '../Settings/Settings';
+} from './CarDetailsStyles'
+import AddIcon from '@mui/icons-material/Add'
+import HistoryIcon from '@mui/icons-material/History'
+import BarChartIcon from '@mui/icons-material/BarChart'
+import DescriptionIcon from '@mui/icons-material/Description'
+import EditIconMui from '@mui/icons-material/Edit'
+import DeleteIcon from '@mui/icons-material/Delete'
+import PhotoCameraIcon from '@mui/icons-material/PhotoCamera'
+import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown'
+import CarExpenses from '../CarExpenses/CarExpenses'
+import { AddExpense } from '../AddExpense/AddExpense'
+import ExpenseStats from '../ExpenseStats/ExpenseStats'
+import Settings from '../Settings/Settings'
 
-const CarDetails: React.FC = () => {
-    const { id } = useParams();
-    const navigate = useNavigate();
-    const { t } = useLanguage();
-    const fileInputRef = useRef<HTMLInputElement>(null);
-    const [car, setCar] = useState<CarInterface | null>(null);
-    const [loading, setLoading] = useState<boolean>(true);
-    const [activeTab, setActiveTab] = useState<string>('gasto');
-    const [expanded, setExpanded] = useState<boolean>(false);
-    const [deleteDialogOpen, setDeleteDialogOpen] = useState<boolean>(false);
-    const [editDialogOpen, setEditDialogOpen] = useState<boolean>(false);
+export const CarDetails: React.FC = () => {
+    const { id } = useParams()
+    const navigate = useNavigate()
+    const { t } = useLanguage()
+    const fileInputRef = useRef<HTMLInputElement>(null)
+    const [car, setCar] = useState<CarInterface | null>(null)
+    const [loading, setLoading] = useState<boolean>(true)
+    const [activeTab, setActiveTab] = useState<string>('gasto')
+    const [expanded, setExpanded] = useState<boolean>(false)
+    const [deleteDialogOpen, setDeleteDialogOpen] = useState<boolean>(false)
+    const [editDialogOpen, setEditDialogOpen] = useState<boolean>(false)
     const [editData, setEditData] = useState({
         brand: '',
         model: '',
@@ -83,10 +77,10 @@ const CarDetails: React.FC = () => {
         service_interval_km: '',
         vtv_date: '',
         extintor_date: ''
-    });
-    const [windowSize, setWindowSize] = useState<number>(window.innerWidth);
-    const [lastKilometers, setLastKilometers] = useState<number | null>(null);
-    const editFileInputRef = useRef<HTMLInputElement>(null);
+    })
+    const [windowSize, setWindowSize] = useState<number>(window.innerWidth)
+    const [lastKilometers, setLastKilometers] = useState<number | null>(null)
+    const editFileInputRef = useRef<HTMLInputElement>(null)
 
     useEffect(() => {
         if (id) {
@@ -96,150 +90,150 @@ const CarDetails: React.FC = () => {
                         getCarById(Number(id)),
                         getCarExpenses(Number(id))
                     ]);
-                    setCar(carResponse.data);
+                    setCar(carResponse.data)
                     
                     const expenses = expensesResponse;
                     const expensesWithKm = expenses
                         .filter((e: any) => e.kilometers && e.kilometers > 0)
-                        .sort((a: any, b: any) => new Date(b.date).getTime() - new Date(a.date).getTime());
+                        .sort((a: any, b: any) => new Date(b.date).getTime() - new Date(a.date).getTime())
                     
                     if (expensesWithKm.length > 0) {
-                        setLastKilometers(expensesWithKm[0].kilometers);
+                        setLastKilometers(expensesWithKm[0].kilometers)
                     }
                 } catch (error) {
-                    console.error("Error fetching car details: ", error);
+                    console.error("Error fetching car details: ", error)
                 } finally {
-                    setLoading(false);
+                    setLoading(false)
                 }
             }
-            fetchCarDetails();
+            fetchCarDetails()
         }
-    }, [id]);
+    }, [id])
 
     useEffect(() => {
         const handleResize = () => {
-            setWindowSize(window.innerWidth);
-        };
+            setWindowSize(window.innerWidth)
+        }
         
-        window.addEventListener('resize', handleResize);
-        return () => window.removeEventListener('resize', handleResize);
-    }, []);
+        window.addEventListener('resize', handleResize)
+        return () => window.removeEventListener('resize', handleResize)
+    }, [])
 
     const handlePhotoClick = () => {
-        fileInputRef.current?.click();
-    };
+        fileInputRef.current?.click()
+    }
 
     const handlePhotoChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
-        const file = e.target.files?.[0];
+        const file = e.target.files?.[0]
         if (file && car) {
-            const reader = new FileReader();
+            const reader = new FileReader()
             reader.onloadend = async () => {
-                const photo = reader.result as string;
+                const photo = reader.result as string
                 try {
-                    await updateCar(car.id, { ...car, photo });
+                    await updateCar(car.id, { ...car, photo })
                     setCar({ ...car, photo });
                 } catch (error) {
-                    console.error("Error updating photo: ", error);
+                    console.error("Error updating photo: ", error)
                 }
-            };
-            reader.readAsDataURL(file);
+            }
+            reader.readAsDataURL(file)
         }
-    };
+    }
 
     const handleTabClick = (tab: string) => {
-        setActiveTab(tab);
-    };
+        setActiveTab(tab)
+    }
 
     const handleDeleteClick = () => {
-        setDeleteDialogOpen(true);
-    };
+        setDeleteDialogOpen(true)
+    }
 
     const handleDeleteCancel = () => {
-        setDeleteDialogOpen(false);
-    };
+        setDeleteDialogOpen(false)
+    }
 
     const handleDeleteConfirm = async () => {
         if (id) {
             try {
-                await deleteCar(Number(id));
-                navigate('/');
+                await deleteCar(Number(id))
+                navigate('/')
             } catch (error) {
-                console.error("Error deleting car: ", error);
+                console.error("Error deleting car: ", error)
             }
         }
-        setDeleteDialogOpen(false);
-    };
+        setDeleteDialogOpen(false)
+    }
 
     const formatKm = (value: string): string => {
-        const cleanValue = value.replace(/[^\d]/g, '');
-        return cleanValue.replace(/\B(?=(\d{3})+(?!\d))/g, '.');
-    };
+        const cleanValue = value.replace(/[^\d]/g, '')
+        return cleanValue.replace(/\B(?=(\d{3})+(?!\d))/g, '.')
+    }
 
     const getRawKm = (value: string): string => {
-        return value.replace(/\./g, '');
-    };
+        return value.replace(/\./g, '')
+    }
 
     const formatDate = (dateStr: string | undefined): string => {
-        if (!dateStr) return '';
-        const date = new Date(dateStr);
-        return date.toLocaleDateString('es-AR');
-    };
+        if (!dateStr) return ''
+        const date = new Date(dateStr)
+        return date.toLocaleDateString('es-AR')
+    }
 
     const isDateExpired = (dateStr: string | undefined): boolean => {
-        if (!dateStr) return false;
-        const date = getNextDueDate(dateStr);
-        return date < new Date();
-    };
+        if (!dateStr) return false
+        const date = getNextDueDate(dateStr)
+        return date < new Date()
+    }
 
     const getNextDueDate = (dateStr: string | undefined): Date => {
-        if (!dateStr) return new Date();
-        const lastDate = new Date(dateStr);
-        const nextDate = new Date(lastDate);
-        nextDate.setFullYear(nextDate.getFullYear() + 1);
-        return nextDate;
-    };
+        if (!dateStr) return new Date()
+        const lastDate = new Date(dateStr)
+        const nextDate = new Date(lastDate)
+        nextDate.setFullYear(nextDate.getFullYear() + 1)
+        return nextDate
+    }
 
     const formatNextDueDate = (dateStr: string | undefined): string => {
-        if (!dateStr) return '-';
-        const nextDate = getNextDueDate(dateStr);
-        return nextDate.toLocaleDateString('es-AR');
-    };
+        if (!dateStr) return '-'
+        const nextDate = getNextDueDate(dateStr)
+        return nextDate.toLocaleDateString('es-AR')
+    }
 
     const getTimeRemaining = (dateStr: string | undefined): string => {
-        if (!dateStr) return '';
-        const targetDate = getNextDueDate(dateStr);
-        const today = new Date();
-        const diffTime = targetDate.getTime() - today.getTime();
-        const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+        if (!dateStr) return ''
+        const targetDate = getNextDueDate(dateStr)
+        const today = new Date()
+        const diffTime = targetDate.getTime() - today.getTime()
+        const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24))
         
         if (diffDays < 0) {
-            return `Vencido hace ${Math.abs(diffDays)} días`;
+            return `Vencido hace ${Math.abs(diffDays)} días`
         } else if (diffDays === 0) {
-            return 'Vence hoy';
+            return 'Vence hoy'
         } else if (diffDays === 1) {
-            return 'Vence mañana';
+            return 'Vence mañana'
         } else if (diffDays < 30) {
-            return `${diffDays} días restantes`;
+            return `${diffDays} días restantes`
         } else if (diffDays < 365) {
-            const months = Math.floor(diffDays / 30);
-            return `${months} mes${months > 1 ? 'es' : ''} restantes`;
+            const months = Math.floor(diffDays / 30)
+            return `${months} mes${months > 1 ? 'es' : ''} restantes`
         } else {
             const years = Math.floor(diffDays / 365);
-            return `${years} año${years > 1 ? 's' : ''} restantes`;
+            return `${years} año${years > 1 ? 's' : ''} restantes`
         }
-    };
+    }
 
     const getNextServiceKm = (): number | null => {
-        if (!car || !car.last_service_km || !car.service_interval_km) return null;
-        return car.last_service_km + car.service_interval_km;
-    };
+        if (!car || !car.last_service_km || !car.service_interval_km) return null
+        return car.last_service_km + car.service_interval_km
+    }
 
     const getRemainingServiceKm = (): number | null => {
-        if (!car || !lastKilometers || !car.last_service_km || !car.service_interval_km) return null;
-        const nextService = getNextServiceKm();
-        if (!nextService) return null;
-        return nextService - lastKilometers;
-    };
+        if (!car || !lastKilometers || !car.last_service_km || !car.service_interval_km) return null
+        const nextService = getNextServiceKm()
+        if (!nextService) return null
+        return nextService - lastKilometers
+    }
 
     const handleEditClick = () => {
         if (car) {
@@ -255,27 +249,27 @@ const CarDetails: React.FC = () => {
                 service_interval_km: car.service_interval_km ? formatKm(car.service_interval_km.toString()) : '',
                 vtv_date: car.vtv_date || '',
                 extintor_date: car.extintor_date || ''
-            });
-            setEditDialogOpen(true);
+            })
+            setEditDialogOpen(true)
         }
-    };
+    }
 
     const handleEditInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-        const { name, value } = e.target;
+        const { name, value } = e.target
         
         if (name === 'kilometers' || name === 'last_service_km' || name === 'service_interval_km') {
-            const formatted = formatKm(value);
+            const formatted = formatKm(value)
             setEditData({
                 ...editData,
                 [name]: formatted
-            });
+            })
         } else {
             setEditData({
                 ...editData,
                 [name]: name === 'vin' ? value.toUpperCase() : value
-            });
+            })
         }
-    };
+    }
 
     const handleEditSave = async () => {
         if (car && id) {
@@ -293,39 +287,39 @@ const CarDetails: React.FC = () => {
                     service_interval_km: editData.service_interval_km ? Number(getRawKm(editData.service_interval_km)) : undefined,
                     vtv_date: editData.vtv_date || undefined,
                     extintor_date: editData.extintor_date || undefined
-                };
-                console.log('=== EDIT CAR DATA ===');
-                console.log('last_service_km:', updatedCar.last_service_km);
-                console.log('service_interval_km:', updatedCar.service_interval_km);
-                console.log('vtv_date:', updatedCar.vtv_date);
-                console.log('extintor_date:', updatedCar.extintor_date);
-                await updateCar(Number(id), updatedCar);
-                setCar(updatedCar);
-                setEditDialogOpen(false);
+                }
+                console.log('=== EDIT CAR DATA ===')
+                console.log('last_service_km:', updatedCar.last_service_km)
+                console.log('service_interval_km:', updatedCar.service_interval_km)
+                console.log('vtv_date:', updatedCar.vtv_date)
+                console.log('extintor_date:', updatedCar.extintor_date)
+                await updateCar(Number(id), updatedCar)
+                setCar(updatedCar)
+                setEditDialogOpen(false)
             } catch (error) {
-                console.error("Error updating car: ", error);
+                console.error("Error updating car: ", error)
             }
         }
-    };
+    }
 
     const handleEditPhotoClick = () => {
-        editFileInputRef.current?.click();
-    };
+        editFileInputRef.current?.click()
+    }
 
     const handleEditPhotoChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-        const file = e.target.files?.[0];
+        const file = e.target.files?.[0]
         if (file) {
-            const reader = new FileReader();
+            const reader = new FileReader()
             reader.onloadend = () => {
-                setEditData({ ...editData, photo: reader.result as string });
-            };
-            reader.readAsDataURL(file);
+                setEditData({ ...editData, photo: reader.result as string })
+            }
+            reader.readAsDataURL(file)
         }
-    };
+    }
 
     const handleCardClick = () => {
-        setExpanded(!expanded);
-    };
+        setExpanded(!expanded)
+    }
 
     if (loading) {
         return (
@@ -334,7 +328,7 @@ const CarDetails: React.FC = () => {
                     <Typography sx={{ color: '#86868b' }}>Cargando...</Typography>
                 </LoadingContainer>
             </Container>
-        );
+        )
     }
 
     if (!car) {
@@ -344,7 +338,7 @@ const CarDetails: React.FC = () => {
                     <Typography color='error'>No se encontró información para este auto.</Typography>
                 </LoadingContainer>
             </Container>
-        );
+        )
     }
 
     return (
@@ -866,7 +860,5 @@ const CarDetails: React.FC = () => {
                 </DialogActions>
             </Dialog>
         </Container>
-    );
-};
-
-export default CarDetails;
+    )
+}

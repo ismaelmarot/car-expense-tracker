@@ -73,8 +73,8 @@ function startBackend() {
     backendApp.use(cors());
     backendApp.use(express.json({ limit: '10mb' }));
     
-    const userDataPath = app.getPath("userData");
-    const dbPath = path.join(userDataPath, "database.db");
+    // Usamos DB_PATH si Electron lo pasó, sino la DB local del backend (igual que server.js)
+    const dbPath = process.env.DB_PATH || path.join(__dirname, "car-expense-tracker-backend", "database.db");
     const db = new sqlite3.Database(dbPath, (err) => {
       if (err) {
         console.error('Error abriendo DB:', err);
@@ -185,16 +185,18 @@ function startBackend() {
       });
     });
     
-    backendApp.get('/expenses/:id', (req, res) => {
-      db.get("SELECT * FROM expenses WHERE id = ?", req.params.id, (err, row) => {
-        if (err) return res.status(500).json({ error: err.message });
-        if (!row) return res.status(404).json({ error: "Expense not found" });
-        if (row.photos) {
-          try { row.photos = JSON.parse(row.photos); } catch(e) { row.photos = []; }
-        }
-        res.json(row);
-      });
-    });
+
+
+    backendApp.get('/expenses/car/:carId', (req, res) => {
+       db.all('SELECT * FROM expenses WHERE car_id = ?', [req.params.carId], (err, rows) => {
+         if (err) return res.status(500).json({ error: err.message });
+         const expenses = rows.map(row => ({
+           ...row,
+           photos: row.photos ? JSON.parse(row.photos) : []
+         }));
+         res.json(expenses);
+       });
+     });
     
     backendApp.post('/expenses', (req, res) => {
       const { car_id, amount, category, description, date, kilometers, photos } = req.body;

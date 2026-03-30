@@ -1,0 +1,1 @@
+export { CarAvatar } from './CarAvatar'

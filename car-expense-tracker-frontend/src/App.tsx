@@ -5,10 +5,11 @@ import { Box } from '@mui/material'
 import styled from '@emotion/styled'
 import CarsPage from './pages/CarPages/CarsPage'
 import { AddCar } from './components/AddCar/AddCar'
-import CarDetails from './components/CarDetails/CarDetails'
+
 import Footer from './components/Footer/Footer'
 import { LanguageProvider } from './contexts/LanguageContext'
 import LoadingScreen from './components/LoadingScreen/LoadingScreen'
+import { CarDetails } from './components/CarDetails'
 
 const AppContainer = styled(Box)`
   display: flex;
