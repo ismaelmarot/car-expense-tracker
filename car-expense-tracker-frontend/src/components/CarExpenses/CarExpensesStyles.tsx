@@ -79,6 +79,13 @@ export const HeaderCell = styled(Typography)`
   color: #86868b;
   text-transform: uppercase;
   letter-spacing: 0.5px;
+  cursor: pointer;
+  user-select: none;
+  transition: color 0.2s ease;
+  
+  &:hover {
+    color: #1d1d1f;
+  }
   
   &:nth-of-type(1) { text-align: left; }
   &:nth-of-type(2) { text-align: center; }

@@ -1,5 +1,5 @@
-import React, { useEffect, useState } from 'react'
-import { Typography, Box } from '@mui/material'
+import React, { useEffect, useState, useMemo } from 'react'
+import { Typography, Box, IconButton } from '@mui/material'
 import { getCarExpenses, deleteExpense, updateExpense } from '../../api/api'
 import { useParams } from 'react-router-dom'
 import { formatDate } from '../../functions/formatDate'
@@ -57,7 +57,12 @@ import CloseIcon from '@mui/icons-material/Close'
 import ReceiptLongIcon from '@mui/icons-material/ReceiptLong'
 import ChevronLeftIcon from '@mui/icons-material/ChevronLeft'
 import ChevronRightIcon from '@mui/icons-material/ChevronRight'
+import ArrowUpwardIcon from '@mui/icons-material/ArrowUpward'
+import ArrowDownwardIcon from '@mui/icons-material/ArrowDownward'
 import { DeleteCarConfirmationDialog } from '../DeletCarConfirmationDialog/DeletCarConfirmationDialog'
+
+type SortField = 'description' | 'kilometers' | 'category' | 'date' | 'amount'
+type SortOrder = 'asc' | 'desc'
 
 export const CarExpenses: React.FC = () => {
     const { id } = useParams()
@@ -74,6 +79,45 @@ export const CarExpenses: React.FC = () => {
     const [currentPhotoIndex, setCurrentPhotoIndex] = useState<number>(0)
     const [viewerPhotos, setViewerPhotos] = useState<string[]>([])
     const [photoZoom, setPhotoZoom] = useState<boolean>(false)
+    const [sortBy, setSortBy] = useState<SortField>('date')
+    const [sortOrder, setSortOrder] = useState<SortOrder>('desc')
+
+    const handleSort = (field: SortField) => {
+        if (sortBy === field) {
+            setSortOrder(sortOrder === 'asc' ? 'desc' : 'asc')
+        } else {
+            setSortBy(field)
+            setSortOrder('desc')
+        }
+    }
+
+    const sortedExpenses = useMemo(() => {
+        return [...expenses].sort((a, b) => {
+            let comparison = 0
+            
+            switch (sortBy) {
+                case 'description':
+                    comparison = (a.description || '').localeCompare(b.description || '')
+                    break
+                case 'kilometers':
+                    comparison = (a.kilometers || 0) - (b.kilometers || 0)
+                    break
+                case 'category':
+                    comparison = (a.category || '').localeCompare(b.category || '')
+                    break
+                case 'date':
+                    comparison = new Date(a.date).getTime() - new Date(b.date).getTime()
+                    break
+                case 'amount':
+                    comparison = (a.amount || 0) - (b.amount || 0)
+                    break
+                default:
+                    comparison = 0
+            }
+            
+            return sortOrder === 'asc' ? comparison : -comparison
+        })
+    }, [expenses, sortBy, sortOrder])
 
     useEffect(() => {
         const fetchExpenses = async () => {
@@ -85,10 +129,7 @@ export const CarExpenses: React.FC = () => {
                         ? JSON.parse(expense.photos || '[]') 
                         : (expense.photos || [])
                 }));
-                const sortedData = expensesWithPhotos.sort((a: any, b: any) => {
-                    return new Date(b.date).getTime() - new Date(a.date).getTime()
-                });
-                setExpenses(sortedData)
+                setExpenses(expensesWithPhotos)
                 setLoading(false)
             } catch (err) {
                 setError("Hubo un error al cargar los gastos.")
@@ -135,7 +176,7 @@ export const CarExpenses: React.FC = () => {
                 const updatedExpenses = prevExpenses.map(exp =>
                     exp.id === editExpense.id ? editExpense : exp
                 )
-                return updatedExpenses.sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime())
+                return updatedExpenses
             })
             if (selectedExpense && selectedExpense.id === editExpense.id) {
                 setSelectedExpense(editExpense);
@@ -218,7 +259,7 @@ export const CarExpenses: React.FC = () => {
                 <TotalAmountNew>$ {formatNumberWithCommas(totalSpent)}</TotalAmountNew>
             </TotalCard>
             
-            {expenses.length === 0 ? (
+            {sortedExpenses.length === 0 ? (
                 <EmptyState>
                     <ReceiptLongIcon sx={{ fontSize: 48, color: '#86868b', mb: 1 }} />
                     <EmptyText>{t('noExpenses')}</EmptyText>
@@ -226,13 +267,63 @@ export const CarExpenses: React.FC = () => {
             ) : (
                 <ExpenseList>
                     <TableHeader>
-                        <HeaderCell>{t('description')}</HeaderCell>
-                        <HeaderCell>{t('km')}</HeaderCell>
-                        <HeaderCell>{t('category')}</HeaderCell>
-                        <HeaderCell>{t('date')}</HeaderCell>
-                        <HeaderCell>$</HeaderCell>
+                        <HeaderCell 
+                            onClick={() => handleSort('description')}
+                            sx={{ cursor: 'pointer', userSelect: 'none' }}
+                        >
+                            <Box sx={{ display: 'flex', alignItems: 'center', gap: 0.5 }}>
+                                {t('description')}
+                                {sortBy === 'description' && (
+                                    sortOrder === 'asc' ? <ArrowUpwardIcon sx={{ fontSize: 14 }} /> : <ArrowDownwardIcon sx={{ fontSize: 14 }} />
+                                )}
+                            </Box>
+                        </HeaderCell>
+                        <HeaderCell 
+                            onClick={() => handleSort('kilometers')}
+                            sx={{ cursor: 'pointer', userSelect: 'none' }}
+                        >
+                            <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 0.5 }}>
+                                {t('km')}
+                                {sortBy === 'kilometers' && (
+                                    sortOrder === 'asc' ? <ArrowUpwardIcon sx={{ fontSize: 14 }} /> : <ArrowDownwardIcon sx={{ fontSize: 14 }} />
+                                )}
+                            </Box>
+                        </HeaderCell>
+                        <HeaderCell 
+                            onClick={() => handleSort('category')}
+                            sx={{ cursor: 'pointer', userSelect: 'none' }}
+                        >
+                            <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 0.5 }}>
+                                {t('category')}
+                                {sortBy === 'category' && (
+                                    sortOrder === 'asc' ? <ArrowUpwardIcon sx={{ fontSize: 14 }} /> : <ArrowDownwardIcon sx={{ fontSize: 14 }} />
+                                )}
+                            </Box>
+                        </HeaderCell>
+                        <HeaderCell 
+                            onClick={() => handleSort('date')}
+                            sx={{ cursor: 'pointer', userSelect: 'none' }}
+                        >
+                            <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'flex-end', gap: 0.5 }}>
+                                {t('date')}
+                                {sortBy === 'date' && (
+                                    sortOrder === 'asc' ? <ArrowUpwardIcon sx={{ fontSize: 14 }} /> : <ArrowDownwardIcon sx={{ fontSize: 14 }} />
+                                )}
+                            </Box>
+                        </HeaderCell>
+                        <HeaderCell 
+                            onClick={() => handleSort('amount')}
+                            sx={{ cursor: 'pointer', userSelect: 'none' }}
+                        >
+                            <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'flex-end', gap: 0.5 }}>
+                                $
+                                {sortBy === 'amount' && (
+                                    sortOrder === 'asc' ? <ArrowUpwardIcon sx={{ fontSize: 14 }} /> : <ArrowDownwardIcon sx={{ fontSize: 14 }} />
+                                )}
+                            </Box>
+                        </HeaderCell>
                     </TableHeader>
-                    {expenses.map((expense) => (
+                    {sortedExpenses.map((expense) => (
                         <ExpenseItem key={expense.id} onClick={() => handleItemClick(expense)}>
                             <ExpenseName>{expense.description}</ExpenseName>
                             <MobileDate>{formatDate(expense.date)}</MobileDate>
