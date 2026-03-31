@@ -61,7 +61,7 @@ import ArrowUpwardIcon from '@mui/icons-material/ArrowUpward'
 import ArrowDownwardIcon from '@mui/icons-material/ArrowDownward'
 import { DeleteCarConfirmationDialog } from '../DeletCarConfirmationDialog/DeletCarConfirmationDialog'
 
-type SortField = 'description' | 'kilometers' | 'category' | 'date' | 'amount'
+type SortField = 'description' | 'kilometers' | 'category' | 'date' | 'price'
 type SortOrder = 'asc' | 'desc'
 
 export const CarExpenses: React.FC = () => {
@@ -108,8 +108,8 @@ export const CarExpenses: React.FC = () => {
                 case 'date':
                     comparison = new Date(a.date).getTime() - new Date(b.date).getTime()
                     break
-                case 'amount':
-                    comparison = (a.amount || 0) - (b.amount || 0)
+                case 'price':
+                    comparison = (a.price || 0) - (b.price || 0)
                     break
                 default:
                     comparison = 0
@@ -238,7 +238,7 @@ export const CarExpenses: React.FC = () => {
         setCurrentPhotoIndex(prev => (prev < viewerPhotos.length - 1 ? prev + 1 : 0))
     }
 
-    const totalSpent = expenses.reduce((total, expense) => total + (expense.amount || 0), 0)
+    const totalSpent = expenses.reduce((total, expense) => total + (expense.price || 0), 0)
 
     if (loading) return (
         <Container>
@@ -312,12 +312,12 @@ export const CarExpenses: React.FC = () => {
                             </Box>
                         </HeaderCell>
                         <HeaderCell 
-                            onClick={() => handleSort('amount')}
+                            onClick={() => handleSort('price')}
                             sx={{ cursor: 'pointer', userSelect: 'none' }}
                         >
                             <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'flex-end', gap: 0.5 }}>
                                 $
-                                {sortBy === 'amount' && (
+                                {sortBy === 'price' && (
                                     sortOrder === 'asc' ? <ArrowUpwardIcon sx={{ fontSize: 14 }} /> : <ArrowDownwardIcon sx={{ fontSize: 14 }} />
                                 )}
                             </Box>
@@ -334,7 +334,7 @@ export const CarExpenses: React.FC = () => {
                                 </CategoryBadge>
                             </ExpenseCategory>
                             <ExpenseDate>{formatDate(expense.date)}</ExpenseDate>
-                            <ExpensePrice>{formatNumberWithCommas(expense.amount)}</ExpensePrice>
+                            <ExpensePrice>{formatNumberWithCommas(expense.price)}</ExpensePrice>
                         </ExpenseItem>
                     ))}
                 </ExpenseList>
@@ -352,7 +352,7 @@ export const CarExpenses: React.FC = () => {
                         <PopupContent>
                             <PopupPriceSection>
                                 <PriceLabel>{t('totalAmount')}</PriceLabel>
-                                <PriceValue>$ {formatNumberWithCommas(selectedExpense.amount)}</PriceValue>
+                                <PriceValue>$ {formatNumberWithCommas(selectedExpense.price)}</PriceValue>
                             </PopupPriceSection>
                             <DetailRow>
                                 <DetailLabel>{t('date')}</DetailLabel>

@@ -48,7 +48,7 @@ export const CarHeader: React.FC<CarHeaderProps> = ({
                     </CarInfoText>
                     {car.vin && (
                         <CarInfoText style={{ fontSize: '0.75rem', color: '#86868b' }}>
-                            VIN: {car.vin}
+                            {car.vin}
                         </CarInfoText>
                     )}
                 </CarInfo>

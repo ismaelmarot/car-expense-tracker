@@ -1,7 +1,7 @@
 export type Expense = {
     car_id: number;
     description: string;
-    amount: number;
+    price: number;
     kilometers?: number;
     category: string;
     date: string;

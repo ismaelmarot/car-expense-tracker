@@ -35,7 +35,7 @@ export const ExpenseTable: React.FC<ExpenseTableInterface> =({
                                 {formatNumberByThousands(expense.kilometers)}
                             </TableCellRight>
                             <TableCellRight>
-                                {formatNumberWithCommas(expense.amount)}
+                                {formatNumberWithCommas(expense.price)}
                             </TableCellRight>
                             <TableCellRight>
                                {formatDate(expense.date)}

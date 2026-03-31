@@ -23,7 +23,7 @@ export const ExpenseTableForPDF: React.FC<ExpenseTableForPDFInterface> = ({ expe
                             <TdStyled>{expense.description}</TdStyled>
                             <TdStyledRight>{expense.category}</TdStyledRight>
                             <TdStyledRight>{expense.kilometers}</TdStyledRight>
-                            <TdStyledRight>{formatNumberWithCommas(expense.amount)}</TdStyledRight>
+                            <TdStyledRight>{formatNumberWithCommas(expense.price)}</TdStyledRight>
                             <TdStyledRight>{formatDate(expense.date)}</TdStyledRight>
                         </tr>
                     ))}

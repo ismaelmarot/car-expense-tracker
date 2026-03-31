@@ -118,7 +118,7 @@ export const CarsPage: React.FC = () => {
                             {cars.map((car) => (
                                 <ItemList key={car.id} onClick={() => navigate(`/cars/${car.id}`)}>
                                     {car.photo ? (
-                                        <ImageCarPhoto image={car.photo} size={5} />
+                                        <ImageCarPhoto image={car.photo} size={5} margin={0.5} />
                                     ) : (
                                         <CarIconList>
                                             <ImageCarIcon size={4} />
