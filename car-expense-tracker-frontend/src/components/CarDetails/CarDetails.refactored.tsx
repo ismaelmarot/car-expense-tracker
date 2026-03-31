@@ -220,20 +220,20 @@ export const CarDetails: React.FC = () => {
                         formatNextDueDate={formatNextDueDate}
                         getTimeRemaining={getTimeRemaining}
                     />
-                    
-                    <CarTabs 
-                        activeTab={activeTab}
-                        onTabChange={setActiveTab}
-                    />
-                    
-                    <TabContent>
-                        {activeTab === 'gasto' && <AddExpense />}
-                        {activeTab === 'historial' && <CarExpenses />}
-                        {activeTab === 'grafica' && <ExpenseStats key={`stats-${windowSize}`} />}
-                        {activeTab === 'reportes' && <Settings />}
-                    </TabContent>
                 </CardExpandedContent>
             </CarInfoCard>
+            
+            <CarTabs 
+                activeTab={activeTab}
+                onTabChange={setActiveTab}
+            />
+            
+            <TabContent>
+                {activeTab === 'gasto' && <AddExpense />}
+                {activeTab === 'historial' && <CarExpenses />}
+                {activeTab === 'grafica' && <ExpenseStats key={`stats-${windowSize}`} />}
+                {activeTab === 'reportes' && <Settings />}
+            </TabContent>
             
             <input
                 type="file"
