@@ -13,7 +13,6 @@ import { DeleteCarConfirmationDialog } from '../DeletCarConfirmationDialog/Delet
 import { useCarData } from './hooks/useCarData'
 import { useCarDates } from './hooks/useCarDates'
 import { CarHeader } from './CarHeader/CarHeader'
-import { IconButton } from './CarHeader/CarHeader.styles'
 import { CarInfoCards } from './CarInfoCards/CarInfoCards'
 import { CarTabs } from './CarTabs/CarTabs'
 import { EditCarDialog } from './EditCarDialog/EditCarDialog'
@@ -201,19 +200,11 @@ export const CarDetails: React.FC = () => {
                             car={car}
                             onPhotoClick={handlePhotoClick}
                         />
-                        <Box sx={{ display: 'flex', alignItems: 'center', gap: '0.625rem', flexShrink: 0 }}>
-                            <IconButton onClick={(e: React.MouseEvent) => { e.stopPropagation(); handleEditClick(); }} color="#0071e3">
-                                ✏️
-                            </IconButton>
-                            <IconButton onClick={(e: React.MouseEvent) => { e.stopPropagation(); handleDeleteClick(); }} color="#ff3b30">
-                                🗑️
-                            </IconButton>
-                            <ExpandIcon>
-                                <span style={{ transform: expanded ? 'rotate(180deg)' : 'rotate(0deg)', transition: 'transform 0.3s' }}>
-                                    ▼
-                                </span>
-                            </ExpandIcon>
-                        </Box>
+                        <ExpandIcon>
+                            <span style={{ transform: expanded ? 'rotate(180deg)' : 'rotate(0deg)', transition: 'transform 0.3s' }}>
+                                ▼
+                            </span>
+                        </ExpandIcon>
                     </CardHeaderCollapsed>
                 </CardHeader>
                 
@@ -227,6 +218,59 @@ export const CarDetails: React.FC = () => {
                         formatNextDueDate={formatNextDueDate}
                         getTimeRemaining={getTimeRemaining}
                     />
+                    
+                    <Box sx={{ 
+                        display: 'flex', 
+                        justifyContent: 'flex-end', 
+                        gap: '0.625rem',
+                        marginTop: '1.5rem',
+                        paddingTop: '1.25rem',
+                        borderTop: '1px solid rgba(0,0,0,0.06)'
+                    }}>
+                        <Box 
+                            onClick={handleEditClick}
+                            sx={{ 
+                                display: 'flex',
+                                alignItems: 'center',
+                                gap: '0.5rem',
+                                padding: '0.75rem 1.25rem',
+                                background: '#0071e3',
+                                color: 'white',
+                                borderRadius: '34px',
+                                fontSize: '0.9375rem',
+                                fontWeight: 500,
+                                cursor: 'pointer',
+                                transition: 'all 0.2s ease',
+                                '&:hover': { background: '#0077ed' },
+                                '&:active': { transform: 'scale(0.98)' },
+                                '@media (max-width: 600px)': { padding: '0.75rem', fontSize: '0' }
+                            }}
+                        >
+                            ✏️<Box component="span" sx={{ '@media (max-width: 600px)': { display: 'none' } }}>{t('edit')}</Box>
+                        </Box>
+                        <Box 
+                            onClick={handleDeleteClick}
+                            sx={{ 
+                                display: 'flex',
+                                alignItems: 'center',
+                                gap: '0.5rem',
+                                padding: '0.75rem 1.25rem',
+                                background: 'transparent',
+                                color: '#ff3b30',
+                                border: '1px solid rgba(255,59,48,0.2)',
+                                borderRadius: '34px',
+                                fontSize: '0.9375rem',
+                                fontWeight: 500,
+                                cursor: 'pointer',
+                                transition: 'all 0.2s ease',
+                                '&:hover': { background: '#ff3b30', color: 'white', borderColor: '#ff3b30' },
+                                '&:active': { transform: 'scale(0.98)' },
+                                '@media (max-width: 600px)': { padding: '0.75rem', fontSize: '0' }
+                            }}
+                        >
+                            🗑️<Box component="span" sx={{ '@media (max-width: 600px)': { display: 'none' } }}>{t('delete')}</Box>
+                        </Box>
+                    </Box>
                 </CardExpandedContent>
             </CarInfoCard>
             
