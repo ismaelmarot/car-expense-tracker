@@ -13,9 +13,14 @@ interface UseCarDatesReturn {
 }
 
 export const useCarDates = (): UseCarDatesReturn => {
+    const parseDate = (dateStr: string): Date => {
+        if (dateStr.includes('T')) return new Date(dateStr)
+        return new Date(dateStr + 'T12:00:00')
+    }
+
     const getNextDueDate = (dateStr: string | undefined): Date => {
         if (!dateStr) return new Date()
-        const lastDate = new Date(dateStr)
+        const lastDate = parseDate(dateStr)
         const nextDate = new Date(lastDate)
         nextDate.setFullYear(nextDate.getFullYear() + 1)
         return nextDate
@@ -23,7 +28,7 @@ export const useCarDates = (): UseCarDatesReturn => {
 
     const formatDate = (dateStr: string | undefined): string => {
         if (!dateStr) return '-'
-        const date = new Date(dateStr)
+        const date = parseDate(dateStr)
         return date.toLocaleDateString('es-AR')
     }
 

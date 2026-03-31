@@ -175,7 +175,8 @@ export const CarDetails: React.FC = () => {
 
     const formatDate = (dateStr: string | undefined): string => {
         if (!dateStr) return ''
-        const date = new Date(dateStr)
+        const ds = dateStr.includes('T') ? dateStr : dateStr + 'T12:00:00'
+        const date = new Date(ds)
         return date.toLocaleDateString('es-AR')
     }
 
@@ -187,7 +188,8 @@ export const CarDetails: React.FC = () => {
 
     const getNextDueDate = (dateStr: string | undefined): Date => {
         if (!dateStr) return new Date()
-        const lastDate = new Date(dateStr)
+        const ds = dateStr.includes('T') ? dateStr : dateStr + 'T12:00:00'
+        const lastDate = new Date(ds)
         const nextDate = new Date(lastDate)
         nextDate.setFullYear(nextDate.getFullYear() + 1)
         return nextDate
