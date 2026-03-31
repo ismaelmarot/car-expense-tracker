@@ -3,7 +3,6 @@ import { useParams, useNavigate } from 'react-router-dom'
 import { Box } from '@mui/material'
 import EditIcon from '@mui/icons-material/Edit'
 import DeleteIcon from '@mui/icons-material/Delete'
-import ArrowBackIcon from '@mui/icons-material/ArrowBack'
 import { useLanguage } from '../../contexts/LanguageContext'
 import { updateCar, deleteCar } from '../../api/api'
 import { CarInterface } from '@/interfaces'
@@ -30,7 +29,8 @@ import {
     Header,
     HeaderLeft,
     HeaderRight,
-    CarName
+    CarName,
+    BackButton as BackBtn
 } from './CarDetailsStyles'
 
 export const CarDetails: React.FC = () => {
@@ -192,27 +192,9 @@ export const CarDetails: React.FC = () => {
                         <CarName>{t('carNotFound')}</CarName>
                     </HeaderLeft>
                     <HeaderRight>
-                        <Box 
-                            onClick={() => navigate('/')}
-                            sx={{ 
-                                display: 'flex',
-                                alignItems: 'center',
-                                gap: '0.5rem',
-                                padding: '0.625rem 1.25rem',
-                                background: '#f5f5f7',
-                                color: '#1d1d1f',
-                                borderRadius: '35px',
-                                fontSize: '0.9375rem',
-                                fontWeight: 500,
-                                cursor: 'pointer',
-                                transition: 'all 0.2s ease',
-                                border: '1px solid rgba(0,0,0,0.04)',
-                                '&:hover': { background: '#e8e8ed' }
-                            }}
-                        >
-                            <ArrowBackIcon sx={{ fontSize: 18 }} />
+                        <BackBtn onClick={() => navigate('/')}>
                             {t('back')}
-                        </Box>
+                        </BackBtn>
                     </HeaderRight>
                 </Header>
                 <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '50vh' }}>
@@ -229,27 +211,9 @@ export const CarDetails: React.FC = () => {
                     <CarName>{car.brand} {car.model}</CarName>
                 </HeaderLeft>
                 <HeaderRight>
-                    <Box 
-                        onClick={() => navigate('/')}
-                        sx={{ 
-                            display: 'flex',
-                            alignItems: 'center',
-                            gap: '0.5rem',
-                            padding: '0.625rem 1.25rem',
-                            background: '#f5f5f7',
-                            color: '#1d1d1f',
-                            borderRadius: '35px',
-                            fontSize: '0.9375rem',
-                            fontWeight: 500,
-                            cursor: 'pointer',
-                            transition: 'all 0.2s ease',
-                            border: '1px solid rgba(0,0,0,0.04)',
-                            '&:hover': { background: '#e8e8ed' }
-                        }}
-                    >
-                        <ArrowBackIcon sx={{ fontSize: 18 }} />
+                    <BackBtn onClick={() => navigate('/')}>
                         {t('back')}
-                    </Box>
+                    </BackBtn>
                 </HeaderRight>
             </Header>
             

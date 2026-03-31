@@ -57,7 +57,7 @@ export const BackButton = styled(Box)`
   padding: 0 1.25rem;
   background: #0071e3;
   color: white;
-  border-radius: 21px;
+  border-radius: 35px;
   font-size: 0.9375rem;
   font-weight: 500;
   cursor: pointer;
@@ -75,7 +75,7 @@ export const BackButton = styled(Box)`
   @media (max-width: 480px) {
     height: 38px;
     padding: 0 0.875rem;
-    border-radius: 19px;
+    border-radius: 35px;
   }
 `;
 

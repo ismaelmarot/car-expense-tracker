@@ -1,13 +1,35 @@
 import styled from '@emotion/styled'
 import { Box, Typography } from '@mui/material'
 
+export const Section = styled(Box)`
+  margin-bottom: 1.25rem;
+  
+  &:last-child {
+    margin-bottom: 0;
+  }
+`
+
+export const SectionTitle = styled(Box)`
+  display: flex;
+  align-items: center;
+  gap: 0.375rem;
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: #0071e3;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  margin-bottom: 0.75rem;
+  padding-bottom: 0.5rem;
+  border-bottom: 1px solid rgba(0, 113, 227, 0.1);
+`
+
 export const InfoGrid = styled(Box)`
   display: grid;
-  grid-template-columns: repeat(3, 1fr);
+  grid-template-columns: repeat(2, 1fr);
   gap: 1rem;
   
   @media (max-width: 480px) {
-    grid-template-columns: repeat(2, 1fr);
+    grid-template-columns: 1fr;
     gap: 0.75rem;
   }
 `
@@ -16,9 +38,6 @@ export const InfoGridSecondRow = styled(Box)`
   display: grid;
   grid-template-columns: repeat(2, 1fr);
   gap: 1rem;
-  margin-top: 1rem;
-  padding-top: 1rem;
-  border-top: 1px solid rgba(0, 0, 0, 0.06);
   
   @media (max-width: 480px) {
     grid-template-columns: 1fr;
