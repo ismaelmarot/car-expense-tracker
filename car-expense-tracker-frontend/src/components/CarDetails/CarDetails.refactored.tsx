@@ -1,10 +1,12 @@
 import React, { useState, useEffect } from 'react'
 import { useParams, useNavigate } from 'react-router-dom'
 import { Box } from '@mui/material'
+import EditIcon from '@mui/icons-material/Edit'
+import DeleteIcon from '@mui/icons-material/Delete'
+import ArrowBackIcon from '@mui/icons-material/ArrowBack'
 import { useLanguage } from '../../contexts/LanguageContext'
 import { updateCar, deleteCar } from '../../api/api'
 import { CarInterface } from '@/interfaces'
-import { BackButton } from '../BackButton/BackButton'
 import { AddExpense } from '../AddExpense/AddExpense'
 import { CarExpenses } from '../CarExpenses/CarExpenses'
 import { ExpenseStats } from '../ExpenseStats/ExpenseStats'
@@ -24,7 +26,11 @@ import {
     CardHeaderInfo, 
     ExpandIcon, 
     CardExpandedContent,
-    TabContent
+    TabContent,
+    Header,
+    HeaderLeft,
+    HeaderRight,
+    CarName
 } from './CarDetailsStyles'
 
 export const CarDetails: React.FC = () => {
@@ -181,7 +187,34 @@ export const CarDetails: React.FC = () => {
     if (error || !car) {
         return (
             <Container>
-                <BackButton />
+                <Header>
+                    <HeaderLeft>
+                        <CarName>{t('carNotFound')}</CarName>
+                    </HeaderLeft>
+                    <HeaderRight>
+                        <Box 
+                            onClick={() => navigate('/')}
+                            sx={{ 
+                                display: 'flex',
+                                alignItems: 'center',
+                                gap: '0.5rem',
+                                padding: '0.625rem 1.25rem',
+                                background: '#f5f5f7',
+                                color: '#1d1d1f',
+                                borderRadius: '35px',
+                                fontSize: '0.9375rem',
+                                fontWeight: 500,
+                                cursor: 'pointer',
+                                transition: 'all 0.2s ease',
+                                border: '1px solid rgba(0,0,0,0.04)',
+                                '&:hover': { background: '#e8e8ed' }
+                            }}
+                        >
+                            <ArrowBackIcon sx={{ fontSize: 18 }} />
+                            {t('back')}
+                        </Box>
+                    </HeaderRight>
+                </Header>
                 <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '50vh' }}>
                     <span>{error || t('carNotFound')}</span>
                 </Box>
@@ -191,7 +224,34 @@ export const CarDetails: React.FC = () => {
     
     return (
         <Container>
-            <BackButton />
+            <Header>
+                <HeaderLeft>
+                    <CarName>{car.brand} {car.model}</CarName>
+                </HeaderLeft>
+                <HeaderRight>
+                    <Box 
+                        onClick={() => navigate('/')}
+                        sx={{ 
+                            display: 'flex',
+                            alignItems: 'center',
+                            gap: '0.5rem',
+                            padding: '0.625rem 1.25rem',
+                            background: '#f5f5f7',
+                            color: '#1d1d1f',
+                            borderRadius: '35px',
+                            fontSize: '0.9375rem',
+                            fontWeight: 500,
+                            cursor: 'pointer',
+                            transition: 'all 0.2s ease',
+                            border: '1px solid rgba(0,0,0,0.04)',
+                            '&:hover': { background: '#e8e8ed' }
+                        }}
+                    >
+                        <ArrowBackIcon sx={{ fontSize: 18 }} />
+                        {t('back')}
+                    </Box>
+                </HeaderRight>
+            </Header>
             
             <CarInfoCard>
                 <CardHeader onClick={() => setExpanded(!expanded)}>
@@ -243,10 +303,11 @@ export const CarDetails: React.FC = () => {
                                 transition: 'all 0.2s ease',
                                 '&:hover': { background: '#0077ed' },
                                 '&:active': { transform: 'scale(0.98)' },
-                                '@media (max-width: 600px)': { padding: '0.75rem', fontSize: '0' }
+                                '@media (max-width: 600px)': { padding: '0.75rem' }
                             }}
                         >
-                            ✏️<Box component="span" sx={{ '@media (max-width: 600px)': { display: 'none' } }}>{t('edit')}</Box>
+                            <EditIcon sx={{ fontSize: 18 }} />
+                            <Box component="span" sx={{ '@media (max-width: 600px)': { display: 'none' } }}>{t('edit')}</Box>
                         </Box>
                         <Box 
                             onClick={handleDeleteClick}
@@ -265,10 +326,11 @@ export const CarDetails: React.FC = () => {
                                 transition: 'all 0.2s ease',
                                 '&:hover': { background: '#ff3b30', color: 'white', borderColor: '#ff3b30' },
                                 '&:active': { transform: 'scale(0.98)' },
-                                '@media (max-width: 600px)': { padding: '0.75rem', fontSize: '0' }
+                                '@media (max-width: 600px)': { padding: '0.75rem' }
                             }}
                         >
-                            🗑️<Box component="span" sx={{ '@media (max-width: 600px)': { display: 'none' } }}>{t('delete')}</Box>
+                            <DeleteIcon sx={{ fontSize: 18 }} />
+                            <Box component="span" sx={{ '@media (max-width: 600px)': { display: 'none' } }}>{t('delete')}</Box>
                         </Box>
                     </Box>
                 </CardExpandedContent>
