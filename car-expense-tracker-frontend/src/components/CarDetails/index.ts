@@ -1,1 +1,1 @@
-export { CarDetails } from './CarDetails'
+export { CarDetails } from './CarDetails.refactored'

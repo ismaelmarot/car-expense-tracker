@@ -62,7 +62,7 @@ export const AddCar: React.FC = () => {
             </Header>
 
             <AddCarForm>
-                {/* FOTO */}
+                {/* PHOTO */}
                 <PhotoSection>
                     {photo ? (
                         <PhotoPreview

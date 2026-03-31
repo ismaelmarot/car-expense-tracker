@@ -8,5 +8,6 @@ export {
     getCarById,
     getCarExpenses,
     getExpenseById,
+    updateCar,
     updateExpense,
 } from './api'

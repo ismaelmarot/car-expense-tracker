@@ -1,9 +1,9 @@
 import React, { useEffect, useState, useRef } from 'react'
 import { useParams, useNavigate } from 'react-router-dom'
-import { getCarById, updateCar, deleteCar, getCarExpenses } from '../../api/api'
-import { Typography, Box, Dialog, DialogTitle, DialogContent, DialogContentText, DialogActions, Button } from '@mui/material'
-import { CarInterface } from '@/interfaces'
+import { getCarById, updateCar, deleteCar, getCarExpenses } from '@/api'
 import { useLanguage } from '../../contexts/LanguageContext'
+import { CarInterface } from '@/interfaces'
+import { Typography, Box, Dialog, DialogTitle, DialogContent, DialogContentText, DialogActions, Button } from '@mui/material'
 import { 
   Container, 
   Header, 
