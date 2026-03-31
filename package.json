@@ -1,6 +1,6 @@
 {
   "name": "car-expense-tracker",
-  "version": "2.0.0",
+  "version": "2.0.1",
   "author": "Ismael Marot <ismaelmarot@hotmail.com>",
   "description": "Car Expense Tracker App",
   "main": "electron.js",
@@ -44,11 +44,11 @@
     },
     "win": {
       "target": "nsis",
-      "icon": "car-expense-tracker-frontend/public/app-car-icon.png"
+      "icon": "app-icon.png"
     },
     "mac": {
       "target": "dmg",
-      "icon": "car-expense-tracker-frontend/public/app-car-icon.png"
+      "icon": "app-icon.png"
     },
     "publish": [
       {

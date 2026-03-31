@@ -3,12 +3,12 @@
   "name": "Vehicles Expenses Tracker",
   "icons": [
     {
-      "src": "app-car-icon.png",
+      "src": "app-icon.png",
       "sizes": "512x512",
       "type": "image/png"
     },
     {
-      "src": "app-car-icon.png",
+      "src": "app-icon.png",
       "sizes": "192x192",
       "type": "image/png"
     }

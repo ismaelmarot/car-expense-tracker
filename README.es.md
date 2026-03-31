@@ -1,7 +1,7 @@
 
 # **Car Expense Tracker**
 
-**Versión:** 1.0.0
+**Versión:** 2.0.1
 
 Aplicación para llevar el registro de gastos de vehículos, diseñada para simplificar la gestión de gastos de múltiples vehículos y agruparlos por categorías. Además, incluye opciones avanzadas como la generación de reportes en PDF y visualización de estadísticas mediante gráficos.
 

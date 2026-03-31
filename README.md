@@ -7,7 +7,7 @@ An application to track car expenses, designed to simplify the management of mul
 
 &nbsp;&nbsp;&nbsp;&nbsp;
 
-![Version](https://img.shields.io/badge/version-2.0.0-orange?style=for-the-badge)
+![Version](https://img.shields.io/badge/version-2.0.1-orange?style=for-the-badge)
 &nbsp;&nbsp;&nbsp;&nbsp;
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg?style=for-the-badge)](https://github.com/ismaelmarot/car-expense-trcker/blob/HEAD/LICENSE)
 &nbsp;&nbsp;&nbsp;&nbsp;
@@ -30,7 +30,7 @@ An application to track car expenses, designed to simplify the management of mul
 
 ## **Download**
 
-[![Download for macOS](https://img.shields.io/badge/Download-macOS-000000?style=for-the-badge&logo=apple)](https://github.com/ismaelmarot/car-expense-tracker/releases/download/v2.0.0/CarET-2.0.0-arm64.dmg)
+[![Download for macOS](https://img.shields.io/badge/Download-macOS-000000?style=for-the-badge&logo=apple)](https://github.com/ismaelmarot/car-expense-tracker/releases/download/v2.0.1/CarET-2.0.1-arm64.dmg)
 
 [![Download for Windows](https://img.shields.io/badge/Download-Windows-0078D4?style=for-the-badge&logo=windows)](https://github.com/ismaelmarot/car-expense-tracker/releases/download/v2.0.0/CarET-Setup-2.0.0.exe)
 
@@ -89,8 +89,13 @@ An application to track car expenses, designed to simplify the management of mul
 
 ### **Desktop App (Recommended)**
 Simply download the installer for your platform:
-- **macOS:** [CarET-2.0.0-arm64.dmg](https://github.com/ismaelmarot/car-expense-tracker/releases/download/v2.0.0/CarET-2.0.0-arm64.dmg)
+- **macOS:** [CarET-2.0.1-arm64.dmg](https://github.com/ismaelmarot/car-expense-tracker/releases/download/v2.0.1/CarET-2.0.1-arm64.dmg)
 - **Windows:** [CarET-Setup-2.0.0.exe](https://github.com/ismaelmarot/car-expense-tracker/releases/download/v2.0.0/CarET-Setup-2.0.0.exe)
+
+> **macOS:** If you see _"CarET.app is damaged and can't be opened"_, run this command in Terminal after installing:
+> ```bash
+> xattr -cr /Applications/CarET.app
+> ```
 
 ### **Development**
 Follow these steps to clone and install the project:

@@ -1,4 +1,4 @@
-import appIcon from '../../app-car-icon.png'
+import appIcon from '../../app-icon.png'
 import { LoadingScreenProps } from '@/interfaces'
 import {
   AppName,
