@@ -46,11 +46,11 @@ export const CarInfoCards: React.FC<CarInfoCardsProps> = ({
             <Section>
                 <SectionTitle>
                     <SpeedIcon sx={{ fontSize: 16, color: '#0071e3' }} />
-                    {t('vin')} & {t('currentKm')}
+                    {t('licensePlate')} & {t('currentKm')}
                 </SectionTitle>
                 <InfoGrid>
                     <DetailItem>
-                        <DetailLabel>{t('vin')}</DetailLabel>
+                        <DetailLabel>{t('licensePlate')}</DetailLabel>
                         <DetailValue>{car.vin || '-'}</DetailValue>
                     </DetailItem>
                     <DetailItem>

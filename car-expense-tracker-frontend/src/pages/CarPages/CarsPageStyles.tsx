@@ -242,13 +242,15 @@ export const CarIconList = styled(Box)`
 `
 
 export const CarInfo = styled(Box)`
-    ${flex('row','center','center')}
+    ${flex('row','center','flex-start')}
     flex: 1;
     min-width: 0;
     height: 5rem;
+    gap: 0.75rem;
 
     @media (max-width: 600px) {
         flex-direction: column;
+        gap: 0.25rem;
     }
 `
 
