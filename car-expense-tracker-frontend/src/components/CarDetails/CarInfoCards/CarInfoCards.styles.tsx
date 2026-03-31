@@ -16,7 +16,7 @@ export const SectionTitle = styled(Box)`
   font-size: 0.75rem;
   font-weight: 600;
   color: #0071e3;
-  text-transform: uppercase;
+  text-transform: capitalize;
   letter-spacing: 0.5px;
   margin-bottom: 0.75rem;
   padding-bottom: 0.5rem;
@@ -55,7 +55,7 @@ export const DetailLabel = styled(Typography)`
   font-size: 0.6875rem;
   font-weight: 500;
   color: #86868b;
-  text-transform: uppercase;
+  text-transform: capitalize;
   letter-spacing: 0.5px;
 `
 

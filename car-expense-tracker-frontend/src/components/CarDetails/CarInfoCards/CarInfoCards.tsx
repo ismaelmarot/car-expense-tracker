@@ -102,7 +102,7 @@ export const CarInfoCards: React.FC<CarInfoCardsProps> = ({
                         <DetailLabel>VTV</DetailLabel>
                         {vtvExpired ? (
                             <AlertBadge expired={true}>
-                                VENCIDA - Próxima: {formatNextDueDate(car.vtv_date)}
+                                {t('vtvExpired')} - {t('nextDue')}: {formatNextDueDate(car.vtv_date)}
                             </AlertBadge>
                         ) : (
                             <DetailValue style={{ 
@@ -116,7 +116,7 @@ export const CarInfoCards: React.FC<CarInfoCardsProps> = ({
                         <DetailLabel>{t('extintor')}</DetailLabel>
                         {extintorExpired ? (
                             <AlertBadge expired={true}>
-                                VENCIDO - Próxima: {formatNextDueDate(car.extintor_date)}
+                                {t('extinguisherExpired')} - {t('nextDue')}: {formatNextDueDate(car.extintor_date)}
                             </AlertBadge>
                         ) : (
                             <DetailValue style={{ 
