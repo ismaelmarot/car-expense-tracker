@@ -5,8 +5,9 @@ export const Header = styled(Box)`
   display: flex;
   align-items: center;
   justify-content: space-between;
-  margin-bottom: 1.5rem;
   gap: 1rem;
+  flex: 1;
+  min-width: 0;
 `
 
 export const HeaderLeft = styled(Box)`

@@ -1,36 +1,27 @@
 import React from 'react'
 import { Box } from '@mui/material'
-import { useLanguage } from '../../../contexts/LanguageContext'
 import { CarInterface } from '@/interfaces'
 import {
     Header,
     HeaderLeft,
-    HeaderRight,
     PhotoWrapper,
     PhotoImage,
     PhotoEditOverlay,
     PhotoPlaceholder,
     CarName,
     CarInfo,
-    CarInfoText,
-    IconButton
+    CarInfoText
 } from './CarHeader.styles'
 
 interface CarHeaderProps {
     car: CarInterface
     onPhotoClick: () => void
-    onEditClick: () => void
-    onDeleteClick: () => void
 }
 
 export const CarHeader: React.FC<CarHeaderProps> = ({
     car,
-    onPhotoClick,
-    onEditClick,
-    onDeleteClick
+    onPhotoClick
 }) => {
-    const { t } = useLanguage()
-    
     return (
         <Header>
             <HeaderLeft>
@@ -62,14 +53,6 @@ export const CarHeader: React.FC<CarHeaderProps> = ({
                     )}
                 </CarInfo>
             </HeaderLeft>
-            <HeaderRight>
-                <IconButton onClick={onEditClick} color="#0071e3">
-                    ✏️
-                </IconButton>
-                <IconButton onClick={onDeleteClick} color="#ff3b30">
-                    🗑️
-                </IconButton>
-            </HeaderRight>
         </Header>
     )
 }

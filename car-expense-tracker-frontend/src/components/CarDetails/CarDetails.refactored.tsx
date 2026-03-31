@@ -13,6 +13,7 @@ import { DeleteCarConfirmationDialog } from '../DeletCarConfirmationDialog/Delet
 import { useCarData } from './hooks/useCarData'
 import { useCarDates } from './hooks/useCarDates'
 import { CarHeader } from './CarHeader/CarHeader'
+import { IconButton } from './CarHeader/CarHeader.styles'
 import { CarInfoCards } from './CarInfoCards/CarInfoCards'
 import { CarTabs } from './CarTabs/CarTabs'
 import { EditCarDialog } from './EditCarDialog/EditCarDialog'
@@ -199,14 +200,20 @@ export const CarDetails: React.FC = () => {
                         <CarHeader 
                             car={car}
                             onPhotoClick={handlePhotoClick}
-                            onEditClick={handleEditClick}
-                            onDeleteClick={handleDeleteClick}
                         />
-                        <ExpandIcon>
-                            <span style={{ transform: expanded ? 'rotate(180deg)' : 'rotate(0deg)', transition: 'transform 0.3s' }}>
-                                ▼
-                            </span>
-                        </ExpandIcon>
+                        <Box sx={{ display: 'flex', alignItems: 'center', gap: '0.625rem', flexShrink: 0 }}>
+                            <IconButton onClick={(e: React.MouseEvent) => { e.stopPropagation(); handleEditClick(); }} color="#0071e3">
+                                ✏️
+                            </IconButton>
+                            <IconButton onClick={(e: React.MouseEvent) => { e.stopPropagation(); handleDeleteClick(); }} color="#ff3b30">
+                                🗑️
+                            </IconButton>
+                            <ExpandIcon>
+                                <span style={{ transform: expanded ? 'rotate(180deg)' : 'rotate(0deg)', transition: 'transform 0.3s' }}>
+                                    ▼
+                                </span>
+                            </ExpandIcon>
+                        </Box>
                     </CardHeaderCollapsed>
                 </CardHeader>
                 
