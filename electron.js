@@ -5,11 +5,14 @@ const fs = require('fs');
 let mainWindow;
 
 function createWindow() {
+  const iconPath = path.join(__dirname, 'app-icon.png');
+  
   mainWindow = new BrowserWindow({
     width: 1200,
     height: 800,
     show: false,
     resizable: true,
+    icon: fs.existsSync(iconPath) ? iconPath : undefined,
     webPreferences: {
       nodeIntegration: false,
       contextIsolation: true
