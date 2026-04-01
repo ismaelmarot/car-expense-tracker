@@ -52,10 +52,11 @@ export const Reports: React.FC = () => {
       const endpoint = format === 'pdf' ? '/reports/pdf' : '/reports/csv'
       const response = await api.get(endpoint, {
         params: {
-          car_id: id || '',
-          start_date: dateFrom || '',
-          end_date: dateTo || '',
-          categories: selectedCategories.join(',')
+          carId: id || '',
+          dateFrom: dateFrom || '',
+          dateTo: dateTo || '',
+          categories: selectedCategories.join(','),
+          language
         },
         responseType: 'blob'
       })
