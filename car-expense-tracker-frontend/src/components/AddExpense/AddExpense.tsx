@@ -4,6 +4,7 @@ import AddCircleOutlineIcon from '@mui/icons-material/AddCircleOutline'
 import PhotoCameraIcon from '@mui/icons-material/PhotoCamera'
 import CloseIcon from '@mui/icons-material/Close'
 import { SnackbarNotification } from '@/components'
+import { CATEGORIES } from '@/constants'
 import { useLanguage } from '../../contexts/LanguageContext'
 import { useAddExpense } from './useAddExpense'
 
@@ -23,7 +24,7 @@ import {
 } from './AddExpenseStyles'
 
 export const AddExpense: React.FC = () => {
-    const { t } = useLanguage()
+    const { t, language } = useLanguage()
 
     const {
         description, price, kilometers, category, date, photos, error,
@@ -99,11 +100,11 @@ export const AddExpense: React.FC = () => {
                                 value={category}
                                 onChange={(e) => setCategory(e.target.value as string)}
                             >
-                                <MenuItem value='combustible'>{t('catFuel')}</MenuItem>
-                                <MenuItem value='mantenimiento'>{t('catMaintenance')}</MenuItem>
-                                <MenuItem value='seguro'>{t('catInsurance')}</MenuItem>
-                                <MenuItem value='reparacion'>{t('catRepairs')}</MenuItem>
-                                <MenuItem value='otros'>{t('catOther')}</MenuItem>
+                                {CATEGORIES.map((cat) => (
+                                    <MenuItem key={cat.key} value={cat.key}>
+                                        {cat.label[language]}
+                                    </MenuItem>
+                                ))}
                             </Input>
                         </SelectInput>
                     </InputGroup>
