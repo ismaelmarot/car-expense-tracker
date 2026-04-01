@@ -1,7 +1,7 @@
 import axios from 'axios'
 import { Car, Expense } from '@/types'
 
-const api = axios.create({
+export const api = axios.create({
     baseURL: process.env.REACT_APP_API_URL || 'http://localhost:5001',
     headers: {
         'Content-Type': 'application/json',

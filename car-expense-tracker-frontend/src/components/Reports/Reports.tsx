@@ -6,6 +6,7 @@ import DownloadIcon from '@mui/icons-material/Download'
 import PictureAsPdfIcon from '@mui/icons-material/PictureAsPdf'
 import TableChartIcon from '@mui/icons-material/TableChart'
 import { CATEGORIES } from '@/constants'
+import { api } from '@/api/api'
 import {
   CategoriesContainer,
   CategoryChip,
@@ -48,23 +49,18 @@ export const Reports: React.FC = () => {
   const handleDownload = async () => {
     setLoading(true)
     try {
-      const params = new URLSearchParams({
-        car_id: id || '',
-        start_date: dateFrom || '',
-        end_date: dateTo || '',
-        categories: selectedCategories.join(',')
-      })
-
       const endpoint = format === 'pdf' ? '/reports/pdf' : '/reports/csv'
-      const response = await fetch(`http://localhost:5001${endpoint}?${params}`)
+      const response = await api.get(endpoint, {
+        params: {
+          car_id: id || '',
+          start_date: dateFrom || '',
+          end_date: dateTo || '',
+          categories: selectedCategories.join(',')
+        },
+        responseType: 'blob'
+      })
       
-      if (!response.ok) {
-        const errorText = await response.text()
-        console.error('Report generation error:', errorText)
-        throw new Error(`Error generating report: ${response.status}`)
-      }
-      
-      const blob = await response.blob()
+      const blob = response.data
       if (blob.size === 0) {
         throw new Error('Empty report received')
       }
