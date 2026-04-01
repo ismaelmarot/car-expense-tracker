@@ -13,14 +13,21 @@ interface UseCarDatesReturn {
 }
 
 export const useCarDates = (): UseCarDatesReturn => {
-    const parseDate = (dateStr: string): Date => {
+    const parseDateLocal = (dateStr: string): Date => {
         if (dateStr.includes('T')) return new Date(dateStr)
-        return new Date(dateStr + 'T12:00:00')
+        const [y, m, d] = dateStr.split('-').map(Number)
+        return new Date(y, m - 1, d)
+    }
+
+    const formatDateString = (dateStr: string): string => {
+        const parts = dateStr.split('T')[0].split('-')
+        if (parts.length !== 3) return dateStr
+        return `${parts[2]}/${parts[1]}/${parts[0]}`
     }
 
     const getNextDueDate = (dateStr: string | undefined): Date => {
         if (!dateStr) return new Date()
-        const lastDate = parseDate(dateStr)
+        const lastDate = parseDateLocal(dateStr)
         const nextDate = new Date(lastDate)
         nextDate.setFullYear(nextDate.getFullYear() + 1)
         return nextDate
@@ -28,8 +35,7 @@ export const useCarDates = (): UseCarDatesReturn => {
 
     const formatDate = (dateStr: string | undefined): string => {
         if (!dateStr) return '-'
-        const date = parseDate(dateStr)
-        return date.toLocaleDateString('es-AR')
+        return formatDateString(dateStr)
     }
 
     const isDateExpired = (dateStr: string | undefined): boolean => {

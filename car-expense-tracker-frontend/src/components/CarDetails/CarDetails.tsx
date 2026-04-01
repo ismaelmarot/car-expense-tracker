@@ -175,9 +175,9 @@ export const CarDetails: React.FC = () => {
 
     const formatDate = (dateStr: string | undefined): string => {
         if (!dateStr) return ''
-        const ds = dateStr.includes('T') ? dateStr : dateStr + 'T12:00:00'
-        const date = new Date(ds)
-        return date.toLocaleDateString('es-AR')
+        const parts = dateStr.split('T')[0].split('-')
+        if (parts.length !== 3) return dateStr
+        return `${parts[2]}/${parts[1]}/${parts[0]}`
     }
 
     const isDateExpired = (dateStr: string | undefined): boolean => {
@@ -188,8 +188,8 @@ export const CarDetails: React.FC = () => {
 
     const getNextDueDate = (dateStr: string | undefined): Date => {
         if (!dateStr) return new Date()
-        const ds = dateStr.includes('T') ? dateStr : dateStr + 'T12:00:00'
-        const lastDate = new Date(ds)
+        const [y, m, d] = dateStr.split('T')[0].split('-').map(Number)
+        const lastDate = new Date(y, m - 1, d)
         const nextDate = new Date(lastDate)
         nextDate.setFullYear(nextDate.getFullYear() + 1)
         return nextDate
