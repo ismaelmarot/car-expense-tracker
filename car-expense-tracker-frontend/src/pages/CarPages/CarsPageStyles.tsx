@@ -34,6 +34,7 @@ export const HeaderRight = styled(Box)`
   display: flex;
   align-items: center;
   gap: 0.625rem;
+  margin-left: auto;
 `
 
 export const Title = styled(Typography)`
