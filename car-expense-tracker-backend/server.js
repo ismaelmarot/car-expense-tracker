@@ -417,103 +417,112 @@ app.get('/reports/pdf', async (req, res) => {
 app.get('/reports/csv', (req, res) => {
   const { carId, dateFrom, dateTo, categories, language } = req.query;
   const lang = language || 'es';
+  const selectedCats = categories ? categories.split(',').filter(c => c) : [];
   
-  // Translations
+  const tr = {
+    es: {
+      vehicle: 'Vehículo', brand: 'Marca', model: 'Modelo', year: 'Año',
+      licensePlate: 'Patente', version: 'Versión', lastServiceKm: 'Último service',
+      serviceEveryKm: 'Service cada', vtvDate: 'Fecha VTV', extinguisherDate: 'Fecha extintor',
+      reportParameters: 'Parámetros del reporte', from: 'Desde', to: 'Hasta',
+      categories: 'Categorías', allPeriod: 'Todo el período', allCategories: 'Todas',
+      summary: 'Resumen', totalSpent: 'Total gastado', totalExpenses: 'Cantidad de gastos',
+      average: 'Promedio'
+    },
+    en: {
+      vehicle: 'Vehicle', brand: 'Brand', model: 'Model', year: 'Year',
+      licensePlate: 'License Plate', version: 'Version', lastServiceKm: 'Last service',
+      serviceEveryKm: 'Service every', vtvDate: 'VTV Date', extinguisherDate: 'Extinguisher Date',
+      reportParameters: 'Report Parameters', from: 'From', to: 'To',
+      categories: 'Categories', allPeriod: 'All period', allCategories: 'All',
+      summary: 'Summary', totalSpent: 'Total spent', totalExpenses: 'Total expenses',
+      average: 'Average'
+    }
+  };
+  const t = tr[lang] || tr.es;
   const headers = {
     es: ['Fecha', 'Descripción', 'Categoría', 'Kilómetros', 'Monto'],
     en: ['Date', 'Description', 'Category', 'Kilometers', 'Amount']
   };
-  const t = headers[lang] || headers.es;
 
-  // Build query
-  let query = `SELECT * FROM expenses WHERE car_id = ?`;
-  const params = [carId];
-
-  if (dateFrom) {
-    query += ` AND date >= ?`;
-    params.push(dateFrom);
-  }
-  if (dateTo) {
-    query += ` AND date <= ?`;
-    params.push(dateTo);
-  }
-  if (categories) {
-    const cats = categories.split(',').filter(c => c);
-    if (cats.length > 0) {
-      query += ` AND category IN (${cats.map(() => '?').join(',')})`;
-      params.push(...cats);
-    }
-  }
-  query += ` ORDER BY date DESC`;
-
-  db.all(query, params, (err, expenses) => {
+  // Fetch car data
+  db.get('SELECT * FROM cars WHERE id = ?', [carId], (err, car) => {
     if (err) return res.status(500).json({ error: err.message });
+    if (!car) return res.status(404).json({ error: 'Car not found' });
 
-    // Generate enhanced CSV with vehicle info and summary
-    let csv = '';
-    
-    // Add UTF-8 BOM for Excel
-    csv += '\ufeff';
-    
-    // Vehicle Information Section
-    csv += `# ${t('vehicle')}\n`;
-    csv += `${t('brand')},${car.brand || ''}\n`;
-    csv += `${t('model')},${car.model || ''}\n`;
-    csv += `${t('year')},${car.year || ''}\n`;
-    csv += `${t('licensePlate')},${car.vin || ''}\n`;
-    csv += `${t('version')},${car.version || ''}\n`;
-    if (car.last_service_km !== null) csv += `${t('lastServiceKm')},${car.last_service_km.toLocaleString('es-AR')} km\n`;
-    if (car.service_interval_km !== null) csv += `${t('serviceEveryKm')},${car.service_interval_km.toLocaleString('es-AR')} km\n`;
-    if (car.vtv_date) csv += `${t('vtvDate')},${formatDate(car.vtv_date)}\n`;
-    if (car.extintor_date) csv += `${t('extinguisherDate')},${formatDate(car.extintor_date)}\n`;
-    csv += '\n';
-    
-    // Report Parameters Section
-    csv += `# ${t('reportParameters')}\n`;
-    csv += `${t('from')},${dateFrom || t('allPeriod')}\n`;
-    csv += `${t('to')},${dateTo || t('allPeriod')}\n`;
-    csv += `${t('categories')},${selectedCategories.length === categories.length ? t('allCategories') : selectedCategories.map(cat => {
-      const catObj = categories.find(c => c.key === cat);
-      return catObj ? catObj.label[language] : cat;
-    }).join(', ')}\n`;
-    csv += '\n';
-    
-    // Summary Section
-    const total = expenses.reduce((sum, e) => sum + e.price, 0);
-    const count = expenses.length;
-    const avg = count > 0 ? total / count : 0;
-    
-    csv += `# ${t('summary')}\n`;
-    csv += `${t('totalSpent')},$ ${formatNumber(total)}\n`;
-    csv += `${t('totalExpenses')},${count}\n`;
-    csv += `${t('average')},$ ${formatNumber(Math.round(avg))}\n`;
-    csv += '\n';
-    
-    // Column Headers
-    csv += `${headers[lang].join(',')}\n`;
-    
-    // Data Rows
-    expenses.forEach(expense => {
-      const row = [
-        formatDate(expense.date),
-        `"${(expense.description || '').replace(/"/g, '""')}"`,
-        formatCategory(expense.category),
-        expense.kilometers || '',
-        expense.price
-      ];
-      csv += row.join(',') + '\n';
+    // Build query
+    let query = `SELECT * FROM expenses WHERE car_id = ?`;
+    const params = [carId];
+
+    if (dateFrom) {
+      query += ` AND date >= ?`;
+      params.push(dateFrom);
+    }
+    if (dateTo) {
+      query += ` AND date <= ?`;
+      params.push(dateTo);
+    }
+    if (selectedCats.length > 0) {
+      query += ` AND category IN (${selectedCats.map(() => '?').join(',')})`;
+      params.push(...selectedCats);
+    }
+    query += ` ORDER BY date DESC`;
+
+    db.all(query, params, (err, expenses) => {
+      if (err) return res.status(500).json({ error: err.message });
+
+      let csv = '\ufeff';
+      
+      csv += `# ${t.vehicle}\n`;
+      csv += `${t.brand},${car.brand || ''}\n`;
+      csv += `${t.model},${car.model || ''}\n`;
+      csv += `${t.year},${car.year || ''}\n`;
+      csv += `${t.licensePlate},${car.vin || ''}\n`;
+      if (car.version) csv += `${t.version},${car.version}\n`;
+      if (car.last_service_km != null) csv += `${t.lastServiceKm},${car.last_service_km.toLocaleString('es-AR')} km\n`;
+      if (car.service_interval_km != null) csv += `${t.serviceEveryKm},${car.service_interval_km.toLocaleString('es-AR')} km\n`;
+      if (car.vtv_date) csv += `${t.vtvDate},${formatDate(car.vtv_date)}\n`;
+      if (car.extintor_date) csv += `${t.extinguisherDate},${formatDate(car.extintor_date)}\n`;
+      csv += '\n';
+      
+      csv += `# ${t.reportParameters}\n`;
+      csv += `${t.from},${dateFrom || t.allPeriod}\n`;
+      csv += `${t.to},${dateTo || t.allPeriod}\n`;
+      csv += '\n';
+      
+      const total = expenses.reduce((sum, e) => sum + (e.price || 0), 0);
+      const count = expenses.length;
+      const avg = count > 0 ? total / count : 0;
+      
+      csv += `# ${t.summary}\n`;
+      csv += `${t.totalSpent},$ ${formatNumber(total)}\n`;
+      csv += `${t.totalExpenses},${count}\n`;
+      csv += `${t.average},$ ${formatNumber(Math.round(avg))}\n`;
+      csv += '\n';
+      
+      csv += `${headers[lang].join(',')}\n`;
+      
+      expenses.forEach(expense => {
+        const row = [
+          formatDate(expense.date),
+          `"${(expense.description || '').replace(/"/g, '""')}"`,
+          formatCategory(expense.category),
+          expense.kilometers || '',
+          expense.price || 0
+        ];
+        csv += row.join(',') + '\n';
+      });
+      
+      csv += '\n';
+      csv += `# ${t.summary}\n`;
+      csv += `${t.totalSpent},$ ${formatNumber(total)}\n`;
+      csv += `${t.totalExpenses},${count}\n`;
+      csv += `${t.average},$ ${formatNumber(Math.round(avg))}\n`;
+
+      res.setHeader('Content-Type', 'text/csv; charset=utf-8');
+      res.setHeader('Content-Disposition', `attachment; filename=report_${carId}_${Date.now()}.csv`);
+      res.send(csv);
     });
-    
-    // Add summary at the end as well
-    csv += '\n';
-    csv += `# ${t('summary')}\n`;
-    csv += `${t('totalSpent')},$ ${formatNumber(total)}\n`;
-    csv += `${t('totalExpenses')},${count}\n`;
-    csv += `${t('average')},$ ${formatNumber(Math.round(avg))}\n`;
-
-    res.setHeader('Content-Type', 'text/csv; charset=utf-8');
-    res.setHeader('Content-Disposition', `attachment; filename=report_${carId}_${Date.now()}.csv`);
-    res.send(csv);
   });
 });
 

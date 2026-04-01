@@ -73,7 +73,7 @@ export const TableHeader = styled(Box)`
   }
 `;
 
-export const HeaderCell = styled(Typography)`
+export const HeaderCell = styled(Box)`
   font-size: 0.6875rem;
   font-weight: 600;
   color: #86868b;

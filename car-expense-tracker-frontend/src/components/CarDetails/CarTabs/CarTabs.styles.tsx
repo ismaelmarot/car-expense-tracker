@@ -14,7 +14,9 @@ export const TabsContainer = styled(Box)`
   }
 `
 
-export const TabButton = styled(Box)<{ active: boolean }>`
+export const TabButton = styled(Box, {
+  shouldForwardProp: (prop) => prop !== 'active'
+})<{ active: boolean }>`
   display: flex;
   align-items: center;
   justify-content: center;
