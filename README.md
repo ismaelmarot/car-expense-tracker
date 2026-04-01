@@ -32,7 +32,7 @@ An application to track car expenses, designed to simplify the management of mul
 
 [![Download for macOS](https://img.shields.io/badge/Download-macOS-000000?style=for-the-badge&logo=apple)](https://github.com/ismaelmarot/car-expense-tracker/releases/download/v2.0.1/CarET-2.0.1-arm64.dmg)
 
-[![Download for Windows](https://img.shields.io/badge/Download-Windows-0078D4?style=for-the-badge&logo=windows)](https://github.com/ismaelmarot/car-expense-tracker/releases/download/v2.0.0/CarET-Setup-2.0.0.exe)
+[![Download for Windows](https://img.shields.io/badge/Download-Windows-0078D4?style=for-the-badge&logo=windows)](https://github.com/ismaelmarot/car-expense-tracker/releases/download/v2.0.1/CarET%20Setup%202.0.1.exe)
 
 <br/>
 
@@ -90,7 +90,7 @@ An application to track car expenses, designed to simplify the management of mul
 ### **Desktop App (Recommended)**
 Simply download the installer for your platform:
 - **macOS:** [CarET-2.0.1-arm64.dmg](https://github.com/ismaelmarot/car-expense-tracker/releases/download/v2.0.1/CarET-2.0.1-arm64.dmg)
-- **Windows:** [CarET-Setup-2.0.0.exe](https://github.com/ismaelmarot/car-expense-tracker/releases/download/v2.0.0/CarET-Setup-2.0.0.exe)
+- **Windows:** [CarET Setup 2.0.1.exe](https://github.com/ismaelmarot/car-expense-tracker/releases/download/v2.0.1/CarET%20Setup%202.0.1.exe)
 
 > **macOS:** If you see _"CarET.app is damaged and can't be opened"_, run this command in Terminal after installing:
 > ```bash
