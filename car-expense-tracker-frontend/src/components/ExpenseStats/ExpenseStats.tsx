@@ -214,7 +214,10 @@ export const ExpenseStats: React.FC = () => {
     const categories = Object.keys(categoryTotals).sort((a, b) => categoryTotals[b] - categoryTotals[a])
     const colors = [
       '#0071e3', '#34c759', '#ff9500', '#ff3b30', '#af52de',
-      '#5856d6', '#5ac8fa', '#ff2d55', '#a2845e', '#8e8e93'
+      '#5856d6', '#5ac8fa', '#ff2d55', '#a2845e', '#8e8e93',
+      '#007aff', '#30d158', '#ffd60a', '#ff6b6b', '#bf5af2',
+      '#64d2ff', '#32d74b', '#ff9f0a', '#ff453a', '#ac8e68',
+      '#48484a'
     ]
 
     return {

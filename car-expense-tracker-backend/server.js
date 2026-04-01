@@ -162,10 +162,22 @@ app.put('/cars/:id', (req, res) => {
 });
 
 app.get('/expenses', (req, res) => {
-  db.all('SELECT * FROM expenses', [], (err, rows) => {
-    if (err) return res.status(500).json({ error: err.message });
-    res.json(rows);
-  });
+  const { car_id } = req.query;
+  if (car_id) {
+    db.all('SELECT * FROM expenses WHERE car_id = ? ORDER BY date DESC', [car_id], (err, rows) => {
+      if (err) return res.status(500).json({ error: err.message });
+      const expenses = rows.map(row => ({
+        ...row,
+        photos: row.photos ? JSON.parse(row.photos) : []
+      }));
+      res.json(expenses);
+    });
+  } else {
+    db.all('SELECT * FROM expenses', [], (err, rows) => {
+      if (err) return res.status(500).json({ error: err.message });
+      res.json(rows);
+    });
+  }
 });
 
 app.get('/expenses/car/:carId', (req, res) => {
