@@ -89,7 +89,6 @@ export const ExpenseStats: React.FC = () => {
       try {
         const data = await getCarExpenses(Number(id))
         setExpenses(data)
-        window.dispatchEvent(new CustomEvent('expense-changed'))
       } catch (error) {
         console.error('Error fetching expenses:', error)
       } finally {
