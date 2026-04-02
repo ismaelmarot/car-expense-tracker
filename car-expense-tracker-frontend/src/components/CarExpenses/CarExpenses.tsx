@@ -109,7 +109,7 @@ export const CarExpenses: React.FC = () => {
                     comparison = new Date(a.date).getTime() - new Date(b.date).getTime()
                     break
                 case 'price':
-                    comparison = (a.price || 0) - (b.price || 0)
+                    comparison = getPrice(a) - getPrice(b)
                     break
                 default:
                     comparison = 0
@@ -239,7 +239,8 @@ export const CarExpenses: React.FC = () => {
         setCurrentPhotoIndex(prev => (prev < viewerPhotos.length - 1 ? prev + 1 : 0))
     }
 
-    const totalSpent = expenses.reduce((total, expense) => total + (expense.price || 0), 0)
+    const getPrice = (exp: any) => exp.price ?? exp.amount ?? 0
+    const totalSpent = expenses.reduce((total, expense) => total + getPrice(expense), 0)
 
     if (loading) return (
         <Container>
@@ -335,7 +336,7 @@ export const CarExpenses: React.FC = () => {
                                 </CategoryBadge>
                             </ExpenseCategory>
                             <ExpenseDate>{formatDate(expense.date)}</ExpenseDate>
-                            <ExpensePrice>$ {formatMoney(expense.price)}</ExpensePrice>
+                            <ExpensePrice>{formatMoney(getPrice(expense))}</ExpensePrice>
                         </ExpenseItem>
                     ))}
                 </ExpenseList>
@@ -353,7 +354,7 @@ export const CarExpenses: React.FC = () => {
                         <PopupContent>
                             <PopupPriceSection>
                                 <PriceLabel>{t('totalAmount')}</PriceLabel>
-                                <PriceValue>{formatMoney(selectedExpense.price)}</PriceValue>
+                                <PriceValue>{formatMoney(getPrice(selectedExpense))}</PriceValue>
                             </PopupPriceSection>
                             <DetailRow>
                                 <DetailLabel>{t('date')}</DetailLabel>

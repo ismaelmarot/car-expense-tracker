@@ -39,7 +39,8 @@ export const EditExpenseDialog: React.FC<EditExpenseDialogPropsInterface> = ({ o
 
     useEffect(() => {
         if (expense) {
-            setPriceDisplay(formatPrice(String(expense.price).replace('.', ',')))
+            const priceValue = (expense as any).price ?? (expense as any).amount ?? 0
+            setPriceDisplay(formatPrice(String(priceValue).replace('.', ',')))
             setKmDisplay(formatKilometers(String(expense.kilometers)))
         }
     }, [expense])
