@@ -203,10 +203,11 @@ function startBackend() {
      });
     
     backendApp.post('/expenses', (req, res) => {
-      const { car_id, amount, category, description, date, kilometers, photos } = req.body;
+      const { car_id, price, amount, category, description, date, kilometers, photos } = req.body;
+      const priceValue = price ?? amount ?? 0;
       const photosStr = photos ? JSON.stringify(photos) : null;
       const stmt = db.prepare(`INSERT INTO expenses (car_id, amount, category, description, date, kilometers, photos) VALUES (?, ?, ?, ?, ?, ?, ?)`);
-      stmt.run(car_id, amount, category, description, date, kilometers, photosStr, function(err) {
+      stmt.run(car_id, priceValue, category, description, date, kilometers, photosStr, function(err) {
         if (err) return res.status(500).json({ error: err.message });
         res.json({ id: this.lastID });
       });
@@ -214,10 +215,11 @@ function startBackend() {
     });
     
     backendApp.put('/expenses/:id', (req, res) => {
-      const { amount, category, description, date, kilometers, photos } = req.body;
+      const { price, amount, category, description, date, kilometers, photos } = req.body;
+      const priceValue = price ?? amount ?? 0;
       const photosStr = photos ? JSON.stringify(photos) : null;
       const stmt = db.prepare(`UPDATE expenses SET amount=?, category=?, description=?, date=?, kilometers=?, photos=? WHERE id=?`);
-      stmt.run(amount, category, description, date, kilometers, photosStr, req.params.id, function(err) {
+      stmt.run(priceValue, category, description, date, kilometers, photosStr, req.params.id, function(err) {
         if (err) return res.status(500).json({ error: err.message });
         res.json({ changes: this.changes });
       });

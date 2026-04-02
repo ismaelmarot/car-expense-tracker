@@ -107,7 +107,7 @@ export const ExpenseStats: React.FC = () => {
     const lowest = sortedByPrice[sortedByPrice.length - 1]
     const average = total / expenses.length
 
-    const totalKm = expenses.reduce((sum, exp) => sum + (exp.kilometers || 0), 0)
+    const totalKm = expenses.reduce((max, exp) => Math.max(max, exp.kilometers || 0), 0)
     const costPerKm = totalKm > 0 ? total / totalKm : 0
 
     // Gasto mensual promedio
