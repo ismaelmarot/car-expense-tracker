@@ -45,7 +45,8 @@ An application to track car expenses, designed to simplify the management of mul
 4. [Usage](#usage)
 5. [Screenshots](#screenshots)
 6. [Author](#author)
-7. [License](#license)
+7. [Screenshots](#screenshots)
+8. [License](#license)
 
 <br/>
 
@@ -175,18 +176,78 @@ This project is licensed under the **MIT License**. See the [LICENSE](LICENSE) f
 
 <br/>
 
----
+<a id="screenshots"></a>
+## 📸 [Screenshots](#-table-of-content)
 
-## **Screenshots**
+>### 📱 Mobile
 
-![Vehicles page](https://github.com/ismaelmarot/car-expense-tracker/blob/main/assets/car-app-01.png)
+<p align="center">
+  <img src="/docs/screenshots/screenshot-01.png" width="230"/>
+  <img src="/docs/screenshots/screenshot-02.png" width="230"/>
+  <img src="/docs/screenshots/screenshot-03.png" width="230"/>
+  <img src="/docs/screenshots/screenshot-04.png" width="230"/>
+</p>
 
-![Add vehicle](https://github.com/ismaelmarot/car-expense-tracker/blob/main/assets/car-app-02.png)
+<details>
+<summary><strong>See more...</strong></summary>
+<br>
+<p align="center">
+  <img src="/docs/screenshots/screenshot-05.png" width="230"/>
+  <img src="/docs/screenshots/screenshot-06.png" width="230"/>
+  <img src="/docs/screenshots/screenshot-07.png" width="230"/>
+  <img src="/docs/screenshots/screenshot-08.png" width="230"/>
+</p>
+<p align="center">
+  <img src="/docs/screenshots/screenshot-09.png" width="230"/>
+  <img src="/docs/screenshots/screenshot-10.png" width="230"/>
+</p>
+</details>
 
-![Add expense](https://github.com/ismaelmarot/car-expense-tracker/blob/main/assets/car-app-03.png)
+<br>
 
-![Expenses List](https://github.com/ismaelmarot/car-expense-tracker/blob/main/assets/car-app-04.png)
+&nbsp;
 
-![Expenses Graphics](https://github.com/ismaelmarot/car-expense-tracker/blob/main/assets/car-app-05.png)
+----------------------------------------
 
-![Edit expense](https://github.com/ismaelmarot/car-expense-tracker/blob/main/assets/car-app-06.png)
+<a id="screenshots"></a>
+## 📸 [Screenshots](#-table-of-content)
+
+>### 📱 Mobile
+
+<p align="center">
+  <img src="/docs/screenshots/screenshot-01.png" width="230"/>
+  <img src="/docs/screenshots/screenshot-02.png" width="230"/>
+  <img src="/docs/screenshots/screenshot-03.png" width="230"/>
+  <img src="/docs/screenshots/screenshot-04.png" width="230"/>
+</p>
+
+<details>
+<summary><strong>See more...</strong></summary>
+<br>
+<p align="center">
+  <img src="/docs/screenshots/screenshot-05.png" width="230"/>
+  <img src="/docs/screenshots/screenshot-06.png" width="230"/>
+  <img src="/docs/screenshots/screenshot-07.png" width="230"/>
+  <img src="/docs/screenshots/screenshot-08.png" width="230"/>
+</p>
+<p align="center">
+  <img src="/docs/screenshots/screenshot-09.png" width="230"/>
+  <img src="/docs/screenshots/screenshot-10.png" width="230"/>
+</p>
+</details>
+
+<br>
+
+----------------------------------------
+
+&nbsp;
+
+## 📬 [CONTACT](#-table-of-content)
+
+Open to collaboration, feedback, and new opportunities.
+
+[![GitHub](https://img.shields.io/badge/GitHub-ismaelmarot-181717?style=for-the-badge&logo=github)](https://github.com/ismaelmarot)
+[![LinkedIn](https://img.shields.io/badge/LinkedIn-ismael--marot-0077B5?style=for-the-badge&logo=linkedin)](https://linkedin.com/in/ismael-marot)
+[![Portfolio](https://img.shields.io/badge/Portfolio-ishmarot-FF5722?style=for-the-badge&logo=google-chrome)](https://ismaelmarot.github.io)
+
+
