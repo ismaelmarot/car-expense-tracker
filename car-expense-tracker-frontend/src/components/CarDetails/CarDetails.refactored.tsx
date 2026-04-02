@@ -175,7 +175,8 @@ export const CarDetails: React.FC = () => {
         }
     }
     
-    const currentKm = lastKilometers || car?.kilometers || 0
+    const maxExpenseKm = expenses.reduce((max, exp) => Math.max(max, exp.kilometers || 0), 0)
+    const currentKm = Math.max(maxExpenseKm, car?.kilometers || 0)
     const serviceKmRemaining = car 
         ? getRemainingServiceKm(car.last_service_km || null, car.service_interval_km || 10000, currentKm)
         : null

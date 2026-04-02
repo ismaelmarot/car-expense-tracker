@@ -36,14 +36,9 @@ export const useCarData = (id: string | undefined): UseCarDataReturn => {
             const expensesData = expensesResponse
             setExpenses(expensesData)
             
-            // Find the most recent expense with kilometers
-            const expensesWithKm = expensesData
-                .filter((e: any) => e.kilometers && e.kilometers > 0)
-                .sort((a: any, b: any) => new Date(b.date).getTime() - new Date(a.date).getTime())
-            
-            if (expensesWithKm.length > 0) {
-                setLastKilometers(expensesWithKm[0].kilometers)
-            }
+            // Find the max km from expenses
+            const maxExpenseKm = expensesData.reduce((max: number, exp: any) => Math.max(max, exp.kilometers || 0), 0)
+            setLastKilometers(maxExpenseKm)
         } catch (err) {
             console.error("Error fetching car details:", err)
             setError("Error al cargar los datos del vehículo")
