@@ -67,6 +67,10 @@ const translations: Translations = {
   deleteCar: { es: 'Eliminar vehículo', en: 'Delete vehicle' },
   deleteCarConfirm: { es: '¿Eliminar', en: 'Delete' },
   carNotFound: { es: 'Vehículo no encontrado', en: 'Vehicle not found' },
+  updateVehicleDate: { es: '¿Actualizar fecha de', en: 'Update' },
+  updateVehicleDateDesc: { es: '¿Deseás actualizar la fecha del vehículo con', en: 'Do you want to update the vehicle date to' },
+  yes: { es: 'Sí, actualizar', en: 'Yes, update' },
+  no: { es: 'No, solo guardar gasto', en: 'No, only save expense' },
   
   // Tabs
   expenseTab: { es: 'Gasto', en: 'Expense' },

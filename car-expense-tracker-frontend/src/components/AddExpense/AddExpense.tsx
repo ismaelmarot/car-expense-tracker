@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { MenuItem, Box } from '@mui/material'
 import AddCircleOutlineIcon from '@mui/icons-material/AddCircleOutline'
 import PhotoCameraIcon from '@mui/icons-material/PhotoCamera'
@@ -6,7 +6,10 @@ import CloseIcon from '@mui/icons-material/Close'
 import { SnackbarNotification } from '@/components'
 import { CATEGORIES } from '@/constants'
 import { useLanguage } from '../../contexts/LanguageContext'
+import { useParams } from 'react-router-dom'
+import { updateCar, getCarById } from '../../api/api'
 import { useAddExpense } from './useAddExpense'
+import { UpdateVehicleDateDialog } from '../UpdateVehicleDateDialog/UpdateVehicleDateDialog'
 
 import {
   Container,
@@ -25,6 +28,35 @@ import {
 
 export const AddExpense: React.FC = () => {
     const { t, language } = useLanguage()
+    const { id } = useParams()
+    const [dialogOpen, setDialogOpen] = useState(false)
+    const [dialogCategory, setDialogCategory] = useState<'vtv_itv' | 'extintor'>('vtv_itv')
+    const [dialogDate, setDialogDate] = useState('')
+
+    const handleExpenseSuccess = (data: { category: string, date: string }) => {
+        if (data.category === 'vtv_itv' || data.category === 'extintor') {
+            setDialogCategory(data.category as 'vtv_itv' | 'extintor')
+            setDialogDate(data.date)
+            setDialogOpen(true)
+        }
+    }
+
+    const handleDialogConfirm = async () => {
+        try {
+            const carResponse = await getCarById(Number(id))
+            const carData = carResponse.data
+            const updateField = dialogCategory === 'vtv_itv' ? 'vtv_date' : 'extintor_date'
+            await updateCar(Number(id), { ...carData, [updateField]: dialogDate })
+            window.dispatchEvent(new CustomEvent('expense-changed'))
+        } catch (err) {
+            console.error('Error updating vehicle date:', err)
+        }
+        setDialogOpen(false)
+    }
+
+    const handleDialogCancel = () => {
+        setDialogOpen(false)
+    }
 
     const {
         description, price, kilometers, category, date, photos, error,
@@ -42,7 +74,7 @@ export const AddExpense: React.FC = () => {
         handlePhotoChange,
         removePhoto,
         closeSnackbar
-    } = useAddExpense()
+    } = useAddExpense(handleExpenseSuccess)
 
     return (
         <Container>
@@ -182,6 +214,14 @@ export const AddExpense: React.FC = () => {
                 message={snackbarMessage}
                 severity={snackbarSeverity}
                 onClose={closeSnackbar}
+            />
+
+            <UpdateVehicleDateDialog
+                open={dialogOpen}
+                category={dialogCategory}
+                date={dialogDate}
+                onConfirm={handleDialogConfirm}
+                onCancel={handleDialogCancel}
             />
         </Container>
     )

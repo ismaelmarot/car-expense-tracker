@@ -2,7 +2,7 @@ import { useState, useEffect, useRef } from 'react'
 import { addExpense } from '@/api'
 import { useParams } from 'react-router-dom'
 
-export const useAddExpense = () => {
+export const useAddExpense = (onSuccess?: (data: { category: string, date: string }) => void) => {
     const { id } = useParams()
 
     const [description, setDescription] = useState('')
@@ -98,6 +98,10 @@ export const useAddExpense = () => {
             setSnackbarOpen(true)
 
             window.dispatchEvent(new CustomEvent('expense-changed'))
+
+            if (onSuccess) {
+                onSuccess({ category, date })
+            }
 
         } catch {
             setSnackbarMessage("Hubo un error al agregar el gasto.")
