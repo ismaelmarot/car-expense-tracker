@@ -57,6 +57,14 @@ export const CarDetails: React.FC = () => {
     })
     
     const { car, expenses, loading, error, lastKilometers, setCar, fetchCarData } = useCarData(id)
+    const [prevTab, setPrevTab] = useState(activeTab)
+    
+    useEffect(() => {
+        if (activeTab !== prevTab) {
+            setPrevTab(activeTab)
+            fetchCarData()
+        }
+    }, [activeTab, prevTab, fetchCarData])
     const { formatDate, isDateExpired, getTimeRemaining, formatNextDueDate, formatKm, getRemainingServiceKm } = useCarDates()
     
     useEffect(() => {
