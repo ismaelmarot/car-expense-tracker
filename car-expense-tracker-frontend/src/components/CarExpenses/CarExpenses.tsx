@@ -3,7 +3,7 @@ import { Typography, Box, IconButton } from '@mui/material'
 import { getCarExpenses, deleteExpense, updateExpense } from '../../api/api'
 import { useParams } from 'react-router-dom'
 import { formatDate } from '../../functions/formatDate'
-import { formatNumberWithCommas } from '../../functions/formatNumberWithCommas'
+import { formatMoney } from '../../functions/formatMoney'
 import { formatNumberByThousands } from '../../functions/formatNumbersByThousands'
 import { ExpenseInterface } from '@/interfaces'
 import { EditExpenseDialog } from '../EditExpenseDialog/EditExpenseDialog'
@@ -257,7 +257,7 @@ export const CarExpenses: React.FC = () => {
         <Container>
             <TotalCard>
                 <TotalLabel>{t('totalSpent')}</TotalLabel>
-                <TotalAmountNew>$ {formatNumberWithCommas(totalSpent)}</TotalAmountNew>
+                <TotalAmountNew>{formatMoney(totalSpent)}</TotalAmountNew>
             </TotalCard>
             
             {sortedExpenses.length === 0 ? (
@@ -335,7 +335,7 @@ export const CarExpenses: React.FC = () => {
                                 </CategoryBadge>
                             </ExpenseCategory>
                             <ExpenseDate>{formatDate(expense.date)}</ExpenseDate>
-                            <ExpensePrice>{formatNumberWithCommas(expense.price)}</ExpensePrice>
+                            <ExpensePrice>$ {formatMoney(expense.price)}</ExpensePrice>
                         </ExpenseItem>
                     ))}
                 </ExpenseList>
@@ -353,7 +353,7 @@ export const CarExpenses: React.FC = () => {
                         <PopupContent>
                             <PopupPriceSection>
                                 <PriceLabel>{t('totalAmount')}</PriceLabel>
-                                <PriceValue>$ {formatNumberWithCommas(selectedExpense.price)}</PriceValue>
+                                <PriceValue>{formatMoney(selectedExpense.price)}</PriceValue>
                             </PopupPriceSection>
                             <DetailRow>
                                 <DetailLabel>{t('date')}</DetailLabel>

@@ -5,6 +5,6 @@ export interface ExpenseTableInterface {
     handleEdit: (expense: ExpenseInterface ) => void;
     handleDelete: (id: number ) => void;
     formatNumberByThousands: (num: number) => string;
-    formatNumberWithCommas: (num: number) => string;
+    formatMoney: (num: number) => string;
     formatDate: (date: string) => string;
 }

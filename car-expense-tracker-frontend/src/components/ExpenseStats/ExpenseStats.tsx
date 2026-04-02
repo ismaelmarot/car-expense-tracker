@@ -2,6 +2,7 @@ import React, { useEffect, useState, useMemo } from 'react'
 import { useParams } from 'react-router-dom'
 import { getCarExpenses } from '../../api/api'
 import { ExpenseInterface } from '@/interfaces'
+import { formatMoney } from '../../functions/formatMoney'
 import { formatNumberWithCommas } from '../../functions/formatNumberWithCommas'
 import { formatCategory } from '../../functions/FormatCategory'
 import { useLanguage } from '../../contexts/LanguageContext'
@@ -364,7 +365,7 @@ export const ExpenseStats: React.FC = () => {
         ticks: {
           color: '#86868b',
           callback: function(value: any) {
-            return '$' + formatNumberWithCommas(value);
+            return formatMoney(value);
           }
         }
       }
@@ -394,7 +395,7 @@ export const ExpenseStats: React.FC = () => {
           label: function(context: any) {
             const total = context.dataset.data.reduce((a: number, b: number) => a + b, 0)
             const percentage = ((context.raw / total) * 100).toFixed(1)
-            return `$${formatNumberWithCommas(context.raw)} (${percentage}%)`
+            return `{formatMoney(context.raw)} (${percentage}%)`
           }
         }
       }
@@ -418,7 +419,7 @@ export const ExpenseStats: React.FC = () => {
         cornerRadius: 8,
         callbacks: {
           label: function(context: any) {
-            return '$' + formatNumberWithCommas(context.raw);
+            return formatMoney(context.raw);
           }
         }
       }
@@ -431,7 +432,7 @@ export const ExpenseStats: React.FC = () => {
         ticks: {
           color: '#86868b',
           callback: function(value: any) {
-            return '$' + formatNumberWithCommas(value);
+            return formatMoney(value);
           }
         }
       },
@@ -485,14 +486,14 @@ export const ExpenseStats: React.FC = () => {
             <AttachMoneyIcon sx={{ fontSize: 24 }} />
           </SummaryIcon>
           <SummaryLabel>{t('totalSpent')}</SummaryLabel>
-          <SummaryValue>$ {formatNumberWithCommas(stats.total)}</SummaryValue>
+          <SummaryValue>{formatMoney(stats.total)}</SummaryValue>
         </SummaryCard>
         <SummaryCard>
           <SummaryIcon style={{ background: '#e8f5e9', color: '#34c759' }}>
             <BarChartIcon sx={{ fontSize: 24 }} />
           </SummaryIcon>
           <SummaryLabel>{t('averagePerExpense')}</SummaryLabel>
-          <SummaryValue>$ {formatNumberWithCommas(Math.round(stats.average))}</SummaryValue>
+          <SummaryValue>{formatMoney(Math.round(stats.average))}</SummaryValue>
         </SummaryCard>
         <SummaryCard>
           <SummaryIcon style={{ background: '#fff3e0', color: '#ff9500' }}>
@@ -517,7 +518,7 @@ export const ExpenseStats: React.FC = () => {
             <CalendarMonthIcon sx={{ fontSize: 24 }} />
           </SummaryIcon>
           <SummaryLabel>{t('monthlyAverageExpense')}</SummaryLabel>
-          <SummaryValue>$ {formatNumberWithCommas(Math.round(stats.monthlyAverage))}</SummaryValue>
+          <SummaryValue>{formatMoney(Math.round(stats.monthlyAverage))}</SummaryValue>
         </SummaryCard>
         <SummaryCard>
           <SummaryIcon style={{ background: '#e8eaf6', color: '#5856d6' }}>
@@ -538,7 +539,7 @@ export const ExpenseStats: React.FC = () => {
             <CalendarMonthIcon sx={{ fontSize: 24 }} />
           </SummaryIcon>
           <SummaryLabel>{t('monthlyAverageCost')}</SummaryLabel>
-          <SummaryValue>$ {formatNumberWithCommas(Math.round(stats.monthlyAverage))}</SummaryValue>
+          <SummaryValue>{formatMoney(Math.round(stats.monthlyAverage))}</SummaryValue>
         </SummaryCard>
       </SummaryGrid>
 
@@ -601,17 +602,17 @@ export const ExpenseStats: React.FC = () => {
       <StatsGrid>
         <StatCard onClick={() => { setSelectedExpense(stats.highest); setPopupType('highest'); }} style={{ cursor: 'pointer' }}>
           <TrendingUpIcon sx={{ fontSize: 24, color: '#ff3b30' }} />
-          <StatValue>$ {formatNumberWithCommas((stats.highest as any).price ?? (stats.highest as any).amount ?? 0)}</StatValue>
+          <StatValue>{formatMoney((stats.highest as any).price ?? (stats.highest as any).amount ?? 0)}</StatValue>
           <StatLabel>{t('highestExpense')}</StatLabel>
         </StatCard>
         <StatCard onClick={() => { setSelectedExpense(stats.lowest); setPopupType('lowest'); }} style={{ cursor: 'pointer' }}>
           <TrendingDownIcon sx={{ fontSize: 24, color: '#34c759' }} />
-          <StatValue>$ {formatNumberWithCommas((stats.lowest as any).price ?? (stats.lowest as any).amount ?? 0)}</StatValue>
+          <StatValue>{formatMoney((stats.lowest as any).price ?? (stats.lowest as any).amount ?? 0)}</StatValue>
           <StatLabel>{t('lowestExpense')}</StatLabel>
         </StatCard>
         <StatCard>
           <SpeedIcon sx={{ fontSize: 24, color: '#0071e3' }} />
-          <StatValue>$ {formatNumberWithCommas(Math.round(stats.costPerKm * 100) / 100)}</StatValue>
+          <StatValue>{formatMoney(Math.round(stats.costPerKm * 100) / 100)}</StatValue>
           <StatLabel>{t('costPerKm')}</StatLabel>
         </StatCard>
       </StatsGrid>
@@ -673,7 +674,7 @@ export const ExpenseStats: React.FC = () => {
                         Monto
                       </Typography>
                       <Typography sx={{ fontSize: '1.25rem', fontWeight: 700, color: '#1d1d1f', mt: 0.5 }}>
-                        $ {formatNumberWithCommas((selectedExpense as any).price ?? (selectedExpense as any).amount ?? 0)}
+                        {formatMoney((selectedExpense as any).price ?? (selectedExpense as any).amount ?? 0)}
                       </Typography>
                     </Box>
                     <Box>

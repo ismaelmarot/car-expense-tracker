@@ -1,4 +1,4 @@
-import { formatNumberWithCommas } from '../../functions/formatNumberWithCommas'
+import { formatMoney } from '../../functions/formatMoney'
 import { formatDate } from '../../functions/formatDate'
 import { ExpenseTableForPDFInterface } from '@/interfaces'
 import { ThStyled, TdStyled, TdStyledRight, TableStyled } from './ExpenseTableForPDFStyles'
@@ -23,7 +23,7 @@ export const ExpenseTableForPDF: React.FC<ExpenseTableForPDFInterface> = ({ expe
                             <TdStyled>{expense.description}</TdStyled>
                             <TdStyledRight>{expense.category}</TdStyledRight>
                             <TdStyledRight>{expense.kilometers}</TdStyledRight>
-                            <TdStyledRight>{formatNumberWithCommas(expense.price)}</TdStyledRight>
+                            <TdStyledRight>{formatMoney(expense.price)}</TdStyledRight>
                             <TdStyledRight>{formatDate(expense.date)}</TdStyledRight>
                         </tr>
                     ))}
