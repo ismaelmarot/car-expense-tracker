@@ -97,6 +97,8 @@ export const useAddExpense = () => {
             setSnackbarSeverity('success')
             setSnackbarOpen(true)
 
+            window.dispatchEvent(new CustomEvent('expense-changed'))
+
         } catch {
             setSnackbarMessage("Hubo un error al agregar el gasto.")
             setSnackbarSeverity('error')

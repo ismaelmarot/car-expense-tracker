@@ -146,6 +146,7 @@ export const CarExpenses: React.FC = () => {
             setShowPopup(false);
             setSelectedExpense(null)
             setShowDeleteConfirm(false)
+            window.dispatchEvent(new CustomEvent('expense-changed'))
         } catch (err) {
             setError("Hubo un error al eliminar el gasto.")
         }
