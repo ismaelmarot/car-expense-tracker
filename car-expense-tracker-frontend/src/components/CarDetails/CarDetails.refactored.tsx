@@ -308,7 +308,7 @@ export const CarDetails: React.FC = () => {
             <TabContent>
                 {activeTab === 'gasto' && <AddExpense />}
                 {activeTab === 'historial' && <CarExpenses />}
-                {activeTab === 'grafica' && <ExpenseStats key={`stats-${windowSize}`} />}
+                {activeTab === 'grafica' && <ExpenseStats key={`stats-${activeTab}-${windowSize}`} />}
                 {activeTab === 'reportes' && <Settings />}
             </TabContent>
             

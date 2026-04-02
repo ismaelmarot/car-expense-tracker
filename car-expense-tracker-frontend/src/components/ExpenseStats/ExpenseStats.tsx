@@ -600,17 +600,17 @@ export const ExpenseStats: React.FC = () => {
       {/* Estadísticas finales */}
       <StatsGrid>
         <StatCard onClick={() => { setSelectedExpense(stats.highest); setPopupType('highest'); }} style={{ cursor: 'pointer' }}>
-          <TrendingUpIcon sx={{ fontSize: 32, color: '#34c759', mb: 1 }} />
-          <StatValue>$ {formatNumberWithCommas(stats.highest.price)}</StatValue>
+          <TrendingUpIcon sx={{ fontSize: 24, color: '#ff3b30' }} />
+          <StatValue>$ {formatNumberWithCommas((stats.highest as any).price ?? (stats.highest as any).amount ?? 0)}</StatValue>
           <StatLabel>{t('highestExpense')}</StatLabel>
         </StatCard>
         <StatCard onClick={() => { setSelectedExpense(stats.lowest); setPopupType('lowest'); }} style={{ cursor: 'pointer' }}>
-          <TrendingDownIcon sx={{ fontSize: 32, color: '#ff3b30', mb: 1 }} />
-          <StatValue>$ {formatNumberWithCommas(stats.lowest.price)}</StatValue>
+          <TrendingDownIcon sx={{ fontSize: 24, color: '#34c759' }} />
+          <StatValue>$ {formatNumberWithCommas((stats.lowest as any).price ?? (stats.lowest as any).amount ?? 0)}</StatValue>
           <StatLabel>{t('lowestExpense')}</StatLabel>
         </StatCard>
         <StatCard>
-          <SpeedIcon sx={{ fontSize: 32, color: '#0071e3', mb: 1 }} />
+          <SpeedIcon sx={{ fontSize: 24, color: '#0071e3' }} />
           <StatValue>$ {formatNumberWithCommas(Math.round(stats.costPerKm * 100) / 100)}</StatValue>
           <StatLabel>{t('costPerKm')}</StatLabel>
         </StatCard>
@@ -673,7 +673,7 @@ export const ExpenseStats: React.FC = () => {
                         Monto
                       </Typography>
                       <Typography sx={{ fontSize: '1.25rem', fontWeight: 700, color: '#1d1d1f', mt: 0.5 }}>
-                        $ {formatNumberWithCommas(selectedExpense.price)}
+                        $ {formatNumberWithCommas((selectedExpense as any).price ?? (selectedExpense as any).amount ?? 0)}
                       </Typography>
                     </Box>
                     <Box>

@@ -193,16 +193,21 @@ app.get('/expenses/car/:carId', (req, res) => {
 
 app.post('/expenses', (req, res) => {
   const { car_id, description, price, kilometers, category, date, photos } = req.body;
-  console.log('POST /expenses - photos received:', photos);
   const currentDate = date || new Date().toISOString();
   const photosJson = photos ? JSON.stringify(photos) : null;
-  console.log('photosJson:', photosJson);
   db.run(
     `INSERT INTO expenses (car_id, description, price, kilometers, category, date, photos)
      VALUES (?, ?, ?, ?, ?, ?, ?)`,
     [car_id, description, price, kilometers, category, currentDate, photosJson],
     function (err) {
       if (err) return res.status(500).json({ error: err.message });
+      if (kilometers && car_id) {
+        db.get('SELECT kilometers FROM cars WHERE id = ?', [car_id], (err, car) => {
+          if (!err && car && Number(kilometers) > (car.kilometers || 0)) {
+            db.run('UPDATE cars SET kilometers = ? WHERE id = ?', [Number(kilometers), car_id]);
+          }
+        });
+      }
       res.json({ id: this.lastID });
     }
   );

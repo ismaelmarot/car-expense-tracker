@@ -209,18 +209,32 @@ function startBackend() {
       const stmt = db.prepare(`INSERT INTO expenses (car_id, amount, category, description, date, kilometers, photos) VALUES (?, ?, ?, ?, ?, ?, ?)`);
       stmt.run(car_id, priceValue, category, description, date, kilometers, photosStr, function(err) {
         if (err) return res.status(500).json({ error: err.message });
+        if (kilometers && car_id) {
+          db.get('SELECT kilometers FROM cars WHERE id = ?', [car_id], (err, car) => {
+            if (!err && car && Number(kilometers) > (car.kilometers || 0)) {
+              db.run('UPDATE cars SET kilometers = ? WHERE id = ?', [Number(kilometers), car_id]);
+            }
+          });
+        }
         res.json({ id: this.lastID });
       });
       stmt.finalize();
     });
     
     backendApp.put('/expenses/:id', (req, res) => {
-      const { price, amount, category, description, date, kilometers, photos } = req.body;
+      const { price, amount, category, description, date, kilometers, photos, car_id } = req.body;
       const priceValue = price ?? amount ?? 0;
       const photosStr = photos ? JSON.stringify(photos) : null;
       const stmt = db.prepare(`UPDATE expenses SET amount=?, category=?, description=?, date=?, kilometers=?, photos=? WHERE id=?`);
       stmt.run(priceValue, category, description, date, kilometers, photosStr, req.params.id, function(err) {
         if (err) return res.status(500).json({ error: err.message });
+        if (kilometers && car_id) {
+          db.get('SELECT kilometers FROM cars WHERE id = ?', [car_id], (err, car) => {
+            if (!err && car && Number(kilometers) > (car.kilometers || 0)) {
+              db.run('UPDATE cars SET kilometers = ? WHERE id = ?', [Number(kilometers), car_id]);
+            }
+          });
+        }
         res.json({ changes: this.changes });
       });
       stmt.finalize();
