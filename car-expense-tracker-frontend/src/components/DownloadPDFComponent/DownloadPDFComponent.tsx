@@ -81,7 +81,7 @@ export const DownloadPDFComponent: React.FC = () => {
             doc.text(expense.description || '', startX + 3, yPosition)
             doc.text(expense.category || '', startX + colWidths[0] + 3, yPosition)
             doc.text((expense.kilometers || 0).toString(), startX + colWidths[0] + colWidths[1] + 3, yPosition)
-            doc.text(Number(expense.price || 0).toFixed(2), startX + colWidths[0] + colWidths[1] + colWidths[2] + 3, yPosition)
+            doc.text(Number(expense.amount || 0).toFixed(2), startX + colWidths[0] + colWidths[1] + colWidths[2] + 3, yPosition)
             doc.text(formatDate(expense.date || ''), startX + colWidths[0] + colWidths[1] + colWidths[2] + colWidths[3] + 3, yPosition)
             yPosition += 10
         })

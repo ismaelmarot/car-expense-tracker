@@ -1,11 +1,11 @@
-import styled from '@emotion/styled';
-import { Grid, Typography, Box } from '@mui/material';
+import styled from '@emotion/styled'
+import { Grid, Typography, Box } from '@mui/material'
 
 export const GridTotalAmount = styled(Grid)`
   display: flex;
   align-items: center;
   justify-content: center;
-`;
+`
 
 export const TotalAmount = styled(Typography)`
   display: flex;
@@ -18,45 +18,44 @@ export const TotalAmount = styled(Typography)`
   color: #ffffff;
   background: linear-gradient(135deg, #1d1d1f 0%, #2c2c2e 100%);
   border-radius: 14px;
-`;
+`
 
 export const Container = styled(Box)`
   width: 100%;
   background: #ffffff;
-  border-radius: 35px 35px 14px 14px;
+  border-radius: 14px;
+  padding-bottom: .5rem;
   overflow: hidden;
-`;
+`
 
 export const TotalCard = styled(Box)`
   display: flex;
   align-items: center;
   justify-content: space-between;
   background: linear-gradient(135deg, #1d1d1f 0%, #2c2c2e 100%);
-  border-radius: 35px;
   padding: 1rem 1.25rem;
   position: sticky;
   top: 0;
   z-index: 10;
-`;
+`
 
 export const TotalLabel = styled(Typography)`
   font-size: 0.9375rem;
   color: #aeaeb2;
-`;
+`
 
 export const TotalAmountNew = styled(Typography)`
   font-size: 1.5rem;
   font-weight: 700;
   color: #ffffff;
-`;
+`
 
 export const ExpenseList = styled(Box)`
   display: flex;
   flex-direction: column;
   gap: 0.5rem;
   width: 100%;
-  padding: 1rem;
-`;
+`
 
 export const TableHeader = styled(Box)`
   display: none;
@@ -71,7 +70,7 @@ export const TableHeader = styled(Box)`
     grid-template-columns: 1fr 60px 70px 90px 80px;
     gap: 1.5rem;
   }
-`;
+`
 
 export const HeaderCell = styled(Box)`
   font-size: 0.6875rem;
@@ -92,7 +91,7 @@ export const HeaderCell = styled(Box)`
   &:nth-of-type(3) { text-align: center; }
   &:nth-of-type(4) { text-align: right; }
   &:nth-of-type(5) { text-align: right; }
-`;
+`
 
 export const ExpenseItem = styled(Box)`
   display: flex;
@@ -119,7 +118,7 @@ export const ExpenseItem = styled(Box)`
     border-radius: 12px;
     align-items: center;
   }
-`;
+`
 
 export const ExpenseName = styled(Typography)`
   font-size: 0.9375rem;
@@ -129,7 +128,7 @@ export const ExpenseName = styled(Typography)`
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
-`;
+`
 
 export const ExpenseCategory = styled(Box)`
   display: none;
@@ -138,7 +137,7 @@ export const ExpenseCategory = styled(Box)`
     display: flex;
     justify-content: center;
   }
-`;
+`
 
 export const ExpenseKm = styled(Typography)`
   display: none;
@@ -150,7 +149,7 @@ export const ExpenseKm = styled(Typography)`
   @media (min-width: 768px) {
     display: block;
   }
-`;
+`
 
 export const ExpenseDate = styled(Typography)`
   display: none;
@@ -162,7 +161,7 @@ export const ExpenseDate = styled(Typography)`
   @media (min-width: 768px) {
     display: block;
   }
-`;
+`
 
 export const ExpensePrice = styled(Typography)`
   display: none;
@@ -175,7 +174,7 @@ export const ExpensePrice = styled(Typography)`
   @media (min-width: 768px) {
     display: block;
   }
-`;
+`
 
 export const MobileDate = styled(Typography)`
   font-size: 0.8125rem;
@@ -186,7 +185,7 @@ export const MobileDate = styled(Typography)`
   @media (min-width: 768px) {
     display: none;
   }
-`;
+`
 
 export const EmptyState = styled(Box)`
   display: flex;
@@ -194,7 +193,7 @@ export const EmptyState = styled(Box)`
   align-items: center;
   padding: 3rem 1rem;
   text-align: center;
-`;
+`
 
 export const EmptyIcon = styled(Box)`
   width: 64px;
@@ -206,12 +205,12 @@ export const EmptyIcon = styled(Box)`
   justify-content: center;
   margin-bottom: 1rem;
   font-size: 1.5rem;
-`;
+`
 
 export const EmptyText = styled(Typography)`
   font-size: 0.9375rem;
   color: #86868b;
-`;
+`
 
 export const PopupOverlay = styled(Box)`
   position: fixed;
@@ -222,7 +221,7 @@ export const PopupOverlay = styled(Box)`
   justify-content: center;
   z-index: 1000;
   padding: 1.5rem;
-`;
+`
 
 export const PopupCard = styled(Box)`
   background: #ffffff;
@@ -232,13 +231,13 @@ export const PopupCard = styled(Box)`
   overflow: hidden;
   box-shadow: 0 20px 60px rgba(0, 0, 0, 0.2);
   position: relative;
-`;
+`
 
 export const PopupHeader = styled(Box)`
   background: linear-gradient(135deg, #1d1d1f 0%, #2c2c2e 100%);
   padding: 1.5rem;
   text-align: center;
-`;
+`
 
 export const PopupTitle = styled(Typography)`
   font-size: 1.125rem;
@@ -246,11 +245,11 @@ export const PopupTitle = styled(Typography)`
   color: #ffffff;
   text-align: center;
   word-break: break-word;
-`;
+`
 
 export const PopupContent = styled(Box)`
   padding: 1.5rem;
-`;
+`
 
 export const DetailRow = styled(Box)`
   display: flex;
@@ -262,18 +261,18 @@ export const DetailRow = styled(Box)`
   &:last-child {
     border-bottom: none;
   }
-`;
+`
 
 export const DetailLabel = styled(Typography)`
   font-size: 0.875rem;
   color: #86868b;
-`;
+`
 
 export const DetailValue = styled(Typography)`
   font-size: 0.9375rem;
   font-weight: 500;
   color: #1d1d1f;
-`;
+`
 
 export const CategoryBadge = styled(Box)<{ category: string }>`
   display: inline-flex;
@@ -319,14 +318,14 @@ export const CategoryBadge = styled(Box)<{ category: string }>`
       case 'accesorios': return '#616161';
       default: return '#86868b';
     }
-  }};
-`;
+  }}
+`
 
 export const PopupActions = styled(Box)`
   display: flex;
   gap: 0.75rem;
   padding: 1rem 1.5rem 1.5rem;
-`;
+`
 
 export const PopupButton = styled(Box)<{ variant?: 'edit' | 'delete' }>`
   flex: 1;
@@ -350,7 +349,7 @@ export const PopupButton = styled(Box)<{ variant?: 'edit' | 'delete' }>`
     color: #ff3b30;
     &:hover { background: #ffe4e4; }
   `}
-`;
+`
 
 export const CloseButton = styled(Box)`
   position: absolute;
@@ -368,13 +367,13 @@ export const CloseButton = styled(Box)`
   &:hover {
     background: rgba(255, 255, 255, 0.3);
   }
-`;
+`
 
 export const PriceValue = styled(Typography)`
   font-size: 1.25rem;
   font-weight: 700;
   color: #1d1d1f;
-`;
+`
 
 export const PopupPriceSection = styled(Box)`
   text-align: center;
@@ -382,20 +381,20 @@ export const PopupPriceSection = styled(Box)`
   background: #f5f5f7;
   border-radius: 14px;
   margin-bottom: 1rem;
-`;
+`
 
 export const PriceLabel = styled(Typography)`
   font-size: 0.75rem;
   color: #86868b;
   margin-bottom: 0.25rem;
-`;
+`
 
 export const PhotosSection = styled(Box)`
   display: flex;
   gap: 0.625rem;
   margin-top: 1rem;
   flex-wrap: wrap;
-`;
+`
 
 export const PhotoThumb = styled(Box)<{ src: string }>`
   width: 80px;
@@ -416,14 +415,14 @@ export const PhotoThumb = styled(Box)<{ src: string }>`
   &:active {
     transform: scale(0.98);
   }
-`;
+`
 
 export const PhotosLabel = styled(Typography)`
   font-size: 0.8125rem;
   color: #86868b;
   font-weight: 500;
   margin-bottom: 0.5rem;
-`;
+`
 
 export const PhotoViewerOverlay = styled(Box)`
   position: fixed;
@@ -433,7 +432,7 @@ export const PhotoViewerOverlay = styled(Box)`
   align-items: center;
   justify-content: center;
   z-index: 2000;
-`;
+`
 
 export const PhotoViewerImage = styled('img')<{ zoomed?: boolean }>`
   max-width: 90vw;
@@ -447,7 +446,7 @@ export const PhotoViewerImage = styled('img')<{ zoomed?: boolean }>`
   &:hover {
     transform: ${props => props.zoomed ? 'scale(2)' : 'scale(1.05)'};
   }
-`;
+`
 
 export const PhotoViewerClose = styled(Box)`
   position: absolute;
@@ -467,7 +466,7 @@ export const PhotoViewerClose = styled(Box)`
     background: rgba(255, 255, 255, 0.2);
     transform: scale(1.1);
   }
-`;
+`
 
 export const PhotoViewerNav = styled(Box)<{ side: 'left' | 'right' }>`
   position: absolute;
@@ -488,7 +487,7 @@ export const PhotoViewerNav = styled(Box)<{ side: 'left' | 'right' }>`
     background: rgba(255, 255, 255, 0.2);
     transform: translateY(-50%) scale(1.1);
   }
-`;
+`
 
 export const PhotoViewerCounter = styled(Box)`
   position: absolute;
@@ -500,4 +499,4 @@ export const PhotoViewerCounter = styled(Box)`
   border-radius: 20px;
   color: white;
   font-size: 0.875rem;
-`;
+`

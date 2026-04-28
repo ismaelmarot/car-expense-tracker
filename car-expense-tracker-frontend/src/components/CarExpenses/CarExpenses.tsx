@@ -61,7 +61,7 @@ import ArrowUpwardIcon from '@mui/icons-material/ArrowUpward'
 import ArrowDownwardIcon from '@mui/icons-material/ArrowDownward'
 import { DeleteCarConfirmationDialog } from '../DeletCarConfirmationDialog/DeletCarConfirmationDialog'
 
-type SortField = 'description' | 'kilometers' | 'category' | 'date' | 'price'
+type SortField = 'description' | 'kilometers' | 'category' | 'date' | 'amount'
 type SortOrder = 'asc' | 'desc'
 
 export const CarExpenses: React.FC = () => {
@@ -108,8 +108,8 @@ export const CarExpenses: React.FC = () => {
                 case 'date':
                     comparison = new Date(a.date).getTime() - new Date(b.date).getTime()
                     break
-                case 'price':
-                    comparison = getPrice(a) - getPrice(b)
+                case 'amount':
+                    comparison = (a.amount || 0) - (b.amount || 0)
                     break
                 default:
                     comparison = 0
@@ -141,7 +141,7 @@ export const CarExpenses: React.FC = () => {
 
     const handleDelete = async (expenseId: number) => {
         try {
-            deleteExpense(expenseId)
+            await deleteExpense(expenseId)
             setExpenses(expenses.filter(expense => expense.id !== expenseId))
             setShowPopup(false);
             setSelectedExpense(null)
@@ -239,8 +239,7 @@ export const CarExpenses: React.FC = () => {
         setCurrentPhotoIndex(prev => (prev < viewerPhotos.length - 1 ? prev + 1 : 0))
     }
 
-    const getPrice = (exp: any) => exp.price ?? exp.amount ?? 0
-    const totalSpent = expenses.reduce((total, expense) => total + getPrice(expense), 0)
+    const totalSpent = expenses.reduce((total, expense) => total + (expense.amount || 0), 0)
 
     if (loading) return (
         <Container>
@@ -303,23 +302,23 @@ export const CarExpenses: React.FC = () => {
                             </Box>
                         </HeaderCell>
                         <HeaderCell 
-                            onClick={() => handleSort('date')}
+                            onClick={() => handleSort('amount')}
                             sx={{ cursor: 'pointer', userSelect: 'none' }}
                         >
                             <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'flex-end', gap: 0.5 }}>
-                                {t('date')}
-                                {sortBy === 'date' && (
+                                ${t('totalAmount')}
+                                {sortBy === 'amount' && (
                                     sortOrder === 'asc' ? <ArrowUpwardIcon sx={{ fontSize: 14 }} /> : <ArrowDownwardIcon sx={{ fontSize: 14 }} />
                                 )}
                             </Box>
                         </HeaderCell>
                         <HeaderCell 
-                            onClick={() => handleSort('price')}
+                            onClick={() => handleSort('amount')}
                             sx={{ cursor: 'pointer', userSelect: 'none' }}
                         >
                             <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'flex-end', gap: 0.5 }}>
-                                $
-                                {sortBy === 'price' && (
+                                ${t('totalAmount')}
+                                {sortBy === 'amount' && (
                                     sortOrder === 'asc' ? <ArrowUpwardIcon sx={{ fontSize: 14 }} /> : <ArrowDownwardIcon sx={{ fontSize: 14 }} />
                                 )}
                             </Box>
@@ -336,7 +335,7 @@ export const CarExpenses: React.FC = () => {
                                 </CategoryBadge>
                             </ExpenseCategory>
                             <ExpenseDate>{formatDate(expense.date)}</ExpenseDate>
-                            <ExpensePrice>{formatMoney(getPrice(expense))}</ExpensePrice>
+                            <ExpensePrice>{formatMoney(expense.amount)}</ExpensePrice>
                         </ExpenseItem>
                     ))}
                 </ExpenseList>
@@ -354,7 +353,7 @@ export const CarExpenses: React.FC = () => {
                         <PopupContent>
                             <PopupPriceSection>
                                 <PriceLabel>{t('totalAmount')}</PriceLabel>
-                                <PriceValue>{formatMoney(getPrice(selectedExpense))}</PriceValue>
+                                <PriceValue>{formatMoney(selectedExpense.amount)}</PriceValue>
                             </PopupPriceSection>
                             <DetailRow>
                                 <DetailLabel>{t('date')}</DetailLabel>

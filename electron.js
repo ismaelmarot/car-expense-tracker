@@ -203,12 +203,19 @@ function startBackend() {
      });
     
     backendApp.post('/expenses', (req, res) => {
+      console.log('POST /expenses - Body:', req.body);
       const { car_id, price, amount, category, description, date, kilometers, photos } = req.body;
+      console.log('Parsed values:', { car_id, price, amount, category, description, date, kilometers, photos: photos?.length });
       const priceValue = price ?? amount ?? 0;
+      console.log('priceValue to save:', priceValue);
       const photosStr = photos ? JSON.stringify(photos) : null;
       const stmt = db.prepare(`INSERT INTO expenses (car_id, amount, category, description, date, kilometers, photos) VALUES (?, ?, ?, ?, ?, ?, ?)`);
       stmt.run(car_id, priceValue, category, description, date, kilometers, photosStr, function(err) {
-        if (err) return res.status(500).json({ error: err.message });
+        if (err) {
+          console.error('Error inserting expense:', err);
+          console.error('Values:', { car_id, priceValue, category, description, date, kilometers, photosStr });
+          return res.status(500).json({ error: err.message });
+        }
         if (kilometers && car_id) {
           db.get('SELECT kilometers FROM cars WHERE id = ?', [car_id], (err, car) => {
             if (!err && car && Number(kilometers) > (car.kilometers || 0)) {

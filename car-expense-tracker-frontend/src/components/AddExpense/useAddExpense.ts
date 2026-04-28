@@ -73,15 +73,17 @@ export const useAddExpense = (onSuccess?: (data: { category: string, date: strin
         setError('')
 
         try {
-            await addExpense({
+            const expenseData = {
                 car_id: Number(id),
                 description,
-                price: parsedPrice,
+                amount: parsedPrice,
                 kilometers: parsedKilometers,
                 category,
                 date,
                 photos: photos.length ? photos : undefined
-            })
+            };
+            console.log('Sending expense data:', expenseData);
+            await addExpense(expenseData)
 
             // reset
             setDescription('')

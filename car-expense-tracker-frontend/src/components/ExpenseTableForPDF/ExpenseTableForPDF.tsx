@@ -23,7 +23,7 @@ export const ExpenseTableForPDF: React.FC<ExpenseTableForPDFInterface> = ({ expe
                             <TdStyled>{expense.description}</TdStyled>
                             <TdStyledRight>{expense.category}</TdStyledRight>
                             <TdStyledRight>{expense.kilometers}</TdStyledRight>
-                            <TdStyledRight>{formatMoney(expense.price)}</TdStyledRight>
+                            <TdStyledRight>{formatMoney(expense.amount)}</TdStyledRight>
                             <TdStyledRight>{formatDate(expense.date)}</TdStyledRight>
                         </tr>
                     ))}

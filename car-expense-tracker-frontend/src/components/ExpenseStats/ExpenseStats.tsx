@@ -101,9 +101,8 @@ export const ExpenseStats: React.FC = () => {
   const stats = useMemo(() => {
     if (expenses.length === 0) return null
 
-    const getPrice = (exp: any) => exp.price ?? exp.amount ?? 0
-    const total = expenses.reduce((sum, exp) => sum + getPrice(exp), 0)
-    const sortedByPrice = [...expenses].sort((a, b) => getPrice(b) - getPrice(a))
+    const total = expenses.reduce((sum, exp) => sum + (exp.amount || 0), 0)
+    const sortedByPrice = [...expenses].sort((a, b) => (b.amount || 0) - (a.amount || 0))
     const highest = sortedByPrice[0]
     const lowest = sortedByPrice[sortedByPrice.length - 1]
     const average = total / expenses.length
@@ -122,14 +121,14 @@ export const ExpenseStats: React.FC = () => {
     const yearlyTotals: { [key: string]: number } = {}
     expenses.forEach(exp => {
       const year = new Date(exp.date).getFullYear().toString()
-      yearlyTotals[year] = (yearlyTotals[year] || 0) + getPrice(exp)
+      yearlyTotals[year] = (yearlyTotals[year] || 0) + (exp.amount || 0)
     })
 
     // Categoría más costosa
     const categoryTotals: { [key: string]: number } = {}
     expenses.forEach(exp => {
       const cat = formatCategory(exp.category)
-      categoryTotals[cat] = (categoryTotals[cat] || 0) + getPrice(exp)
+      categoryTotals[cat] = (categoryTotals[cat] || 0) + (exp.amount || 0)
     })
     const mostExpensiveCategory = Object.entries(categoryTotals).sort((a, b) => b[1] - a[1])[0]
 
@@ -138,7 +137,7 @@ export const ExpenseStats: React.FC = () => {
     expenses.forEach(exp => {
       const date = new Date(exp.date)
       const monthKey = `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, '0')}`
-      monthlyTotals[monthKey] = (monthlyTotals[monthKey] || 0) + getPrice(exp)
+      monthlyTotals[monthKey] = (monthlyTotals[monthKey] || 0) + (exp.amount || 0)
     });
     const highestMonth = Object.entries(monthlyTotals).sort((a, b) => b[1] - a[1])[0]
 
@@ -173,7 +172,7 @@ export const ExpenseStats: React.FC = () => {
     expenses.forEach(exp => {
       const date = new Date(exp.date)
       const monthKey = `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, '0')}`
-      monthlyTotals[monthKey] = (monthlyTotals[monthKey] || 0) + ((exp as any).price ?? (exp as any).amount ?? 0)
+      monthlyTotals[monthKey] = (monthlyTotals[monthKey] || 0) + (exp.amount || 0)
     })
 
     const sortedMonths = Object.keys(monthlyTotals).sort()
@@ -210,7 +209,7 @@ export const ExpenseStats: React.FC = () => {
     const categoryTotals: { [key: string]: number } = {}
     expenses.forEach(exp => {
       const cat = formatCategory(exp.category)
-      categoryTotals[cat] = (categoryTotals[cat] || 0) + ((exp as any).price ?? (exp as any).amount ?? 0)
+      categoryTotals[cat] = (categoryTotals[cat] || 0) + (exp.amount || 0)
     })
 
     const categories = Object.keys(categoryTotals).sort((a, b) => categoryTotals[b] - categoryTotals[a])
@@ -236,13 +235,13 @@ export const ExpenseStats: React.FC = () => {
   const topExpenses = useMemo(() => {
     if (expenses.length === 0) return null
 
-    const sorted = [...expenses].sort((a, b) => ((b as any).price ?? (b as any).amount ?? 0) - ((a as any).price ?? (a as any).amount ?? 0)).slice(0, 5)
+    const sorted = [...expenses].sort((a, b) => (b.amount || 0) - (a.amount || 0)).slice(0, 5)
 
     return {
       labels: sorted.map(exp => exp.description.substring(0, 20) + (exp.description.length > 20 ? '...' : '')),
       datasets: [{
         label: t('expense'),
-        data: sorted.map(exp => (exp as any).price ?? (exp as any).amount ?? 0),
+        data: sorted.map(exp => exp.amount || 0),
         backgroundColor: sorted.map((_, i) => {
           const colors = ['#0071e3', '#34c759', '#ff9500', '#ff3b30', '#af52de'];
           return colors[i % colors.length];
@@ -280,7 +279,7 @@ export const ExpenseStats: React.FC = () => {
 
     expenses.forEach(exp => {
       const month = new Date(exp.date).getMonth()
-      monthTotals[month] += (exp as any).price ?? (exp as any).amount ?? 0
+      monthTotals[month] += (exp.amount || 0)
     })
 
     return {
@@ -307,7 +306,7 @@ export const ExpenseStats: React.FC = () => {
       const startOfYear = new Date(date.getFullYear(), 0, 1)
       const weekNumber = Math.ceil(((date.getTime() - startOfYear.getTime()) / 86400000 + startOfYear.getDay() + 1) / 7)
       const weekKey = `Sem ${weekNumber}`
-      weeklyTotals[weekKey] = (weeklyTotals[weekKey] || 0) + ((exp as any).price ?? (exp as any).amount ?? 0)
+      weeklyTotals[weekKey] = (weeklyTotals[weekKey] || 0) + (exp.amount || 0)
     })
 
     // Ordenar por número de semana
@@ -602,12 +601,12 @@ export const ExpenseStats: React.FC = () => {
       <StatsGrid>
         <StatCard onClick={() => { setSelectedExpense(stats.highest); setPopupType('highest'); }} style={{ cursor: 'pointer' }}>
           <TrendingUpIcon sx={{ fontSize: 24, color: '#ff3b30' }} />
-          <StatValue>{formatMoney((stats.highest as any).price ?? (stats.highest as any).amount ?? 0)}</StatValue>
+          <StatValue>{formatMoney(stats.highest.amount)}</StatValue>
           <StatLabel>{t('highestExpense')}</StatLabel>
         </StatCard>
         <StatCard onClick={() => { setSelectedExpense(stats.lowest); setPopupType('lowest'); }} style={{ cursor: 'pointer' }}>
           <TrendingDownIcon sx={{ fontSize: 24, color: '#34c759' }} />
-          <StatValue>{formatMoney((stats.lowest as any).price ?? (stats.lowest as any).amount ?? 0)}</StatValue>
+          <StatValue>{formatMoney(stats.lowest.amount)}</StatValue>
           <StatLabel>{t('lowestExpense')}</StatLabel>
         </StatCard>
         <StatCard>
@@ -674,7 +673,7 @@ export const ExpenseStats: React.FC = () => {
                         Monto
                       </Typography>
                       <Typography sx={{ fontSize: '1.25rem', fontWeight: 700, color: '#1d1d1f', mt: 0.5 }}>
-                        {formatMoney((selectedExpense as any).price ?? (selectedExpense as any).amount ?? 0)}
+                        {formatMoney(selectedExpense.amount)}
                       </Typography>
                     </Box>
                     <Box>

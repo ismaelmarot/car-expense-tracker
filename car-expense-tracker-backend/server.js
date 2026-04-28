@@ -59,10 +59,21 @@ db.serialize(() => {
 
   db.run(`CREATE TABLE IF NOT EXISTS expenses (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
-    car_id INTEGER, description TEXT, price REAL, kilometers INTEGER,
+    car_id INTEGER, description TEXT, amount REAL, kilometers INTEGER,
     category TEXT, date TIMESTAMP, photos TEXT,
     FOREIGN KEY (car_id) REFERENCES cars(id)
   )`);
+
+  // Migrate price column to amount if it exists
+  db.get(`SELECT sql FROM sqlite_master WHERE type='table' AND name='expenses'`, (err, row) => {
+    if (!err && row && row.sql && row.sql.includes('price') && !row.sql.includes('amount')) {
+      console.log('Migrating expenses table: renaming price to amount...');
+      db.run(`ALTER TABLE expenses RENAME COLUMN price TO amount`, (err) => {
+        if (err) console.error('Error renaming column:', err);
+        else console.log('Migration completed: price -> amount');
+      });
+    }
+  });
 
   db.run(`ALTER TABLE expenses ADD COLUMN photos TEXT`, (err) => {});
 });
@@ -192,15 +203,22 @@ app.get('/expenses/car/:carId', (req, res) => {
 });
 
 app.post('/expenses', (req, res) => {
-  const { car_id, description, price, kilometers, category, date, photos } = req.body;
+  console.log('POST /expenses - Body:', req.body);
+  const { car_id, description, amount, price, kilometers, category, date, photos } = req.body;
   const currentDate = date || new Date().toISOString();
+  const priceValue = amount ?? price ?? 0;
   const photosJson = photos ? JSON.stringify(photos) : null;
+  console.log('POST /expenses - Parsed:', { car_id, description, amount: priceValue, kilometers, category, date: currentDate, hasPhotos: !!photos });
   db.run(
-    `INSERT INTO expenses (car_id, description, price, kilometers, category, date, photos)
+    `INSERT INTO expenses (car_id, description, amount, kilometers, category, date, photos)
      VALUES (?, ?, ?, ?, ?, ?, ?)`,
-    [car_id, description, price, kilometers, category, currentDate, photosJson],
+    [car_id, description, priceValue, kilometers, category, currentDate, photosJson],
     function (err) {
-      if (err) return res.status(500).json({ error: err.message });
+      if (err) {
+        console.error('Error inserting expense:', err);
+        console.error('Values:', { car_id, description, amount: priceValue, kilometers, category, date: currentDate, photosJson });
+        return res.status(500).json({ error: err.message });
+      }
       if (kilometers && car_id) {
         db.get('SELECT kilometers FROM cars WHERE id = ?', [car_id], (err, car) => {
           if (!err && car && Number(kilometers) > (car.kilometers || 0)) {
@@ -212,17 +230,23 @@ app.post('/expenses', (req, res) => {
     }
   );
 });
+      }
+      res.json({ id: this.lastID });
+    }
+  );
+});
 
 app.put('/expenses/:id', (req, res) => {
-  const { description, price, kilometers, category, date, photos } = req.body;
+  const { description, amount, price, kilometers, category, date, photos } = req.body;
   const expenseId = req.params.id;
+  const priceValue = amount ?? price ?? 0;
   const photosJson = photos ? JSON.stringify(photos) : null;
   
   db.run(
     `UPDATE expenses SET 
-      description = ?, price = ?, kilometers = ?, category = ?, date = ?, photos = ?
-     WHERE id = ?`,
-    [description, price, kilometers, category, date, photosJson, expenseId],
+        description = ?, amount = ?, kilometers = ?, category = ?, date = ?, photos = ?
+        WHERE id = ?`,
+    [description, priceValue, kilometers, category, date, photosJson, expenseId],
     function (err) {
       if (err) return res.status(500).json({ error: err.message });
       if (this.changes === 0) return res.status(404).json({ message: "Expense not found" });
