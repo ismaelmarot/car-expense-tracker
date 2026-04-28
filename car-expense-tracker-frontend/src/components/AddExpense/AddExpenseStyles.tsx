@@ -90,7 +90,7 @@ export const Input = styled(TextField)`
 
 export const SelectInput = styled(FormControl)`
   .MuiOutlinedInput-root {
-    border-radius: 12px;
+    border-radius: 35px;
     background: #ffffff;
     
     fieldset {
