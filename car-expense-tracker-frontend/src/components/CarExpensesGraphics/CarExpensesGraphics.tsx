@@ -18,7 +18,7 @@ import { pieChartColors } from '../../constants/PieChartColors'
 import { ChartPie } from '../ChartPie/ChartPie'
 import { ChartBar } from '../ChartBar/ChartBar'
 import { categoriesExpenses } from '../../constants/CategoriesExpenses'
-import { formatCategory } from '../../functions/FormatCategory'
+import { formatCategory } from '@/functions'
 
 ChartJS.register(
     CategoryScale,

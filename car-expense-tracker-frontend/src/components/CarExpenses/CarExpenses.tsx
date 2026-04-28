@@ -1,13 +1,13 @@
 import React, { useEffect, useState, useMemo } from 'react'
-import { Typography, Box, IconButton } from '@mui/material'
-import { getCarExpenses, deleteExpense, updateExpense } from '../../api/api'
 import { useParams } from 'react-router-dom'
-import { formatDate } from '../../functions/formatDate'
-import { formatMoney } from '../../functions/formatMoney'
-import { formatNumberByThousands } from '../../functions/formatNumbersByThousands'
+import { Typography, Box, IconButton } from '@mui/material'
+import { getCarExpenses, deleteExpense, updateExpense } from '@/api'
+import { useLanguage } from '@/contexts'
+import { Icons } from '@/constants'
 import { ExpenseInterface } from '@/interfaces'
-import { EditExpenseDialog } from '../EditExpenseDialog/EditExpenseDialog'
-import { useLanguage } from '../../contexts/LanguageContext'
+import { SortField, SortOrder } from '@/types'
+import { formatCategory, formatDate, formatMoney, formatNumberByThousands } from '@/functions'
+import { EditExpenseDialog, DeleteCarConfirmationDialog } from '@/components'
 import { 
   Container, 
   TotalCard, 
@@ -24,7 +24,6 @@ import {
   ExpensePrice,
   MobileDate,
   EmptyState,
-  EmptyIcon,
   EmptyText,
   PopupOverlay,
   PopupCard,
@@ -50,19 +49,8 @@ import {
   PhotoViewerNav,
   PhotoViewerCounter
 } from './CarExpensesStyles'
-import { formatCategory } from '../../functions/FormatCategory'
-import EditIcon from '@mui/icons-material/Edit'
-import DeleteIcon from '@mui/icons-material/Delete'
-import CloseIcon from '@mui/icons-material/Close'
-import ReceiptLongIcon from '@mui/icons-material/ReceiptLong'
-import ChevronLeftIcon from '@mui/icons-material/ChevronLeft'
-import ChevronRightIcon from '@mui/icons-material/ChevronRight'
-import ArrowUpwardIcon from '@mui/icons-material/ArrowUpward'
-import ArrowDownwardIcon from '@mui/icons-material/ArrowDownward'
-import { DeleteCarConfirmationDialog } from '../DeletCarConfirmationDialog/DeletCarConfirmationDialog'
 
-type SortField = 'description' | 'kilometers' | 'category' | 'date' | 'amount'
-type SortOrder = 'asc' | 'desc'
+
 
 export const CarExpenses: React.FC = () => {
     const { id } = useParams()
@@ -262,7 +250,7 @@ export const CarExpenses: React.FC = () => {
             
             {sortedExpenses.length === 0 ? (
                 <EmptyState>
-                    <ReceiptLongIcon sx={{ fontSize: 48, color: '#86868b', mb: 1 }} />
+                    <Icons.Receipt sx={{ fontSize: 48, color: '#86868b', mb: 1 }} />
                     <EmptyText>{t('noExpenses')}</EmptyText>
                 </EmptyState>
             ) : (
@@ -275,7 +263,7 @@ export const CarExpenses: React.FC = () => {
                             <Box sx={{ display: 'flex', alignItems: 'center', gap: 0.5 }}>
                                 {t('description')}
                                 {sortBy === 'description' && (
-                                    sortOrder === 'asc' ? <ArrowUpwardIcon sx={{ fontSize: 14 }} /> : <ArrowDownwardIcon sx={{ fontSize: 14 }} />
+                                    sortOrder === 'asc' ? <Icons.ArrowUp sx={{ fontSize: 14 }} /> : <Icons.ArrowDown sx={{ fontSize: 14 }} />
                                 )}
                             </Box>
                         </HeaderCell>
@@ -286,7 +274,7 @@ export const CarExpenses: React.FC = () => {
                             <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 0.5 }}>
                                 {t('km')}
                                 {sortBy === 'kilometers' && (
-                                    sortOrder === 'asc' ? <ArrowUpwardIcon sx={{ fontSize: 14 }} /> : <ArrowDownwardIcon sx={{ fontSize: 14 }} />
+                                    sortOrder === 'asc' ? <Icons.ArrowUp sx={{ fontSize: 14 }} /> : <Icons.ArrowDown sx={{ fontSize: 14 }} />
                                 )}
                             </Box>
                         </HeaderCell>
@@ -297,7 +285,7 @@ export const CarExpenses: React.FC = () => {
                             <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 0.5 }}>
                                 {t('category')}
                                 {sortBy === 'category' && (
-                                    sortOrder === 'asc' ? <ArrowUpwardIcon sx={{ fontSize: 14 }} /> : <ArrowDownwardIcon sx={{ fontSize: 14 }} />
+                                    sortOrder === 'asc' ? <Icons.ArrowUp sx={{ fontSize: 14 }} /> : <Icons.ArrowDown sx={{ fontSize: 14 }} />
                                 )}
                             </Box>
                         </HeaderCell>
@@ -308,7 +296,7 @@ export const CarExpenses: React.FC = () => {
                             <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'flex-end', gap: 0.5 }}>
                                 ${t('totalAmount')}
                                 {sortBy === 'amount' && (
-                                    sortOrder === 'asc' ? <ArrowUpwardIcon sx={{ fontSize: 14 }} /> : <ArrowDownwardIcon sx={{ fontSize: 14 }} />
+                                    sortOrder === 'asc' ? <Icons.ArrowUp sx={{ fontSize: 14 }} /> : <Icons.ArrowDown sx={{ fontSize: 14 }} />
                                 )}
                             </Box>
                         </HeaderCell>
@@ -319,7 +307,7 @@ export const CarExpenses: React.FC = () => {
                             <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'flex-end', gap: 0.5 }}>
                                 ${t('totalAmount')}
                                 {sortBy === 'amount' && (
-                                    sortOrder === 'asc' ? <ArrowUpwardIcon sx={{ fontSize: 14 }} /> : <ArrowDownwardIcon sx={{ fontSize: 14 }} />
+                                    sortOrder === 'asc' ? <Icons.ArrowUp sx={{ fontSize: 14 }} /> : <Icons.ArrowDown sx={{ fontSize: 14 }} />
                                 )}
                             </Box>
                         </HeaderCell>
@@ -346,7 +334,7 @@ export const CarExpenses: React.FC = () => {
                     <PopupCard onClick={(e: any) => e.stopPropagation()}>
                         <PopupHeader>
                             <CloseButton onClick={handleClosePopup}>
-                                <CloseIcon sx={{ fontSize: 16, color: '#fff' }} />
+                                <Icons.Close sx={{ fontSize: 16, color: '#fff' }} />
                             </CloseButton>
                             <PopupTitle>{selectedExpense.description}</PopupTitle>
                         </PopupHeader>
@@ -386,11 +374,11 @@ export const CarExpenses: React.FC = () => {
                         </PopupContent>
                         <PopupActions>
                             <PopupButton variant="edit" onClick={() => handleEdit(selectedExpense)}>
-                                <EditIcon sx={{ fontSize: 16 }} />
+                                <Icons.Edit sx={{ fontSize: 16 }} />
                                 {t('edit')}
                             </PopupButton>
                             <PopupButton variant="delete" onClick={() => setShowDeleteConfirm(true)}>
-                                <DeleteIcon sx={{ fontSize: 16 }} />
+                                <Icons.Delete sx={{ fontSize: 16 }} />
                                 {t('delete')}
                             </PopupButton>
                         </PopupActions>
@@ -419,16 +407,16 @@ export const CarExpenses: React.FC = () => {
             {photoViewerOpen && (
                 <PhotoViewerOverlay onClick={closePhotoViewer}>
                     <PhotoViewerClose onClick={closePhotoViewer}>
-                        <CloseIcon sx={{ fontSize: 24, color: 'white' }} />
+                        <Icons.Close sx={{ fontSize: 24, color: 'white' }} />
                     </PhotoViewerClose>
                     
                     {viewerPhotos.length > 1 && (
                         <>
                             <PhotoViewerNav side="left" onClick={(e: any) => { e.stopPropagation(); goToPrevPhoto(); }}>
-                                <ChevronLeftIcon sx={{ fontSize: 32, color: 'white' }} />
+                                <Icons.ChevronLeft sx={{ fontSize: 32, color: 'white' }} />
                             </PhotoViewerNav>
                             <PhotoViewerNav side="right" onClick={(e: any) => { e.stopPropagation(); goToNextPhoto(); }}>
-                                <ChevronRightIcon sx={{ fontSize: 32, color: 'white' }} />
+                                <Icons.ChevronRight sx={{ fontSize: 32, color: 'white' }} />
                             </PhotoViewerNav>
                         </>
                     )}

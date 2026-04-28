@@ -2,7 +2,7 @@ import { Dialog, DialogContent, Box, Typography } from '@mui/material'
 import WarningAmberRoundedIcon from '@mui/icons-material/WarningAmberRounded'
 import { DeleteCarConfirmationDialogInterface } from '@/interfaces'
 import { useLanguage } from '../../contexts/LanguageContext'
-import { ButtonCancel, ButtonConfirm } from './DeletCarConfirmationDialogStyles'
+import { ButtonCancel, ButtonConfirm } from './DeletCarConfirmationDialog.styles'
 
 export const DeleteCarConfirmationDialog: React.FC<DeleteCarConfirmationDialogInterface> = ({ open, title, description, onConfirm, onCancel }) => {
     const { t } = useLanguage()

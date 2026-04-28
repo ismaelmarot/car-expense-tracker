@@ -4,7 +4,7 @@ import { getCarExpenses } from '../../api/api'
 import { ExpenseInterface } from '@/interfaces'
 import { formatMoney } from '../../functions/formatMoney'
 import { formatNumberWithCommas } from '../../functions/formatNumberWithCommas'
-import { formatCategory } from '../../functions/FormatCategory'
+import { formatCategory } from '@/functions'
 import { useLanguage } from '../../contexts/LanguageContext'
 import {
   Chart as ChartJS,
