@@ -1,5 +1,7 @@
 import React, { useEffect, useState } from 'react'
+import { useParams } from 'react-router-dom'
 import { Grid, Typography } from '@mui/material'
+import { getCarExpenses } from '@/api'
 import {
     Chart as ChartJS,
     CategoryScale,
@@ -10,15 +12,10 @@ import {
     Tooltip,
     Legend
 } from 'chart.js'
-import { useParams } from 'react-router-dom'
-import { getCarExpenses } from '../../api/api'
-import { Container, ContainerGraphics, TitleStyled } from './CarExpensesGraphicsStyles'
-import { barChartColors } from '../../constants/BarChartColors'
-import { pieChartColors } from '../../constants/PieChartColors'
-import { ChartPie } from '../ChartPie/ChartPie'
-import { ChartBar } from '../ChartBar/ChartBar'
-import { categoriesExpenses } from '../../constants/CategoriesExpenses'
+import { barChartColors, categoriesExpenses, pieChartColors } from '@/constants'
 import { formatCategory } from '@/functions'
+import { ChartBar, ChartPie } from '@/components'
+import { Container, ContainerGraphics, TitleStyled } from './CarExpensesGraphicsStyles'
 
 ChartJS.register(
     CategoryScale,

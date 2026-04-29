@@ -5,4 +5,4 @@ export const pieChartColors = [
     'rgba(130, 204, 221, 1)',
     'rgba(76, 209, 55, 1)',
     'rgba(162, 148, 249, 1)',
-];
+]

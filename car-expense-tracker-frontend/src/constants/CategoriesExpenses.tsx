@@ -1,6 +1,0 @@
-export const categoriesExpenses = [
-    'accesorios', 'chapa_pintura', 'combustible', 'electricidad', 'estacionamiento',
-    'extintor', 'grua_asistencia', 'lavado', 'mantenimiento', 'mejoras_tuning',
-    'multas', 'neumaticos', 'patente', 'peajes', 'reparacion',
-    'reparaciones_mecanicas', 'repuestos', 'seguro', 'service', 'vtv_itv', 'otros'
-];
