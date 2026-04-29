@@ -4,7 +4,7 @@ import { Reports } from '../Reports'
 import { useLanguage } from '../../contexts/LanguageContext'
 
 export const Settings: React.FC = () => {
-    const { t } = useLanguage();
+    const { t } = useLanguage()
     
     return (
         <SettingsContainer>

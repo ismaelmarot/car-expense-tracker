@@ -1,8 +1,13 @@
 import CloseIcon from '@mui/icons-material/Close'
-import { LanguageSelector } from '../LanguageSelector/LanguageSelector'
-import { useLanguage } from '../../contexts/LanguageContext'
+import { useLanguage } from '@/contexts'
 import { SettingsModalProps } from '@/interfaces'
-import { CloseButton, ContentStyled, DialogStyled, TitleStyled } from './SetttingModal.styles'
+import { LanguageSelector } from '@/components'
+import {
+  CloseButton,
+  ContentStyled,
+  DialogStyled,
+  TitleStyled
+} from './SetttingModal.styles'
 
 export const SettingsModal: React.FC<SettingsModalProps> = ({ open, onClose }) => {
   const { t } = useLanguage()

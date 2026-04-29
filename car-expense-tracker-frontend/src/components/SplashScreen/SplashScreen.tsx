@@ -1,39 +1,20 @@
 import React, { useEffect } from 'react'
-import { Box, CircularProgress, Typography } from '@mui/material'
+import { CircularProgress } from '@mui/material'
+import { SplashScreenProps } from '@/interfaces'
+import { Container, Title } from './SplashScreen.styles'
 
-export const SplashScreen: React.FC<{ onFinish: () => void }> = ({ onFinish }) => {
+export const SplashScreen: React.FC<SplashScreenProps> = ({ onFinish }) => {
   useEffect(() => {
-    const timer = setTimeout(() => {
-      onFinish()
-    }, 1500)
+    const timer = setTimeout(onFinish, 1500)
     return () => clearTimeout(timer)
   }, [onFinish])
 
   return (
-    <Box
-      sx={{
-        height: '100vh',
-        display: 'flex',
-        flexDirection: 'column',
-        alignItems: 'center',
-        justifyContent: 'center',
-        backgroundColor: '#1976d2',
-        color: 'white',
-        padding: '1.5rem',
-        textAlign: 'center',
-      }}
-    >
-      <Typography 
-        variant="h3" 
-        sx={{ 
-          mb: 3, 
-          fontWeight: 'bold',
-          fontSize: { xs: '1.5rem', sm: '2rem', md: '2.5rem' }
-        }}
-      >
+    <Container>
+      <Title variant="h3">
         Vehicles Expenses Tracker
-      </Typography>
+      </Title>
       <CircularProgress color="inherit" />
-    </Box>
+    </Container>
   )
 }
