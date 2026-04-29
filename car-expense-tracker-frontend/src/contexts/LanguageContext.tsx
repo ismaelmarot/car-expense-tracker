@@ -161,7 +161,7 @@ const translations: Translations = {
   noExpenses: { es: 'No hay gastos registrados para este vehículo.', en: 'No expenses recorded for this vehicle.' },
   loadingExpenses: { es: 'Cargando gastos...', en: 'Loading expenses...' },
   totalSpent: { es: 'Total gastado', en: 'Total spent' },
-  totalAmount: { es: 'Monto total', en: 'Total amount' },
+  totalAmount: { es: ' total', en: ' total' },
   expense: { es: 'gasto', en: 'expense' },
   km: { es: 'Km', en: 'km' },
 }

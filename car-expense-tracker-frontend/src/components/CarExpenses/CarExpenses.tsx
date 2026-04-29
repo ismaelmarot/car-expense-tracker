@@ -143,7 +143,7 @@ export const CarExpenses: React.FC = () => {
     <Container>
       <TotalCard>
         <TotalLabel>{t('totalSpent')}</TotalLabel>
-        <TotalAmountNew>{formatMoney(totalSpent)}</TotalAmountNew>
+        <TotalAmountNew>$ {formatMoney(totalSpent)}</TotalAmountNew>
       </TotalCard>
 
       {sortedExpenses.length === 0 ? (
@@ -162,6 +162,9 @@ export const CarExpenses: React.FC = () => {
             </HeaderCell>
             <HeaderCell onClick={() => handleSort('category')}>
               {t('category')}
+            </HeaderCell>
+            <HeaderCell onClick={() => handleSort('date')}>
+              {t('date')}
             </HeaderCell>
             <HeaderCell onClick={() => handleSort('amount')}>
               ${t('totalAmount')}
