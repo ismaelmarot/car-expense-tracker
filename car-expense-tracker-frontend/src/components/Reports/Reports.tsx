@@ -1,12 +1,9 @@
-import React, { useState } from 'react'
+import React from 'react'
 import { Typography, CircularProgress, Input } from '@mui/material'
-import { useLanguage } from '../../contexts/LanguageContext'
-import { useParams } from 'react-router-dom'
-import DownloadIcon from '@mui/icons-material/Download'
-import PictureAsPdfIcon from '@mui/icons-material/PictureAsPdf'
-import TableChartIcon from '@mui/icons-material/TableChart'
-import { CATEGORIES } from '@/constants'
-import { api } from '@/api/api'
+import { useLanguage } from '@/contexts'
+import { CATEGORIES, Icons } from '@/constants'
+import { useReports } from './useReports'
+
 import {
   CategoriesContainer,
   CategoryChip,
@@ -22,96 +19,64 @@ import {
 } from './Reports.styles'
 
 export const Reports: React.FC = () => {
-  const { id } = useParams()
-  const { language, t } = useLanguage()
-  const [dateFrom, setDateFrom] = useState('')
-  const [dateTo, setDateTo] = useState('')
-  const [selectedCategories, setSelectedCategories] = useState<string[]>([])
-  const [format, setFormat] = useState<'pdf' | 'csv'>('pdf')
-  const [loading, setLoading] = useState(false)
+  const { t, language } = useLanguage()
 
-  const toggleCategory = (category: string) => {
-    setSelectedCategories(prev => 
-      prev.includes(category) 
-        ? prev.filter(c => c !== category)
-        : [...prev, category]
-    )
-  }
-
-  const selectAllCategories = () => {
-    setSelectedCategories(CATEGORIES.map(c => c.key));
-  }
-
-  const clearAllCategories = () => {
-    setSelectedCategories([])
-  }
-
-  const handleDownload = async () => {
-    setLoading(true)
-    try {
-      const endpoint = format === 'pdf' ? '/reports/pdf' : '/reports/csv'
-      const response = await api.get(endpoint, {
-        params: {
-          carId: id || '',
-          dateFrom: dateFrom || '',
-          dateTo: dateTo || '',
-          categories: selectedCategories.join(','),
-          language
-        },
-        responseType: 'blob'
-      })
-      
-      const blob = response.data
-      if (blob.size === 0) {
-        throw new Error('Empty report received')
-      }
-      
-      const url = window.URL.createObjectURL(blob)
-      const a = document.createElement('a')
-      a.href = url
-      a.download = `report_${dateFrom}_${dateTo}.${format}`
-      document.body.appendChild(a)
-      a.click()
-      window.URL.revokeObjectURL(url)
-      document.body.removeChild(a)
-    } catch (error) {
-      console.error('Error downloading report:', error)
-      alert(`Error al descargar el reporte: ${error instanceof Error ? error.message : 'Error desconocido'}`)
-    } finally {
-      setLoading(false)
-    }
-  }
+  const {
+    dateFrom,
+    dateTo,
+    setDateFrom,
+    setDateTo,
+    selectedCategories,
+    toggleCategory,
+    selectAllCategories,
+    clearAllCategories,
+    format,
+    setFormat,
+    loading,
+    handleDownload
+  } = useReports()
 
   return (
     <Container>
       <Title>{t('generateReport')}</Title>
-      
+
       <DateRangeContainer>
         <DateInput>
           <Label>{t('from')}</Label>
-          <Input 
-            type="date" 
+          <Input
+            type="date"
             value={dateFrom}
             onChange={(e) => setDateFrom(e.target.value)}
           />
         </DateInput>
+
         <DateInput>
           <Label>{t('to')}</Label>
-          <Input 
-            type="date" 
+          <Input
+            type="date"
             value={dateTo}
             onChange={(e) => setDateTo(e.target.value)}
           />
         </DateInput>
       </DateRangeContainer>
-      
+
       <Label style={{ marginBottom: '0.5rem' }}>{t('categories')}</Label>
-      <SelectAllButton onClick={selectedCategories.length === CATEGORIES.length ? clearAllCategories : selectAllCategories}>
-        {selectedCategories.length === CATEGORIES.length ? t('deselectAll') : t('selectAll')}
+
+      <SelectAllButton
+        onClick={
+          selectedCategories.length === CATEGORIES.length
+            ? clearAllCategories
+            : selectAllCategories
+        }
+      >
+        {selectedCategories.length === CATEGORIES.length
+          ? t('deselectAll')
+          : t('selectAll')}
       </SelectAllButton>
+
       <CategoriesContainer>
         {CATEGORIES.map(cat => (
-          <CategoryChip 
+          <CategoryChip
             key={cat.key}
             selected={selectedCategories.includes(cat.key)}
             onClick={() => toggleCategory(cat.key)}
@@ -120,30 +85,40 @@ export const Reports: React.FC = () => {
           </CategoryChip>
         ))}
       </CategoriesContainer>
-      
+
       <Label style={{ marginBottom: '0.5rem' }}>{t('format')}</Label>
+
       <FormatContainer>
-        <FormatOption 
-          selected={format === 'pdf'} 
+        <FormatOption
+          selected={format === 'pdf'}
           onClick={() => setFormat('pdf')}
         >
-          <PictureAsPdfIcon sx={{ fontSize: 20 }} />
-          <Typography sx={{ fontWeight: 500, fontSize: '0.875rem' }}>PDF</Typography>
+          <Icons.Pdf sx={{ fontSize: 20 }} />
+          <Typography sx={{ fontWeight: 500, fontSize: '0.875rem' }}>
+            PDF
+          </Typography>
         </FormatOption>
-        <FormatOption 
-          selected={format === 'csv'} 
+
+        <FormatOption
+          selected={format === 'csv'}
           onClick={() => setFormat('csv')}
         >
-          <TableChartIcon sx={{ fontSize: 20 }} />
-          <Typography sx={{ fontWeight: 500, fontSize: '0.875rem' }}>Excel (CSV)</Typography>
+          <Icons.Table sx={{ fontSize: 20 }} />
+          <Typography sx={{ fontWeight: 500, fontSize: '0.875rem' }}>
+            Excel (CSV)
+          </Typography>
         </FormatOption>
       </FormatContainer>
-      
-      <DownloadButton 
-        variant="contained" 
+
+      <DownloadButton
+        variant="contained"
         onClick={handleDownload}
         disabled={loading || (!dateFrom && !dateTo)}
-        startIcon={loading ? <CircularProgress size={20} color='inherit' /> : <DownloadIcon />}
+        startIcon={
+          loading
+            ? <CircularProgress size={20} color='inherit' />
+            : <Icons.Download sx={{ fontSize: 20 }} />
+        }
       >
         {loading ? t('generating') : t('download')}
       </DownloadButton>
