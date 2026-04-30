@@ -1,7 +1,7 @@
 import React from 'react'
 import { Box } from '@mui/material'
 import { Icons } from '@/constants'
-import { ExpenseDetailModalProps, ExpenseInterface } from '@/interfaces'
+import { ExpenseDetailModalProps } from '@/interfaces'
 import { formatMoney } from '@/functions'
 import {
     PopupOverlay,

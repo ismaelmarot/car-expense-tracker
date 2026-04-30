@@ -1,41 +1,42 @@
-import React, { useState } from 'react'
+import React from 'react'
 import { ExpenseActionButtonInterface } from '@/interfaces'
-import { Container, EditButton, DeleteButton } from './ExpenseActionButtonsStyles'
-import DeleteIcon from '@mui/icons-material/Delete'
-import EditIcon from '@mui/icons-material/Edit'
-import { DeleteExpenseConfirmationDialog } from '../DeleteExpenseConfirmationDialog/DeleteExpenseConfirmationDialog'
+import { Icons } from '@/constants'
+import { DeleteExpenseConfirmationDialog } from '@/components'
+import { useExpenseActionButtons } from './useExpenseActionButtons'
+import {
+    Container,
+    EditButton,
+    DeleteButton
+} from './ExpenseActionButtons.styles'
 
-export const ExpenseActionButtons: React.FC<ExpenseActionButtonInterface> = ({ onEdit, onDelete }) => {
-    const [open, setOpen] = useState(false)
-
-    const handleClickOpen = () => {
-        setOpen(true)
-    }
-
-    const handleClose = () => {
-        setOpen(false)
-    }
-
-    const handleConfirmDelete = () => {
-        onDelete()
-        setOpen(false)
-    }
+export const ExpenseActionButtons: React.FC<ExpenseActionButtonInterface> = ({
+    onEdit,
+    onDelete
+}) => {
+    const {
+        open,
+        openDialog,
+        closeDialog,
+        confirmDelete
+    } = useExpenseActionButtons(onDelete)
 
     return (
         <Container>
-            <EditButton aria-label='editar' onClick={onEdit}>
-                <EditIcon />
-            </EditButton>
-            <DeleteButton aria-label='eliminar' onClick={handleClickOpen}>
-                <DeleteIcon />
-            </DeleteButton>
-            <DeleteExpenseConfirmationDialog
-                open={open}
-                onClose={handleClose}
-                onConfirm={handleConfirmDelete}
-                title="¿Desea eliminar este gasto?"
-                message="Esta acción no se puede deshacer."
-            />
+        <EditButton aria-label='editar' onClick={onEdit}>
+            <Icons.Edit sx={{ fontSize: 16, color: '#fff' }} />
+        </EditButton>
+
+        <DeleteButton aria-label='eliminar' onClick={openDialog}>
+            <Icons.Delete sx={{ fontSize: 16, color: '#fff' }} />
+        </DeleteButton>
+
+        <DeleteExpenseConfirmationDialog
+            open={open}
+            onClose={closeDialog}
+            onConfirm={confirmDelete}
+            title="¿Desea eliminar este gasto?"
+            message="Esta acción no se puede deshacer."
+        />
         </Container>
     )
 }
