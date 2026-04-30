@@ -2,7 +2,6 @@ import React from 'react'
 import { Icons } from '@/constants'
 import { PhotoUploaderProps } from '@/interfaces'
 import { usePhotoUploader } from './usePhotoUploader'
-
 import {
     PhotosWrapper,
     PhotoItem,
