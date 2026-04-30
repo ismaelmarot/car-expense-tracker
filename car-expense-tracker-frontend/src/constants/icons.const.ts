@@ -7,6 +7,7 @@ import ChevronRightIcon from '@mui/icons-material/ChevronRight'
 import ArrowUpwardIcon from '@mui/icons-material/ArrowUpward'
 import ArrowDownwardIcon from '@mui/icons-material/ArrowDownward'
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore'
+import WarningAmberRoundedIcon from '@mui/icons-material/WarningAmberRounded'
 
 import PictureAsPdfIcon from '@mui/icons-material/PictureAsPdf'
 import TableChartIcon from '@mui/icons-material/TableChart'
@@ -67,6 +68,9 @@ export const Icons = {
 
     // nuevo grupo visual
     PhotoCamera: PhotoCameraIcon,
+
+    // alerts / warnings
+    Warning: WarningAmberRoundedIcon,
 
     // otros
     List: ListAltIcon,
