@@ -1,6 +1,9 @@
 import React, { useRef, useState, useEffect } from 'react'
+import { Dialog, DialogTitle, MenuItem, Select, Button } from '@mui/material'
+import { useLanguage } from '@/contexts'
 import { EditExpenseDialogPropsInterface  } from '@/interfaces'
-import { Dialog, DialogTitle, MenuItem, Select, Button, Box, Typography } from '@mui/material'
+import { formatKilometers, formatPrice } from '@/functions'
+import { PhotoUploader } from '@/components'
 import {
     ButtonSave,
     DialogActionsStyled,
@@ -9,25 +12,7 @@ import {
     InputLabelStyled,
     TextFieldStyled,
     TypographyError
-} from './EditExpenseDialogStyled'
-import PhotoCameraIcon from '@mui/icons-material/PhotoCamera'
-import CloseIcon from '@mui/icons-material/Close'
-import { useLanguage } from '../../contexts/LanguageContext'
-
-const formatPrice = (value: string): string => {
-    const cleanValue = value.replace(/[^\d,]/g, '')
-    const parts = cleanValue.split(',')
-    const integerPart = parts[0].replace(/\B(?=(\d{3})+(?!\d))/g, '.')
-    if (parts.length > 1) {
-        return `${integerPart},${parts[1].slice(0, 2)}`
-    }
-    return integerPart
-}
-
-const formatKilometers = (value: string): string => {
-    const cleanValue = value.replace(/[^\d]/g, '');
-    return cleanValue.replace(/\B(?=(\d{3})+(?!\d))/g, '.')
-}
+} from './EditExpenseDialog.styled'
 
 export const EditExpenseDialog: React.FC<EditExpenseDialogPropsInterface> = ({ open, expense, error, onClose, onSave, onChange, onPhotosChange }) => {
     const { t } = useLanguage()
@@ -170,73 +155,10 @@ export const EditExpenseDialog: React.FC<EditExpenseDialogPropsInterface> = ({ o
                         />
                         
                         {onPhotosChange && (
-                            <Box sx={{ mt: 2 }}>
-                                <Typography sx={{ fontSize: '0.8125rem', color: '#86868b', mb: 1, fontWeight: 500 }}>
-                                    {t('photos')} ({photos.length}/3)
-                                </Typography>
-                                <Box sx={{ display: 'flex', gap: 1, flexWrap: 'wrap' }}>
-                                    {photos.map((photo: string, index: number) => (
-                                        <Box
-                                            key={index}
-                                            sx={{
-                                                width: 64,
-                                                height: 64,
-                                                borderRadius: '12px',
-                                                backgroundImage: `url(${photo})`,
-                                                backgroundSize: 'cover',
-                                                backgroundPosition: 'center',
-                                                position: 'relative',
-                                            }}
-                                        >
-                                            <Box
-                                                onClick={() => removePhoto(index)}
-                                                sx={{
-                                                    position: 'absolute',
-                                                    top: -6,
-                                                    right: -6,
-                                                    width: 20,
-                                                    height: 20,
-                                                    borderRadius: '50%',
-                                                    background: 'rgba(0,0,0,0.6)',
-                                                    display: 'flex',
-                                                    alignItems: 'center',
-                                                    justifyContent: 'center',
-                                                    cursor: 'pointer',
-                                                    '&:hover': { background: '#ff3b30' }
-                                                }}
-                                            >
-                                                <CloseIcon sx={{ fontSize: 12, color: 'white' }} />
-                                            </Box>
-                                        </Box>
-                                    ))}
-                                    {photos.length < 3 && (
-                                        <Box
-                                            onClick={handlePhotoClick}
-                                            sx={{
-                                                width: 64,
-                                                height: 64,
-                                                borderRadius: '12px',
-                                                border: '1.5px dashed #c7c7cc',
-                                                display: 'flex',
-                                                alignItems: 'center',
-                                                justifyContent: 'center',
-                                                cursor: 'pointer',
-                                                '&:hover': { borderColor: '#0071e3', background: 'rgba(0,113,227,0.05)' }
-                                            }}
-                                        >
-                                            <PhotoCameraIcon sx={{ fontSize: 20, color: '#aeaeb2' }} />
-                                        </Box>
-                                    )}
-                                </Box>
-                                <input
-                                    ref={fileInputRef}
-                                    type="file"
-                                    accept="image/*"
-                                    multiple
-                                    onChange={handlePhotoChange}
-                                    style={{ display: 'none' }}
-                                />
-                            </Box>
+                            <PhotoUploader
+                                photos={(expense as any)?.photos || []}
+                                onPhotosChange={onPhotosChange}
+                            />
                         )}
                     </>
                 )}

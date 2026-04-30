@@ -230,11 +230,6 @@ app.post('/expenses', (req, res) => {
     }
   );
 });
-      }
-      res.json({ id: this.lastID });
-    }
-  );
-});
 
 app.put('/expenses/:id', (req, res) => {
   const { description, amount, price, kilometers, category, date, photos } = req.body;
