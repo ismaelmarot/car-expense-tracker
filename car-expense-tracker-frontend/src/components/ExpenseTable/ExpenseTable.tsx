@@ -1,10 +1,14 @@
 import React from 'react'
-import { ExpenseTableInterface } from '@/interfaces'
 import { TableBody, TableCell, Typography } from '@mui/material'
-import { TableCellRight, TableContainerStyled, TableRowStyled, TableStyled } from './ExpenseTableStyles'
-import { ExpenseTableHeader } from '../ExpenseTableHeader/ExpenseTableHeader'
-import { headers } from '../../constants/ExpenseTableHeaders'
-import { ExpenseActionButtons } from '../ExpenseActionButtons/ExpenseActionButtons'
+import { headers } from '@/constants'
+import { ExpenseTableInterface } from '@/interfaces'
+import { ExpenseActionButtons, ExpenseTableHeader } from '@/components'
+import {
+    TableCellRight,
+    TableContainerStyled,
+    TableRowStyled,
+    TableStyled
+} from './ExpenseTable.styles'
 
 export const ExpenseTable: React.FC<ExpenseTableInterface> =({
     expenses,

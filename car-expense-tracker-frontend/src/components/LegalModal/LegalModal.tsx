@@ -1,8 +1,8 @@
 import { Dialog, DialogTitle, DialogContent, DialogActions, Typography } from '@mui/material'
+import { useLanguage } from '@/contexts'
 import { LegalModalProps } from '@/interfaces'
-import { useLanguage } from '../../contexts/LanguageContext'
-import { ButtonStyled, TextStyled } from './LegalModalStyles'
 import { APP_VERSION } from '@/constants'
+import { ButtonStyled, TextStyled } from './LegalModal.styles'
 
 export const LegalModal: React.FC<LegalModalProps> = ({ open, onClose }) => {
   const { t } = useLanguage()

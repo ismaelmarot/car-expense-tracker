@@ -57,7 +57,7 @@ import {
   EmptyState,
   EmptyTitle,
   EmptyText
-} from './ExpenseStatsStyles'
+} from './ExpenseStats.styles'
 
 ChartJS.register(
   CategoryScale,

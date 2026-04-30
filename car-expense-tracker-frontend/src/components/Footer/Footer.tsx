@@ -1,8 +1,13 @@
 import React, { useState } from 'react'
-import { LegalModal } from '../LegalModal/LegalModal'
-import { getCurrentYear } from '../../functions/getCurrentYear'
-import { Container, FooterText, FooterLink, Divider } from './FooterStyles'
-import { useLanguage } from '../../contexts/LanguageContext'
+import { useLanguage } from '@/contexts'
+import { getCurrentYear } from '@/functions'
+import { LegalModal } from '@/components'
+import {
+    Container,
+    FooterText,
+    FooterLink,
+    Divider
+} from './Footer.styles'
 
 export const Footer: React.FC = () => {
     const [openLegal, setOpenLegal] = useState(false)

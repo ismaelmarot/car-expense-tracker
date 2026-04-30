@@ -1,6 +1,12 @@
 import { Typography } from '@mui/material'
-import { useLanguage } from '../../contexts/LanguageContext'
-import { CheckIcon, Container, Options, Option, Title } from './LanguageSelector.styles'
+import { useLanguage } from '@/contexts'
+import {
+  CheckIcon,
+  Container,
+  Options,
+  Option,
+  Title
+} from './LanguageSelector.styles'
 
 export const LanguageSelector: React.FC = () => {
   const { language, setLanguage, t } = useLanguage()

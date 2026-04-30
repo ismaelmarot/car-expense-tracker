@@ -1,7 +1,6 @@
-import { formatMoney } from '../../functions/formatMoney'
-import { formatDate } from '../../functions/formatDate'
 import { ExpenseTableForPDFInterface } from '@/interfaces'
-import { ThStyled, TdStyled, TdStyledRight, TableStyled } from './ExpenseTableForPDFStyles'
+import { formatDate, formatMoney } from '@/functions'
+import { ThStyled, TdStyled, TdStyledRight, TableStyled } from './ExpenseTableForPDF.styles'
 
 export const ExpenseTableForPDF: React.FC<ExpenseTableForPDFInterface> = ({ expenses }) => {
     return (

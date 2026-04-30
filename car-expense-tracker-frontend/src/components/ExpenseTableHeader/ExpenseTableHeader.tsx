@@ -1,6 +1,6 @@
 import { TableRow, TableCell } from '@mui/material'
-import { TableHeadStyled } from './ExpenseTableHeadStyles'
 import { ExpenseTableHeaderInterface } from '@/interfaces'
+import { TableHeadStyled } from './ExpenseTableHead.styles'
 
 export const ExpenseTableHeader = ({ headers }: { headers: ExpenseTableHeaderInterface[] }) => {
     return(
