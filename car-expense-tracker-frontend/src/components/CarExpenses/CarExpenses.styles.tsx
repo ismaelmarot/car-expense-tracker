@@ -49,10 +49,19 @@ export const TableHeader = styled(Box)`
   
   @media (min-width: 768px) {
     display: grid;
-    grid-template-columns: 1fr 60px 70px 90px 80px;
+    grid-template-columns: 1fr 70px 90px 100px 90px;
     gap: 1.5rem;
   }
 `
+
+
+export const SortIndicator = styled.span`
+    font-size: 11px;
+    opacity: 0.7;
+    display: inline-flex;
+    align-items: center;
+    margin-left: 2px;
+`;
 
 export const HeaderCell = styled(Box)`
   font-size: 0.6875rem;
@@ -63,16 +72,20 @@ export const HeaderCell = styled(Box)`
   cursor: pointer;
   user-select: none;
   transition: color 0.2s ease;
+  white-space: nowrap;
+  display: flex;
+  align-items: center;
+  gap: 4px;
   
   &:hover {
     color: #1d1d1f;
   }
   
-  &:nth-of-type(1) { text-align: left; }
-  &:nth-of-type(2) { text-align: center; }
-  &:nth-of-type(3) { text-align: center; }
-  &:nth-of-type(4) { text-align: right; }
-  &:nth-of-type(5) { text-align: right; }
+  &:nth-of-type(1) { justify-content: flex-start; }
+  &:nth-of-type(2) { justify-content: center; }
+  &:nth-of-type(3) { justify-content: center; }
+  &:nth-of-type(4) { justify-content: flex-end; }
+  &:nth-of-type(5) { justify-content: flex-end; }
 `
 
 export const ExpenseItem = styled(Box)`
@@ -94,7 +107,7 @@ export const ExpenseItem = styled(Box)`
 
   @media (min-width: 768px) {
     display: grid;
-    grid-template-columns: 1fr 60px 70px 90px 80px;
+    grid-template-columns: 1fr 70px 90px 100px 90px;
     gap: 1.5rem;
     padding: 0.75rem 1.25rem;
     border-radius: 12px;

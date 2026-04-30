@@ -25,6 +25,7 @@ import {
     EmptyState,
     EmptyText,
     CategoryBadge,
+    SortIndicator,
 } from './CarExpenses.styles'
 
 export const CarExpenses: React.FC = () => {
@@ -88,7 +89,11 @@ export const CarExpenses: React.FC = () => {
         setSelectedExpense(null)
     }
 
-    const openPhotoViewer = (photos: string[], index: number, e?: React.MouseEvent) => {
+    
+
+    
+
+const openPhotoViewer = (photos: string[], index: number, e?: React.MouseEvent) => {
         setViewerPhotos(photos)
         setCurrentPhotoIndex(index)
         setPhotoViewerOpen(true)
@@ -127,19 +132,19 @@ export const CarExpenses: React.FC = () => {
                     <TableHeader>
                         <HeaderCell onClick={() => handleSort('description')}>
                             {t('description')}
-                        </HeaderCell>
+                        {sortBy === 'description' && <SortIndicator>{sortOrder === 'asc' ? '↑' : '↓'}</SortIndicator>}</HeaderCell>
                         <HeaderCell onClick={() => handleSort('kilometers')}>
                             {t('km')}
-                        </HeaderCell>
+                        {sortBy === 'kilometers' && <SortIndicator>{sortOrder === 'asc' ? '↑' : '↓'}</SortIndicator>}</HeaderCell>
                         <HeaderCell onClick={() => handleSort('category')}>
                             {t('category')}
-                        </HeaderCell>
+                        {sortBy === 'category' && <SortIndicator>{sortOrder === 'asc' ? '↑' : '↓'}</SortIndicator>}</HeaderCell>
                         <HeaderCell onClick={() => handleSort('date')}>
                             {t('date')}
-                        </HeaderCell>
+                        {sortBy === 'date' && <SortIndicator>{sortOrder === 'asc' ? '↑' : '↓'}</SortIndicator>}</HeaderCell>
                         <HeaderCell onClick={() => handleSort('amount')}>
                             ${t('totalAmount')}
-                        </HeaderCell>
+                        {sortBy === 'amount' && <SortIndicator>{sortOrder === 'asc' ? '↑' : '↓'}</SortIndicator>}</HeaderCell>
                     </TableHeader>
 
                     {sortedExpenses.map(expense => (
