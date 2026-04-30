@@ -1,11 +1,20 @@
 import React, { useState } from 'react'
 import { AccordionDetails, AccordionSummary, Dialog, DialogContent, DialogTitle, Button, Grid } from '@mui/material'
-import { AccordionStyled, ButtonDownloadPDF, DialogActionsStyled, ExpencesToDate, PictureAsPdfIconStyled, TypographyStyled, VehicleDescription, VehicleDescriptionText } from './DownloadPDFComponentStyles'
-import ExpandMoreIcon from '@mui/icons-material/ExpandMore'
-import { getCarExpenses, getCarById } from '../../api/api'
-import { getCurrentDate } from '../../functions/getCurrentDate'
 import jsPDF from 'jspdf'
-import { ExpenseTableForPDF } from '../ExpenseTableForPDF/ExpenseTableForPDF'
+import { Icons } from '@/constants'
+import { getCarExpenses, getCarById } from '@/api'
+import { getCurrentDate } from '@/functions'
+import { ExpenseTableForPDF } from '@/components'
+import {
+    AccordionStyled,
+    ButtonDownloadPDF,
+    DialogActionsStyled,
+    ExpencesToDate,
+    PictureAsPdfIconStyled,
+    TypographyStyled,
+    VehicleDescription,
+    VehicleDescriptionText
+} from './DownloadPDFComponentStyles'
 
 export const DownloadPDFComponent: React.FC = () => {
     const [expenses, setExpenses] = useState<any[]>([])
@@ -92,7 +101,7 @@ export const DownloadPDFComponent: React.FC = () => {
     return (
         <AccordionStyled>
             <AccordionSummary
-                expandIcon={<ExpandMoreIcon />}
+                expandIcon={<Icons.ExpandMore />}
                 aria-controls='panel1-content'
                 id='panel1-header'
             >
