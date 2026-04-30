@@ -88,7 +88,7 @@ export const CarExpenses: React.FC = () => {
         setSelectedExpense(null)
     }
 
-    const openPhotoViewer = (photos: string[], index: number) => {
+    const openPhotoViewer = (photos: string[], index: number, e?: React.MouseEvent) => {
         setViewerPhotos(photos)
         setCurrentPhotoIndex(index)
         setPhotoViewerOpen(true)

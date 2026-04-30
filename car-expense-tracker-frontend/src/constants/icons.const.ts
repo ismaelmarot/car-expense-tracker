@@ -24,6 +24,7 @@ import EventRepeatIcon from '@mui/icons-material/EventRepeat'
 import CalendarTodayIcon from '@mui/icons-material/CalendarToday'
 import InsertChartIcon from '@mui/icons-material/InsertChart'
 import DateRangeIcon from '@mui/icons-material/DateRange'
+import PhotoCameraIcon from '@mui/icons-material/PhotoCamera'
 
 export const Icons = {
     // acciones
@@ -61,6 +62,9 @@ export const Icons = {
     CalendarMonth: CalendarMonthIcon,
     DateRange: DateRangeIcon,
     Recurring: EventRepeatIcon,
+
+    // nuevo grupo visual
+    PhotoCamera: PhotoCameraIcon,
 
     // otros
     List: ListAltIcon,
