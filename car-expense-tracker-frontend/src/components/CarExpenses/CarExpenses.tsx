@@ -104,6 +104,79 @@ const openPhotoViewer = (photos: string[], index: number, e?: React.MouseEvent) 
             <Typography variant='h6' sx={{ textAlign: 'center', color: '#86868b' }}>
                 {t('loadingExpenses')}
             </Typography>
+            
+            {/* Photo Viewer Full Screen */}
+            {photoViewerOpen && (
+                <div 
+                    style={{
+                        position: 'fixed',
+                        top: 0,
+                        left: 0,
+                        right: 0,
+                        bottom: 0,
+                        backgroundColor: 'rgba(0,0,0,0.95)',
+                        zIndex: 9999,
+                        display: 'flex',
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                        cursor: 'pointer'
+                    }} 
+                    onClick={() => setPhotoViewerOpen(false)}
+                >
+                    <img 
+                        src={viewerPhotos[currentPhotoIndex]} 
+                        style={{
+                            maxWidth: '95vw',
+                            maxHeight: '95vh',
+                            objectFit: 'contain'
+                        }}
+                        alt="Full size"
+                        onClick={(e) => e.stopPropagation()}
+                    />
+                    {viewerPhotos.length > 1 && (
+                        <>
+                            <button 
+                                onClick={(e) => { 
+                                    e.stopPropagation(); 
+                                    setCurrentPhotoIndex((prev) => Math.max(0, prev - 1)); 
+                                }}
+                                style={{
+                                    position: 'absolute',
+                                    left: '20px',
+                                    top: '50%',
+                                    transform: 'translateY(-50%)',
+                                    background: 'rgba(255,255,255,0.2)',
+                                    border: 'none',
+                                    color: 'white',
+                                    fontSize: '40px',
+                                    padding: '10px 15px',
+                                    cursor: 'pointer',
+                                    borderRadius: '5px'
+                                }}
+                            >‹</button>
+                            <button 
+                                onClick={(e) => { 
+                                    e.stopPropagation(); 
+                                    setCurrentPhotoIndex((prev) => Math.min(viewerPhotos.length - 1, prev + 1)); 
+                                }}
+                                style={{
+                                    position: 'absolute',
+                                    right: '20px',
+                                    top: '50%',
+                                    transform: 'translateY(-50%)',
+                                    background: 'rgba(255,255,255,0.2)',
+                                    border: 'none',
+                                    color: 'white',
+                                    fontSize: '40px',
+                                    padding: '10px 15px',
+                                    cursor: 'pointer',
+                                    borderRadius: '5px'
+                                }}
+                            >›</button>
+                        </>
+                    )}
+                </div>
+            )}
         </Container>
     )
 
@@ -112,6 +185,79 @@ const openPhotoViewer = (photos: string[], index: number, e?: React.MouseEvent) 
             <Typography variant='h6' color='error' sx={{ textAlign: 'center' }}>
                 {error}
             </Typography>
+            
+            {/* Photo Viewer Full Screen */}
+            {photoViewerOpen && (
+                <div 
+                    style={{
+                        position: 'fixed',
+                        top: 0,
+                        left: 0,
+                        right: 0,
+                        bottom: 0,
+                        backgroundColor: 'rgba(0,0,0,0.95)',
+                        zIndex: 9999,
+                        display: 'flex',
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                        cursor: 'pointer'
+                    }} 
+                    onClick={() => setPhotoViewerOpen(false)}
+                >
+                    <img 
+                        src={viewerPhotos[currentPhotoIndex]} 
+                        style={{
+                            maxWidth: '95vw',
+                            maxHeight: '95vh',
+                            objectFit: 'contain'
+                        }}
+                        alt="Full size"
+                        onClick={(e) => e.stopPropagation()}
+                    />
+                    {viewerPhotos.length > 1 && (
+                        <>
+                            <button 
+                                onClick={(e) => { 
+                                    e.stopPropagation(); 
+                                    setCurrentPhotoIndex((prev) => Math.max(0, prev - 1)); 
+                                }}
+                                style={{
+                                    position: 'absolute',
+                                    left: '20px',
+                                    top: '50%',
+                                    transform: 'translateY(-50%)',
+                                    background: 'rgba(255,255,255,0.2)',
+                                    border: 'none',
+                                    color: 'white',
+                                    fontSize: '40px',
+                                    padding: '10px 15px',
+                                    cursor: 'pointer',
+                                    borderRadius: '5px'
+                                }}
+                            >‹</button>
+                            <button 
+                                onClick={(e) => { 
+                                    e.stopPropagation(); 
+                                    setCurrentPhotoIndex((prev) => Math.min(viewerPhotos.length - 1, prev + 1)); 
+                                }}
+                                style={{
+                                    position: 'absolute',
+                                    right: '20px',
+                                    top: '50%',
+                                    transform: 'translateY(-50%)',
+                                    background: 'rgba(255,255,255,0.2)',
+                                    border: 'none',
+                                    color: 'white',
+                                    fontSize: '40px',
+                                    padding: '10px 15px',
+                                    cursor: 'pointer',
+                                    borderRadius: '5px'
+                                }}
+                            >›</button>
+                        </>
+                    )}
+                </div>
+            )}
         </Container>
     )
 
@@ -192,6 +338,79 @@ const openPhotoViewer = (photos: string[], index: number, e?: React.MouseEvent) 
                 onConfirm={() => selectedExpense && handleDelete(selectedExpense.id)}
                 onCancel={() => setShowDeleteConfirm(false)}
             />
+            
+            {/* Photo Viewer Full Screen */}
+            {photoViewerOpen && (
+                <div 
+                    style={{
+                        position: 'fixed',
+                        top: 0,
+                        left: 0,
+                        right: 0,
+                        bottom: 0,
+                        backgroundColor: 'rgba(0,0,0,0.95)',
+                        zIndex: 9999,
+                        display: 'flex',
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                        cursor: 'pointer'
+                    }} 
+                    onClick={() => setPhotoViewerOpen(false)}
+                >
+                    <img 
+                        src={viewerPhotos[currentPhotoIndex]} 
+                        style={{
+                            maxWidth: '95vw',
+                            maxHeight: '95vh',
+                            objectFit: 'contain'
+                        }}
+                        alt="Full size"
+                        onClick={(e) => e.stopPropagation()}
+                    />
+                    {viewerPhotos.length > 1 && (
+                        <>
+                            <button 
+                                onClick={(e) => { 
+                                    e.stopPropagation(); 
+                                    setCurrentPhotoIndex((prev) => Math.max(0, prev - 1)); 
+                                }}
+                                style={{
+                                    position: 'absolute',
+                                    left: '20px',
+                                    top: '50%',
+                                    transform: 'translateY(-50%)',
+                                    background: 'rgba(255,255,255,0.2)',
+                                    border: 'none',
+                                    color: 'white',
+                                    fontSize: '40px',
+                                    padding: '10px 15px',
+                                    cursor: 'pointer',
+                                    borderRadius: '5px'
+                                }}
+                            >‹</button>
+                            <button 
+                                onClick={(e) => { 
+                                    e.stopPropagation(); 
+                                    setCurrentPhotoIndex((prev) => Math.min(viewerPhotos.length - 1, prev + 1)); 
+                                }}
+                                style={{
+                                    position: 'absolute',
+                                    right: '20px',
+                                    top: '50%',
+                                    transform: 'translateY(-50%)',
+                                    background: 'rgba(255,255,255,0.2)',
+                                    border: 'none',
+                                    color: 'white',
+                                    fontSize: '40px',
+                                    padding: '10px 15px',
+                                    cursor: 'pointer',
+                                    borderRadius: '5px'
+                                }}
+                            >›</button>
+                        </>
+                    )}
+                </div>
+            )}
         </Container>
     )
 }
