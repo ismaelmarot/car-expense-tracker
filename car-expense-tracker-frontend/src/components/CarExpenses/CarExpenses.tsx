@@ -119,7 +119,7 @@ export const CarExpenses: React.FC = () => {
 
             {sortedExpenses.length === 0 ? (
                 <EmptyState>
-                <Icons.Receipt sx={{ fontSize: 48, color: '#86868b', mb: 1 }} />
+                <Icons.Expenses sx={{ fontSize: 48, color: '#86868b', mb: 1 }} />
                 <EmptyText>{t('noExpenses')}</EmptyText>
                 </EmptyState>
             ) : (

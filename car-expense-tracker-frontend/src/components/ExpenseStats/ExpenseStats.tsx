@@ -1,11 +1,9 @@
 import React, { useEffect, useState, useMemo } from 'react'
 import { useParams } from 'react-router-dom'
-import { getCarExpenses } from '../../api/api'
+import { getCarExpenses } from '@/api'
+import { useLanguage } from '@/contexts'
 import { ExpenseInterface } from '@/interfaces'
-import { formatMoney } from '../../functions/formatMoney'
-import { formatNumberWithCommas } from '../../functions/formatNumberWithCommas'
-import { formatCategory } from '@/functions'
-import { useLanguage } from '../../contexts/LanguageContext'
+import { formatMoney, formatNumberWithCommas, formatCategory   } from '@/functions'
 import {
   Chart as ChartJS,
   CategoryScale,
@@ -21,20 +19,21 @@ import {
 } from 'chart.js'
 import { Line, Doughnut, Bar } from 'react-chartjs-2'
 import { Dialog, DialogContent, IconButton as MuiIconButton, Box, Typography } from '@mui/material'
-import AttachMoneyIcon from '@mui/icons-material/AttachMoney'
-import BarChartIcon from '@mui/icons-material/BarChart'
-import ListAltIcon from '@mui/icons-material/ListAlt'
-import DirectionsCarIcon from '@mui/icons-material/DirectionsCar'
-import TrendingUpIcon from '@mui/icons-material/TrendingUp'
-import TrendingDownIcon from '@mui/icons-material/TrendingDown'
-import SpeedIcon from '@mui/icons-material/Speed'
-import CalendarMonthIcon from '@mui/icons-material/CalendarMonth'
-import CategoryIcon from '@mui/icons-material/Category'
-import EventRepeatIcon from '@mui/icons-material/EventRepeat'
-import CalendarTodayIcon from '@mui/icons-material/CalendarToday'
-import InsertChartIcon from '@mui/icons-material/InsertChart'
-import DateRangeIcon from '@mui/icons-material/DateRange'
-import CloseIcon from '@mui/icons-material/Close'
+
+// import AttachMoneyIcon from '@mui/icons-material/AttachMoney'
+// import BarChartIcon from '@mui/icons-material/BarChart'
+// import ListAltIcon from '@mui/icons-material/ListAlt'
+// import DirectionsCarIcon from '@mui/icons-material/DirectionsCar'
+// import TrendingUpIcon from '@mui/icons-material/TrendingUp'
+// import TrendingDownIcon from '@mui/icons-material/TrendingDown'
+// import SpeedIcon from '@mui/icons-material/Speed'
+// import CalendarMonthIcon from '@mui/icons-material/CalendarMonth'
+// import CategoryIcon from '@mui/icons-material/Category'
+// import EventRepeatIcon from '@mui/icons-material/EventRepeat'
+// import CalendarTodayIcon from '@mui/icons-material/CalendarToday'
+// import InsertChartIcon from '@mui/icons-material/InsertChart'
+// import DateRangeIcon from '@mui/icons-material/DateRange'
+// import CloseIcon from '@mui/icons-material/Close'
 import { 
   Container, 
   Header, 
@@ -58,6 +57,7 @@ import {
   EmptyTitle,
   EmptyText
 } from './ExpenseStats.styles'
+import { Icons } from '@/constants'
 
 ChartJS.register(
   CategoryScale,
@@ -463,7 +463,7 @@ export const ExpenseStats: React.FC = () => {
     return (
       <Container>
         <EmptyState>
-          <InsertChartIcon sx={{ fontSize: 48, color: '#86868b', mb: 1 }} />
+          <Icons.Report sx={{ fontSize: 48, color: '#86868b', mb: 1 }} />
           <EmptyTitle>No hay datos suficientes</EmptyTitle>
           <EmptyText>Agrega algunos gastos para ver las estadísticas</EmptyText>
         </EmptyState>
@@ -482,28 +482,28 @@ export const ExpenseStats: React.FC = () => {
       <SummaryGrid>
         <SummaryCard>
           <SummaryIcon style={{ background: '#e8f4fd', color: '#0071e3' }}>
-            <AttachMoneyIcon sx={{ fontSize: 24 }} />
+            <Icons.Money sx={{ fontSize: 24 }} />
           </SummaryIcon>
           <SummaryLabel>{t('totalSpent')}</SummaryLabel>
           <SummaryValue>{formatMoney(stats.total)}</SummaryValue>
         </SummaryCard>
         <SummaryCard>
           <SummaryIcon style={{ background: '#e8f5e9', color: '#34c759' }}>
-            <BarChartIcon sx={{ fontSize: 24 }} />
+            <Icons.Chart sx={{ fontSize: 24 }} />
           </SummaryIcon>
           <SummaryLabel>{t('averagePerExpense')}</SummaryLabel>
           <SummaryValue>{formatMoney(Math.round(stats.average))}</SummaryValue>
         </SummaryCard>
         <SummaryCard>
           <SummaryIcon style={{ background: '#fff3e0', color: '#ff9500' }}>
-            <ListAltIcon sx={{ fontSize: 24 }} />
+            <Icons.List sx={{ fontSize: 24 }} />
           </SummaryIcon>
           <SummaryLabel>{t('registeredExpenses')}</SummaryLabel>
           <SummaryValue>{stats.count}</SummaryValue>
         </SummaryCard>
         <SummaryCard>
           <SummaryIcon style={{ background: '#fce4ec', color: '#ff3b30' }}>
-            <DirectionsCarIcon sx={{ fontSize: 24 }} />
+            <Icons.Car sx={{ fontSize: 24 }} />
           </SummaryIcon>
           <SummaryLabel>{t('totalKilometers')}</SummaryLabel>
           <SummaryValue>{formatNumberWithCommas(stats.totalKm)} km</SummaryValue>
@@ -514,28 +514,28 @@ export const ExpenseStats: React.FC = () => {
       <SummaryGrid>
         <SummaryCard>
           <SummaryIcon style={{ background: '#f3e5f5', color: '#af52de' }}>
-            <CalendarMonthIcon sx={{ fontSize: 24 }} />
+            <Icons.CalendarMonth sx={{ fontSize: 24 }} />
           </SummaryIcon>
           <SummaryLabel>{t('monthlyAverageExpense')}</SummaryLabel>
           <SummaryValue>{formatMoney(Math.round(stats.monthlyAverage))}</SummaryValue>
         </SummaryCard>
         <SummaryCard>
           <SummaryIcon style={{ background: '#e8eaf6', color: '#5856d6' }}>
-            <CategoryIcon sx={{ fontSize: 24 }} />
+            <Icons.Category sx={{ fontSize: 24 }} />
           </SummaryIcon>
           <SummaryLabel>{t('mostExpensiveCategory')}</SummaryLabel>
           <SummaryValue>{stats.mostExpensiveCategory ? formatCategory(stats.mostExpensiveCategory[0]) : '-'}</SummaryValue>
         </SummaryCard>
         <SummaryCard>
           <SummaryIcon style={{ background: '#fff8e1', color: '#ff9500' }}>
-            <EventRepeatIcon sx={{ fontSize: 24 }} />
+            <Icons.Recurring sx={{ fontSize: 24 }} />
           </SummaryIcon>
           <SummaryLabel>{t('expenseFrequency')}</SummaryLabel>
           <SummaryValue>{t('every')} {Math.round(stats.frequency)} {t('daysFrequency')}</SummaryValue>
         </SummaryCard>
         <SummaryCard>
           <SummaryIcon style={{ background: '#e0f7fa', color: '#00838f' }}>
-            <CalendarMonthIcon sx={{ fontSize: 24 }} />
+            <Icons.CalendarMonth sx={{ fontSize: 24 }} />
           </SummaryIcon>
           <SummaryLabel>{t('monthlyAverageCost')}</SummaryLabel>
           <SummaryValue>{formatMoney(Math.round(stats.monthlyAverage))}</SummaryValue>
@@ -563,7 +563,7 @@ export const ExpenseStats: React.FC = () => {
         {monthlyDistributionData && (
           <ChartCard>
             <ChartTitle>
-              <CalendarTodayIcon sx={{ fontSize: 20, mr: 1, color: '#0071e3' }} />
+              <Icons.Calendar sx={{ fontSize: 20, mr: 1, color: '#0071e3' }} />
               {t('monthlyDistribution')}
             </ChartTitle>
             <ChartContainer>
@@ -574,7 +574,7 @@ export const ExpenseStats: React.FC = () => {
         {weeklyComparisonData && (
           <ChartCard>
             <ChartTitle>
-              <DateRangeIcon sx={{ fontSize: 20, mr: 1, color: '#0071e3' }} />
+              <Icons.DateRange sx={{ fontSize: 20, mr: 1, color: '#0071e3' }} />
               {t('weeklyComparison')}
             </ChartTitle>
             <ChartContainer>
@@ -588,7 +588,7 @@ export const ExpenseStats: React.FC = () => {
       {topExpenses && (
         <ChartCard style={{ marginBottom: '2rem' }}>
           <ChartTitle>
-            <TrendingUpIcon sx={{ fontSize: 20, mr: 1, color: '#0071e3' }} />
+            <Icons.TrendingUp sx={{ fontSize: 20, mr: 1, color: '#0071e3' }} />
             {t('topExpenses')}
           </ChartTitle>
           <ChartContainer style={{ height: '200px' }}>
@@ -600,17 +600,17 @@ export const ExpenseStats: React.FC = () => {
       {/* Estadísticas finales */}
       <StatsGrid>
         <StatCard onClick={() => { setSelectedExpense(stats.highest); setPopupType('highest'); }} style={{ cursor: 'pointer' }}>
-          <TrendingUpIcon sx={{ fontSize: 24, color: '#ff3b30' }} />
+          <Icons.TrendingUp sx={{ fontSize: 24, color: '#ff3b30' }} />
           <StatValue>{formatMoney(stats.highest.amount)}</StatValue>
           <StatLabel>{t('highestExpense')}</StatLabel>
         </StatCard>
         <StatCard onClick={() => { setSelectedExpense(stats.lowest); setPopupType('lowest'); }} style={{ cursor: 'pointer' }}>
-          <TrendingDownIcon sx={{ fontSize: 24, color: '#34c759' }} />
+          <Icons.TrendingDown sx={{ fontSize: 24, color: '#34c759' }} />
           <StatValue>{formatMoney(stats.lowest.amount)}</StatValue>
           <StatLabel>{t('lowestExpense')}</StatLabel>
         </StatCard>
         <StatCard>
-          <SpeedIcon sx={{ fontSize: 24, color: '#0071e3' }} />
+          <Icons.Speed sx={{ fontSize: 24, color: '#0071e3' }} />
           <StatValue>{formatMoney(Math.round(stats.costPerKm * 100) / 100)}</StatValue>
           <StatLabel>{t('costPerKm')}</StatLabel>
         </StatCard>
@@ -642,13 +642,13 @@ export const ExpenseStats: React.FC = () => {
                   onClick={() => { setSelectedExpense(null); setPopupType(null); }}
                   sx={{ position: 'absolute', top: 8, right: 8, color: 'white' }}
                 >
-                  <CloseIcon />
+                  <Icons.Close sx={{ fontSize: 24 }} />
                 </MuiIconButton>
                 <Box sx={{ textAlign: 'center', py: 2 }}>
                   {popupType === 'highest' ? (
-                    <TrendingUpIcon sx={{ fontSize: 48, color: 'white', mb: 1 }} />
+                    <Icons.TrendingUp sx={{ fontSize: 48, color: 'white', mb: 1 }} />
                   ) : (
-                    <TrendingDownIcon sx={{ fontSize: 48, color: 'white', mb: 1 }} />
+                    <Icons.TrendingDown sx={{ fontSize: 48, color: 'white', mb: 1 }} />
                   )}
                   <Typography sx={{ color: 'white', fontSize: '1.25rem', fontWeight: 600 }}>
                     {popupType === 'highest' ? t('highestExpense') : t('lowestExpense')}

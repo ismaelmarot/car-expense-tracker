@@ -103,7 +103,7 @@ export const Reports: React.FC = () => {
           selected={format === 'csv'}
           onClick={() => setFormat('csv')}
         >
-          <Icons.Table sx={{ fontSize: 20 }} />
+          <Icons.Csv sx={{ fontSize: 20 }} />
           <Typography sx={{ fontWeight: 500, fontSize: '0.875rem' }}>
             Excel (CSV)
           </Typography>
