@@ -1,8 +1,7 @@
-import React, { useState } from 'react'
+import React from 'react'
 import { Typography } from '@mui/material'
 import { useLanguage } from '@/contexts'
 import { Icons } from '@/constants'
-import { ExpenseInterface } from '@/interfaces'
 import { formatMoney } from '@/functions'
 import {
     EditExpenseDialog,
@@ -12,7 +11,10 @@ import {
     usePhotoViewer,
     ExpenseList as ExpenseListComponent
 } from '@/components'
+
 import { useCarExpenses } from './useCarExpenses'
+import { useCarExpensesUI } from './useCarExpensesUI'
+
 import {
     Container,
     TotalCard,
@@ -37,12 +39,20 @@ export const CarExpenses: React.FC = () => {
         handleUpdate,
     } = useCarExpenses()
 
-    // UI STATE
-    const [editExpense, setEditExpense] = useState<ExpenseInterface | null>(null)
-    const [openEditDialog, setOpenEditDialog] = useState(false)
-    const [selectedExpense, setSelectedExpense] = useState<ExpenseInterface | null>(null)
-    const [showPopup, setShowPopup] = useState(false)
-    const [showDeleteConfirm, setShowDeleteConfirm] = useState(false)
+    const {
+        editExpense,
+        openEditDialog,
+        selectedExpense,
+        showPopup,
+        showDeleteConfirm,
+        setOpenEditDialog,
+        setShowDeleteConfirm,
+        handleItemClick,
+        handleEdit,
+        handleSave,
+        handleClosePopup,
+        handleChange,
+    } = useCarExpensesUI(handleUpdate)
 
     // PhotoViewer hook
     const {
@@ -54,43 +64,6 @@ export const CarExpenses: React.FC = () => {
         prev,
         next,
     } = usePhotoViewer()
-
-    // HANDLERS
-    const handleItemClick = (expense: ExpenseInterface) => {
-        const expenseWithPhotos = {
-            ...expense,
-            photos: typeof expense.photos === 'string'
-                ? JSON.parse(expense.photos || '[]')
-                : (expense.photos || [])
-        }
-
-        setSelectedExpense(expenseWithPhotos)
-        setShowPopup(true)
-    }
-
-    const handleEdit = (expense: ExpenseInterface) => {
-        setEditExpense(expense)
-        setOpenEditDialog(true)
-        setShowPopup(false)
-    }
-
-    const handleSave = async () => {
-        if (!editExpense) return
-
-        await handleUpdate(editExpense)
-
-        if (selectedExpense?.id === editExpense.id) {
-            setSelectedExpense(editExpense)
-        }
-
-        setOpenEditDialog(false)
-        setEditExpense(null)
-    }
-
-    const handleClosePopup = () => {
-        setShowPopup(false)
-        setSelectedExpense(null)
-    }
 
     const openPhotoViewer = (photos: string[], index: number) => {
         openViewer(photos, index)
@@ -178,11 +151,7 @@ export const CarExpenses: React.FC = () => {
                 error={error}
                 onClose={() => setOpenEditDialog(false)}
                 onSave={handleSave}
-                onChange={(field, value) =>
-                    setEditExpense(prev =>
-                        prev ? { ...prev, [field]: value } : prev
-                    )
-                }
+                onChange={handleChange}
             />
 
             <DeleteCarConfirmationDialog

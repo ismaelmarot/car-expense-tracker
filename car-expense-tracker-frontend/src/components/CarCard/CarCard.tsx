@@ -1,6 +1,6 @@
 import React from 'react'
 import { CarInterface } from '@/interfaces'
-import { CardStyled, CarType, CarInfo } from './CarCardStyles'
+import { CardStyled, CarType, CarInfo } from './CarCard.styles'
 
 export const CarCard: React.FC<{ car: CarInterface }> =({ car }) => {
   return (

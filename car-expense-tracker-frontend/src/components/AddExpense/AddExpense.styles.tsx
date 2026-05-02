@@ -1,3 +1,4 @@
+import { PhotoItemProps } from '@/types/photoItem.type'
 import styled from '@emotion/styled'
 import { Box, Typography, TextField, FormControl } from '@mui/material'
 
@@ -165,4 +166,36 @@ export const OptionalLabel = styled.span`
   color: #86868b;
   font-weight: 400;
   margin-left: 0.25rem;
+`
+
+export const PhotoBox = styled(Box)`
+  width: 72px;
+  height: 72px;
+  border: 1px dashed #ccc;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+`
+
+export const PhotoItem = styled(Box)<PhotoItemProps>`
+  width: 72px;
+  height: 72px;
+  border-radius: 8px;
+  background-size: cover;
+  background-position: center;
+  position: relative;
+
+  ${({ image }) =>
+    image &&
+      `
+      background-image: url(${image});
+    `}
+`
+
+export const PhotoItemBox = styled(Box)`
+  position: absolute;
+  top: -5px;
+  right: -5px;
+  cursor: pointer;
 `

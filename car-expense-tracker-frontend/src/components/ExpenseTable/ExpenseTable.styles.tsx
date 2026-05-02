@@ -1,6 +1,6 @@
 import styled from '@emotion/styled'
 import { Table, TableRow, TableCell, TableContainer } from '@mui/material'
-import { GeneralColors } from '../../constants/GeneralColors'
+import { GeneralColors } from '@/constants'
 
 
 export const TableContainerStyled = styled(TableContainer)`

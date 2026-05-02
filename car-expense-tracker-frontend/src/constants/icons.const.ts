@@ -8,7 +8,9 @@ import ArrowUpwardIcon from '@mui/icons-material/ArrowUpward'
 import ArrowDownwardIcon from '@mui/icons-material/ArrowDownward'
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore'
 import WarningAmberRoundedIcon from '@mui/icons-material/WarningAmberRounded'
+import ArrowBackIcon from '@mui/icons-material/ArrowBack'
 
+import BuildIcon from '@mui/icons-material/Build'
 import PictureAsPdfIcon from '@mui/icons-material/PictureAsPdf'
 import TableChartIcon from '@mui/icons-material/TableChart'
 import DownloadIcon from '@mui/icons-material/Download'
@@ -27,52 +29,56 @@ import CalendarTodayIcon from '@mui/icons-material/CalendarToday'
 import InsertChartIcon from '@mui/icons-material/InsertChart'
 import DateRangeIcon from '@mui/icons-material/DateRange'
 import PhotoCameraIcon from '@mui/icons-material/PhotoCamera'
+import AddCircleOutlineIcon from '@mui/icons-material/AddCircleOutline'
 
 export const Icons = {
-    // acciones
+    // actions
     Edit: EditIcon,
     Delete: DeleteIcon,
     Close: CloseIcon,
     Download: DownloadIcon,
+    Add: AddCircleOutlineIcon,
 
-    // navegación
+    // navigation
     ChevronLeft: ChevronLeftIcon,
     ChevronRight: ChevronRightIcon,
     ExpandMore: ExpandMoreIcon,
+    ArrowBack: ArrowBackIcon,
 
-    // orden
+    // order
     ArrowUp: ArrowUpwardIcon,
     ArrowDown: ArrowDownwardIcon,
 
-    // documentos / reportes
+    // documents / reports
     Pdf: PictureAsPdfIcon,
     Csv: TableChartIcon,
     Report: InsertChartIcon,
 
-    // negocio
+    // buisness
     Money: AttachMoneyIcon,
     Expenses: ReceiptLongIcon,
     Category: CategoryIcon,
     Car: DirectionsCarIcon,
+    Build: BuildIcon,
 
-    // métricas
+    // metrics
     Chart: BarChartIcon,
     TrendingUp: TrendingUpIcon,
     TrendingDown: TrendingDownIcon,
 
-    // tiempo / fechas
+    // time / dates
     Calendar: CalendarTodayIcon,
     CalendarMonth: CalendarMonthIcon,
     DateRange: DateRangeIcon,
     Recurring: EventRepeatIcon,
 
-    // nuevo grupo visual
+    // new visual group
     PhotoCamera: PhotoCameraIcon,
 
     // alerts / warnings
     Warning: WarningAmberRoundedIcon,
 
-    // otros
+    // others
     List: ListAltIcon,
     Speed: SpeedIcon,
 }

@@ -47,7 +47,7 @@ export const useAddExpense = (onSuccess?: (data: { category: string, date: strin
     }
 
     const getRawPrice = (): number => {
-        return parseFloat(price.replace(/\./g, '').replace(',', '.')) || 0
+        return parseFloat(price.replace(/\./g, '').replace(',', '.').trim()) || 0
     }
 
     const getRawKilometers = (): number => {

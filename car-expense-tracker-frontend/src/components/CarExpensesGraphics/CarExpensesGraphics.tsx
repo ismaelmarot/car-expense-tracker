@@ -15,7 +15,7 @@ import {
 import { barChartColors, categoriesExpenses, pieChartColors } from '@/constants'
 import { formatCategory } from '@/functions'
 import { ChartBar, ChartPie } from '@/components'
-import { Container, ContainerGraphics, TitleStyled } from './CarExpensesGraphicsStyles'
+import { Container, ContainerGraphics, TitleStyled } from './CarExpensesGraphics.styles'
 
 ChartJS.register(
     CategoryScale,

@@ -4,7 +4,7 @@ import {
     GridBar,
     BarStyled,
     TypographyStyled
-} from './ChartBarStyles'
+} from './ChartBar.styles'
 
 export const ChartBar: React.FC<ChartBartInterfaces> = ({ title, data }) => {
     return (

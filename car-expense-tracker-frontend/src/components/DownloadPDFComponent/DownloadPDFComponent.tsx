@@ -12,7 +12,7 @@ import {
     VehicleDescription,
     VehicleDescriptionText,
     ExpencesToDate,
-} from './DownloadPDFComponentStyles'
+} from './DownloadPDFComponent.styles'
 
 export const DownloadPDFComponent: React.FC = () => {
     const vehicleId = window.location.pathname.split('/')[2]

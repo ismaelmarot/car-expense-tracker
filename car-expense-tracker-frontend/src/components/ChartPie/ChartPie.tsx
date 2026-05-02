@@ -1,6 +1,6 @@
 import { Pie } from 'react-chartjs-2'
-import {Container, GridPieChart, TypographyStyled } from './ChartPieStyles'
 import { ChartPieInterface } from '@/interfaces'
+import {Container, GridPieChart, TypographyStyled } from './ChartPie.styles'
 
 export const ChartPie: React.FC<ChartPieInterface> = ({ title, data }) => {
     return (

@@ -1,16 +1,12 @@
 import React, { useState } from 'react'
-import { MenuItem, Box } from '@mui/material'
-import AddCircleOutlineIcon from '@mui/icons-material/AddCircleOutline'
-import PhotoCameraIcon from '@mui/icons-material/PhotoCamera'
-import CloseIcon from '@mui/icons-material/Close'
-import { SnackbarNotification } from '@/components'
-import { CATEGORIES } from '@/constants'
-import { useLanguage } from '../../contexts/LanguageContext'
 import { useParams } from 'react-router-dom'
-import { updateCar, getCarById } from '../../api/api'
+import { MenuItem, Box } from '@mui/material'
+import { updateCar, getCarById } from '@/api'
+import { CATEGORIES } from '@/constants'
+import { Icons } from '@/constants'
+import { useLanguage } from '@/contexts'
+import { SnackbarNotification, UpdateVehicleDateDialog  } from '@/components'
 import { useAddExpense } from './useAddExpense'
-import { UpdateVehicleDateDialog } from '../UpdateVehicleDateDialog/UpdateVehicleDateDialog'
-
 import {
   Container,
   FormHeader,
@@ -23,8 +19,11 @@ import {
   Input,
   SelectInput,
   SubmitButton,
-  ErrorMessage
-} from './AddExpenseStyles'
+  ErrorMessage,
+  PhotoItem,
+  PhotoBox,
+  PhotoItemBox
+} from './AddExpense.styles'
 
 export const AddExpense: React.FC = () => {
     const { t, language } = useLanguage()
@@ -61,19 +60,9 @@ export const AddExpense: React.FC = () => {
     const {
         description, price, kilometers, category, date, photos, error,
         snackbarOpen, snackbarMessage, snackbarSeverity,
-        fileInputRef,
-
-        setDescription,
-        setCategory,
-        setDate,
-
-        handleSubmit,
-        handlePriceChange,
-        handleKilometersChange,
-        handlePhotoClick,
-        handlePhotoChange,
-        removePhoto,
-        closeSnackbar
+        fileInputRef, setDescription, setCategory, setDate,
+        handleSubmit, handlePriceChange, handleKilometersChange,
+        handlePhotoClick, handlePhotoChange, removePhoto, closeSnackbar
     } = useAddExpense(handleExpenseSuccess)
 
     return (
@@ -142,60 +131,31 @@ export const AddExpense: React.FC = () => {
                     </InputGroup>
                 </FormRow>
 
-                {/* FOTOS */}
+                {/* PHOTOS */}
                 <InputGroup>
                     <InputLabel>{t('photos')} (max 3)</InputLabel>
 
                     <Box sx={{ display: 'flex', gap: 1 }}>
                         {photos.map((photo, index) => (
-                            <Box
-                                key={index}
-                                sx={{
-                                    width: 72,
-                                    height: 72,
-                                    borderRadius: 2,
-                                    backgroundImage: `url(${photo})`,
-                                    backgroundSize: 'cover',
-                                    position: 'relative'
-                                }}
-                            >
-                                <Box
-                                    onClick={() => removePhoto(index)}
-                                    sx={{
-                                        position: 'absolute',
-                                        top: -5,
-                                        right: -5,
-                                        cursor: 'pointer'
-                                    }}
-                                >
-                                    <CloseIcon fontSize="small" />
-                                </Box>
-                            </Box>
+                            <PhotoItem key={index}>
+                                <PhotoItemBox onClick={() => removePhoto(index)}>
+                                    <Icons.Close fontSize='small' />
+                                </PhotoItemBox>
+                            </PhotoItem>
                         ))}
 
                         {photos.length < 3 && (
-                            <Box
-                                onClick={handlePhotoClick}
-                                sx={{
-                                    width: 72,
-                                    height: 72,
-                                    border: '1px dashed #ccc',
-                                    display: 'flex',
-                                    alignItems: 'center',
-                                    justifyContent: 'center',
-                                    cursor: 'pointer'
-                                }}
-                            >
-                                <PhotoCameraIcon />
-                            </Box>
+                            <PhotoBox onClick={handlePhotoClick}>
+                                <Icons.PhotoCamera />
+                            </PhotoBox>
                         )}
                     </Box>
 
                     <input
                         ref={fileInputRef}
-                        type="file"
+                        type='file'
                         multiple
-                        accept="image/*"
+                        accept='image/*'
                         onChange={(e) => handlePhotoChange(e.target.files)}
                         style={{ display: 'none' }}
                     />
@@ -203,8 +163,8 @@ export const AddExpense: React.FC = () => {
 
                 {error && <ErrorMessage>{error}</ErrorMessage>}
 
-                <SubmitButton type="submit">
-                    <AddCircleOutlineIcon />
+                <SubmitButton type='submit'>
+                    <Icons.Add />
                     {t('addExpense')}
                 </SubmitButton>
             </Form>

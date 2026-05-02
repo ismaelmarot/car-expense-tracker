@@ -1,8 +1,8 @@
 import React from 'react'
 import { useNavigate } from 'react-router-dom'
 import { Box } from '@mui/material'
+import { useLanguage } from '@/contexts'
 import { useAddCar } from './useAddCar'
-import { useLanguage } from '../../contexts/LanguageContext'
 import {
   Container,
   Header,
@@ -27,9 +27,7 @@ import {
   HiddenInput,
   AddCarForm
 } from './AddCarStyles'
-
-import ExpandMoreIcon from '@mui/icons-material/ExpandMore'
-import BuildIcon from '@mui/icons-material/Build'
+import { Icons } from '@/constants'
 
 export const AddCar: React.FC = () => {
     const navigate = useNavigate()
@@ -177,11 +175,11 @@ export const AddCar: React.FC = () => {
                         }}
                     >
                         <Box sx={{ display: 'flex', gap: '0.5rem' }}>
-                            <BuildIcon sx={{ fontSize: 18 }} />
+                            <Icons.Build sx={{ fontSize: 18 }} />
                             <span>{t('additionalInfo')}</span>
                         </Box>
 
-                        <ExpandMoreIcon
+                        <Icons.ExpandMore
                             sx={{
                                 transform: showAdditionalInfo ? 'rotate(180deg)' : 'rotate(0deg)',
                                 transition: '0.2s'

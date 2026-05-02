@@ -1,10 +1,8 @@
 import styled from '@emotion/styled'
-import { Link } from 'react-router-dom';
+import { Link } from 'react-router-dom'
 import { Grid, Button, Typography } from '@mui/material'
-import ArrowBackIcon from '@mui/icons-material/ArrowBack'
-import { flex } from '../../mixins/setFlex'
-import { size } from '../../mixins/setSize'
-import { GeneralColors } from '../../constants/GeneralColors'
+import { GeneralColors, Icons } from '@/constants'
+import { flex, size } from '@/mixins'
 
 export const Container = styled(Grid)`
     ${flex('row', 'center', 'flex-start')}
@@ -17,7 +15,7 @@ export const LinkStyled = styled(Link)`
     text-decoration: none;
 `
 
-export const ArrowBackIconStyled = styled(ArrowBackIcon)`
+export const ArrowBackIconStyled = styled(Icons.ArrowBack)`
     font-size: 1.5rem;
     margin: 0 .4rem;
     color: ${GeneralColors.white};
