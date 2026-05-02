@@ -268,7 +268,7 @@ export const ExpenseStats: React.FC = () => {
             <Icons.Speed />
           </SummaryIcon>
           <SummaryLabel>{t('costPerKm')}</SummaryLabel>
-          <SummaryValue>{formatMoney(stats.costPerKm || 0)}/km</SummaryValue>
+          <SummaryValue>{formatMoney(stats.costPerKm || 0)} $/km</SummaryValue>
         </SummaryCard>
       </SummaryGrid>
 
