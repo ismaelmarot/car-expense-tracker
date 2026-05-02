@@ -152,6 +152,7 @@ export const CarExpenses: React.FC = () => {
                 onClose={() => setOpenEditDialog(false)}
                 onSave={handleSave}
                 onChange={handleChange}
+                onPhotosChange={(photos) => handleChange('photos', photos)}
             />
 
             <DeleteCarConfirmationDialog

@@ -17,12 +17,17 @@ export const PhotoViewer: React.FC<PhotoViewerProps> = ({
 }) => {
     if (!open) return null
 
+    const handleOverlayClick = (e: React.MouseEvent) => {
+        if (e.target === e.currentTarget) {
+            onClose()
+        }
+    }
+
     return (
-        <Overlay onClick={onClose}>
+        <Overlay onClick={handleOverlayClick}>
             <ImageStyled
                 src={photos[currentIndex]}
                 alt="Full size"
-                onClick={(e) => e.stopPropagation()}
             />
 
             {photos.length > 1 && (
