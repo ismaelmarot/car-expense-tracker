@@ -42,7 +42,7 @@ export const EditExpenseDialog: React.FC<EditExpenseDialogPropsInterface> = ({
         >
             {/* TITLE */}
             <DialogTitle sx={{ fontWeight: 600, fontSize: '1.25rem' }}>
-                {t('editExpense')}
+                {t('edit')} {t('expense')}
             </DialogTitle>
 
             <DialogContentStyled>

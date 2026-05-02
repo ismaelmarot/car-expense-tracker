@@ -30,6 +30,12 @@ export const PhotoUploader: React.FC<PhotoUploaderProps> = ({
                         key={index}
                         sx={{
                             backgroundImage: `url(${photo})`,
+                            width: 64,
+                            height: 64,
+                            borderRadius: '12px',
+                            backgroundSize: 'cover',
+                            backgroundPosition: 'center',
+                            position: 'relative',
                         }}
                     >
                         <RemoveButton onClick={() => removePhoto(index)}>
