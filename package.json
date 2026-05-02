@@ -6,7 +6,6 @@
   "main": "electron.js",
   "scripts": {
     "frontend": "cd car-expense-tracker-frontend && npm start",
-    "backend": "cd car-expense-tracker-backend && node server.js",
     "build-frontend": "cd car-expense-tracker-frontend && npm run build",
     "electron": "electron .",
     "package": "npm run build-frontend && npx electron-builder",
@@ -41,7 +40,10 @@
       "package.json",
       "node_modules/**/*"
     ],
-    "asar": false,
+    "asar": true,
+    "asarUnpack": [
+      "node_modules/sqlite3/**/*"
+    ],
     "directories": {
       "output": "dist"
     },
