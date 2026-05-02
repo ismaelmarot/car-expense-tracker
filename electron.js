@@ -68,8 +68,17 @@ function createWindow() {
 
 function startBackend() {
   return new Promise((resolve, reject) => {
+    let sqlite3;
+    try {
+      sqlite3 = require('sqlite3').verbose();
+      console.log('[Backend] sqlite3 cargado correctamente');
+    } catch (err) {
+      console.error('[Backend] FATAL: No se pudo cargar sqlite3:', err);
+      reject(new Error('Failed to load sqlite3: ' + err.message));
+      return;
+    }
+
     const express = require('express');
-    const sqlite3 = require('sqlite3').verbose();
     const cors = require('cors');
     
     const backendApp = express();
@@ -79,11 +88,13 @@ function startBackend() {
     // Usamos la misma DB que Electron está usando
     const userDataPath = app.getPath("userData");
     const dbPath = path.join(userDataPath, "database.db");
+    console.log('[Backend] Intentando abrir DB en:', dbPath);
+    
     const db = new sqlite3.Database(dbPath, (err) => {
       if (err) {
-        console.error('Error abriendo DB:', err);
+        console.error('[Backend] Error abriendo DB:', err);
       } else {
-        console.log('DB abierta:', dbPath);
+        console.log('[Backend] DB abierta exitosamente:', dbPath);
       }
     });
     
