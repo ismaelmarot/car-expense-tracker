@@ -137,7 +137,7 @@ export const AddExpense: React.FC = () => {
 
                     <Box sx={{ display: 'flex', gap: 1 }}>
                         {photos.map((photo, index) => (
-                            <PhotoItem key={index}>
+                            <PhotoItem key={index} image={photo}>
                                 <PhotoItemBox onClick={() => removePhoto(index)}>
                                     <Icons.Close fontSize='small' />
                                 </PhotoItemBox>
