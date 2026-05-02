@@ -1,8 +1,9 @@
 import { useMemo } from 'react'
 import { ExpenseInterface } from '@/interfaces'
 import { formatCategory } from '@/functions'
+import { ExpenseStatsProps } from '@/interfaces'
 
-export const useExpenseStats = (expenses: ExpenseInterface[]) => {
+export const useExpenseStats = ( expenses: ExpenseInterface[] ): ExpenseStatsProps | null => {
     return useMemo(() => {
         if (expenses.length === 0) return null
 
@@ -12,8 +13,8 @@ export const useExpenseStats = (expenses: ExpenseInterface[]) => {
             (a, b) => (b.amount || 0) - (a.amount || 0)
         )
 
-        const highest = sortedByPrice[0]
-        const lowest = sortedByPrice[sortedByPrice.length - 1]
+        const highest = sortedByPrice[0] || null
+        const lowest = sortedByPrice[sortedByPrice.length - 1] || null
         const average = total / expenses.length
 
         const totalKm = expenses.reduce(
@@ -49,35 +50,39 @@ export const useExpenseStats = (expenses: ExpenseInterface[]) => {
             categoryTotals[cat] = (categoryTotals[cat] || 0) + (exp.amount || 0)
         })
 
-        const mostExpensiveCategory = Object.entries(categoryTotals)
-            .sort((a, b) => b[1] - a[1])[0]
+        const mostExpensiveCategory =
+        Object.entries(categoryTotals).sort((a, b) => b[1] - a[1])[0] || null
 
         const monthlyTotals: Record<string, number> = {}
 
         expenses.forEach(exp => {
             const date = new Date(exp.date)
-            const key = `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, '0')}`
+            const key = `${date.getFullYear()}-${String(
+                date.getMonth() + 1
+            ).padStart(2, '0')}`
             monthlyTotals[key] = (monthlyTotals[key] || 0) + (exp.amount || 0)
         })
 
-        const highestMonth = Object.entries(monthlyTotals)
-            .sort((a, b) => b[1] - a[1])[0]
+        const highestMonth =
+        Object.entries(monthlyTotals).sort((a, b) => b[1] - a[1])[0] || null
 
-        const sortedDates = [...dates].sort((a, b) => a.getTime() - b.getTime())
+        const sortedDates = [...dates].sort(
+            (a, b) => a.getTime() - b.getTime()
+        )
 
         let totalDays = 0
         for (let i = 1; i < sortedDates.length; i++) {
             totalDays +=
                 Math.abs(
-                    sortedDates[i].getTime() - sortedDates[i - 1].getTime()
+                sortedDates[i].getTime() - sortedDates[i - 1].getTime()
                 ) /
                 (1000 * 60 * 60 * 24)
         }
 
         const frequency =
-            sortedDates.length > 1
-                ? totalDays / (sortedDates.length - 1)
-                : 0
+        sortedDates.length > 1
+            ? totalDays / (sortedDates.length - 1)
+            : 0
 
         return {
             total,
