@@ -2,6 +2,7 @@ import React from 'react'
 import { PhotoViewerProps } from '@/types'
 import {
     Overlay,
+    ImageContainer,
     ImageStyled,
     LeftButton,
     RightButton,
@@ -25,10 +26,12 @@ export const PhotoViewer: React.FC<PhotoViewerProps> = ({
 
     return (
         <Overlay onClick={handleOverlayClick}>
-            <ImageStyled
-                src={photos[currentIndex]}
-                alt="Full size"
-            />
+            <ImageContainer>
+                <ImageStyled
+                    src={photos[currentIndex]}
+                    alt="Full size"
+                />
+            </ImageContainer>
 
             {photos.length > 1 && (
                 <>

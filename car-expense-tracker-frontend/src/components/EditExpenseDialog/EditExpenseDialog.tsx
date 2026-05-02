@@ -70,6 +70,7 @@ export const EditExpenseDialog: React.FC<EditExpenseDialogPropsInterface> = ({
                             <PhotoUploader
                                 photos={photos}
                                 onPhotosChange={onPhotosChange}
+                                maxPhotos={3}
                             />
                         )}
                     </>

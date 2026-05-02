@@ -12,6 +12,7 @@ import {
 export const PhotoUploader: React.FC<PhotoUploaderProps> = ({
     photos,
     onPhotosChange,
+    maxPhotos = 3,
 }) => {
     const {
         fileInputRef,
@@ -38,7 +39,7 @@ export const PhotoUploader: React.FC<PhotoUploaderProps> = ({
                 ))}
 
                 {/* ADD BUTTON */}
-                {photos.length < 3 && (
+                {photos.length < maxPhotos && (
                     <AddPhotoButton onClick={handlePhotoClick}>
                         <Icons.PhotoCamera sx={{ fontSize: 20, color: '#aeaeb2' }} />
                     </AddPhotoButton>

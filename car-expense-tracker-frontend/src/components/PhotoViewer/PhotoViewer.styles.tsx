@@ -13,9 +13,17 @@ export const Overlay = styled('div')`
     justify-content: center;
 `
 
+export const ImageContainer = styled('div')`
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    max-width: 90vw;
+    max-height: 90vh;
+`
+
 export const ImageStyled = styled('img')`
-    max-width: 95vw;
-    max-height: 95vh;
+    max-width: 100%;
+    max-height: 90vh;
     object-fit: contain;
 `
 

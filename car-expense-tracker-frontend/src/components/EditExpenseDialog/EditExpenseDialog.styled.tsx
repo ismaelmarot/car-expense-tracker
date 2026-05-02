@@ -19,6 +19,8 @@ export const ButtonSave = styled(Button)`
 
 export const DialogContentStyled = styled(DialogContent)`
     padding-top: 1rem !important;
+    max-height: 70vh;
+    overflow-y: auto;
 `
 export const dialogPaperStyles = {
     borderRadius: '20px',
