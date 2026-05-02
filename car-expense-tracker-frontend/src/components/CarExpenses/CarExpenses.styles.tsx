@@ -54,14 +54,13 @@ export const TableHeader = styled(Box)`
   }
 `
 
-
 export const SortIndicator = styled.span`
-    font-size: 11px;
-    opacity: 0.7;
-    display: inline-flex;
-    align-items: center;
-    margin-left: 2px;
-`;
+  font-size: 11px;
+  opacity: 0.7;
+  display: inline-flex;
+  align-items: center;
+  margin-left: 2px;
+`
 
 export const HeaderCell = styled(Box)`
   font-size: 0.6875rem;

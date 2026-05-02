@@ -3,42 +3,23 @@ import { Typography } from '@mui/material'
 import { useLanguage } from '@/contexts'
 import { Icons } from '@/constants'
 import { ExpenseInterface } from '@/interfaces'
-import {
-    formatCategory,
-    formatDate,
-    formatMoney,
-    formatNumberByThousands
-} from '@/functions'
-
+import { formatMoney } from '@/functions'
 import {
     EditExpenseDialog,
     DeleteCarConfirmationDialog,
     ExpenseDetailModal,
     PhotoViewer,
-    usePhotoViewer
+    usePhotoViewer,
+    ExpenseList as ExpenseListComponent
 } from '@/components'
-
 import { useCarExpenses } from './useCarExpenses'
-
 import {
     Container,
     TotalCard,
     TotalLabel,
     TotalAmountNew,
-    ExpenseList,
-    TableHeader,
-    HeaderCell,
-    ExpenseItem,
-    ExpenseName,
-    ExpenseDate,
-    ExpenseKm,
-    ExpenseCategory,
-    ExpensePrice,
-    MobileDate,
     EmptyState,
     EmptyText,
-    CategoryBadge,
-    SortIndicator,
 } from './CarExpenses.styles'
 
 export const CarExpenses: React.FC = () => {
@@ -63,7 +44,7 @@ export const CarExpenses: React.FC = () => {
     const [showPopup, setShowPopup] = useState(false)
     const [showDeleteConfirm, setShowDeleteConfirm] = useState(false)
 
-    // ✅ NUEVO: PhotoViewer hook
+    // PhotoViewer hook
     const {
         open: photoViewerOpen,
         photos: viewerPhotos,
@@ -82,6 +63,7 @@ export const CarExpenses: React.FC = () => {
                 ? JSON.parse(expense.photos || '[]')
                 : (expense.photos || [])
         }
+
         setSelectedExpense(expenseWithPhotos)
         setShowPopup(true)
     }
@@ -170,66 +152,16 @@ export const CarExpenses: React.FC = () => {
                     <EmptyText>{t('noExpenses')}</EmptyText>
                 </EmptyState>
             ) : (
-                <ExpenseList>
-                    <TableHeader>
-                        <HeaderCell onClick={() => handleSort('description')}>
-                            {t('description')}
-                            {sortBy === 'description' && (
-                                <SortIndicator>{sortOrder === 'asc' ? '↑' : '↓'}</SortIndicator>
-                            )}
-                        </HeaderCell>
-
-                        <HeaderCell onClick={() => handleSort('kilometers')}>
-                            {t('km')}
-                            {sortBy === 'kilometers' && (
-                                <SortIndicator>{sortOrder === 'asc' ? '↑' : '↓'}</SortIndicator>
-                            )}
-                        </HeaderCell>
-
-                        <HeaderCell onClick={() => handleSort('category')}>
-                            {t('category')}
-                            {sortBy === 'category' && (
-                                <SortIndicator>{sortOrder === 'asc' ? '↑' : '↓'}</SortIndicator>
-                            )}
-                        </HeaderCell>
-
-                        <HeaderCell onClick={() => handleSort('date')}>
-                            {t('date')}
-                            {sortBy === 'date' && (
-                                <SortIndicator>{sortOrder === 'asc' ? '↑' : '↓'}</SortIndicator>
-                            )}
-                        </HeaderCell>
-
-                        <HeaderCell onClick={() => handleSort('amount')}>
-                            ${t('totalAmount')}
-                            {sortBy === 'amount' && (
-                                <SortIndicator>{sortOrder === 'asc' ? '↑' : '↓'}</SortIndicator>
-                            )}
-                        </HeaderCell>
-                    </TableHeader>
-
-                    {sortedExpenses.map(expense => (
-                        <ExpenseItem
-                            key={expense.id}
-                            onClick={() => handleItemClick(expense)}
-                        >
-                            <ExpenseName>{expense.description}</ExpenseName>
-                            <MobileDate>{formatDate(expense.date)}</MobileDate>
-                            <ExpenseKm>{formatNumberByThousands(expense.kilometers)}</ExpenseKm>
-
-                            <ExpenseCategory>
-                                <CategoryBadge category={formatCategory(expense.category)}>
-                                    {formatCategory(expense.category)}
-                                </CategoryBadge>
-                            </ExpenseCategory>
-
-                            <ExpenseDate>{formatDate(expense.date)}</ExpenseDate>
-                            <ExpensePrice>{formatMoney(expense.amount)}</ExpensePrice>
-                        </ExpenseItem>
-                    ))}
-                </ExpenseList>
+                <ExpenseListComponent
+                    expenses={sortedExpenses}
+                    sortBy={sortBy}
+                    sortOrder={sortOrder}
+                    onSort={handleSort}
+                    onItemClick={handleItemClick}
+                />
             )}
 
+            {/* MODALS */}
             <ExpenseDetailModal
                 open={showPopup}
                 expense={selectedExpense}
@@ -261,6 +193,7 @@ export const CarExpenses: React.FC = () => {
                 onCancel={() => setShowDeleteConfirm(false)}
             />
 
+            {/* PHOTO VIEWER */}
             <PhotoViewer
                 open={photoViewerOpen}
                 photos={viewerPhotos}
