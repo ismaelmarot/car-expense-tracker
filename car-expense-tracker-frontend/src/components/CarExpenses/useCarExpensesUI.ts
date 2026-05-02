@@ -25,7 +25,13 @@ export const useCarExpensesUI = (handleUpdate: any) => {
     }
 
     const handleEdit = (expense: ExpenseInterface) => {
-        setEditExpense(expense)
+        const expenseWithPhotos = {
+            ...expense,
+            photos: typeof expense.photos === 'string'
+                ? JSON.parse(expense.photos || '[]')
+                : (expense.photos || [])
+        }
+        setEditExpense(expenseWithPhotos)
         setOpenEditDialog(true)
         setShowPopup(false)
     }
