@@ -668,7 +668,7 @@ function startBackend() {
       resolve();
     });
 
-    server.on('error', (err: any) => {
+    server.on('error', (err) => {
       if (err.code === 'EADDRINUSE') {
         console.error('[Backend] Puerto 5001 en uso. Intentando cerrar procesos anteriores...');
         try {
@@ -677,12 +677,12 @@ function startBackend() {
           execSync("lsof -ti:5001 | xargs kill -9 2>/dev/null || true", { encoding: 'utf-8' });
           console.log('[Backend] Procesos anteriores terminados. Reintentando...');
           // Reintentar después de un breve delay
-          setTimeout(() => {
-            const server2 = backendApp.listen(5001, () => {
+          setTimeout(function() {
+            const server2 = backendApp.listen(5001, function() {
               console.log('[Backend] Escuchando en http://localhost:5001 (reintento)');
               resolve();
             });
-            server2.on('error', (err2: any) => {
+            server2.on('error', function(err2) {
               console.error('[Backend] Error fatal al iniciar backend:', err2);
               reject(err2);
             });
