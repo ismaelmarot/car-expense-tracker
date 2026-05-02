@@ -15,19 +15,19 @@ jobs:
       - name: Setup NodeJS
         uses: actions/setup-node@v4
         with:
-          node-version: 20
+          node-version: 23
 
       - name: Install root dependencies
         run: npm install --legacy-peer-deps
+
+      - name: Rebuild native modules for Electron
+        run: npx electron-rebuild
 
       - name: Install Electron
         run: npm install electron@33.2.1
 
       - name: Install frontend dependencies
         run: cd car-expense-tracker-frontend && npm install --legacy-peer-deps
-
-      - name: Install backend dependencies
-        run: cd car-expense-tracker-backend && npm install --legacy-peer-deps
 
       - name: Build frontend
         run: cd car-expense-tracker-frontend && npm run build
@@ -50,19 +50,19 @@ jobs:
       - name: Setup NodeJS
         uses: actions/setup-node@v4
         with:
-          node-version: 20
+          node-version: 23
 
       - name: Install root dependencies
         run: npm install --legacy-peer-deps
+
+      - name: Rebuild native modules for Electron
+        run: npx electron-rebuild
 
       - name: Install Electron
         run: npm install electron@33.2.1
 
       - name: Install frontend dependencies
         run: cd car-expense-tracker-frontend && npm install --legacy-peer-deps
-
-      - name: Install backend dependencies
-        run: cd car-expense-tracker-backend && npm install --legacy-peer-deps
 
       - name: Build frontend
         run: cd car-expense-tracker-frontend && npm run build
