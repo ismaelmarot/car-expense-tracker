@@ -33,6 +33,8 @@ jobs:
 
       - name: Build frontend
         run: cd car-expense-tracker-frontend && npm run build
+        env:
+          CI: ""
 
       - name: Build Windows installer
         run: npx electron-builder --win --x64 --publish never
@@ -70,6 +72,8 @@ jobs:
 
       - name: Build frontend
         run: cd car-expense-tracker-frontend && npm run build
+        env:
+          CI: ""
 
       - name: Build macOS installer
         run: npx electron-builder --mac --arm64 --publish never
